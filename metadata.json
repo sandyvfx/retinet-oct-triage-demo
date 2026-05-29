@@ -1,0 +1,39 @@
+{
+  "created_utc": "2026-05-29T13:27:08.642230+00:00",
+  "phase": "phase14_polished_case_dashboard",
+  "input_dir": "data\\oct_100_each",
+  "run_dir": "data\\polished_dashboards\\phase14_polished_dashboard_20260529_132614",
+  "html_index": "data\\polished_dashboards\\phase14_polished_dashboard_20260529_132614\\index.html",
+  "case_count": 100,
+  "records_count": 400,
+  "labels": [
+    "CNV",
+    "DME",
+    "DRUSEN",
+    "NORMAL"
+  ],
+  "model_path": "models\\phase10_baseline_oct_cnn_20260529_124947.pt",
+  "ui_features": [
+    "case_dropdown",
+    "patient_exam_header",
+    "confidence_badges",
+    "top2_margin_warning",
+    "class_probability_bars",
+    "gradcam_overlay",
+    "glaucoma_assessability_panel",
+    "triage_only_safety_notice"
+  ],
+  "glaucoma_scope": {
+    "included": true,
+    "mode": "assessability_only",
+    "glaucoma_classifier_trained": false,
+    "reason": "Current POC model is trained only on CNV/DME/DRUSEN/NORMAL macular OCT images."
+  },
+  "interpretation_limits": {
+    "proof_of_concept": true,
+    "not_clinically_validated": true,
+    "triage_only_not_diagnosis": true,
+    "medical_diagnosis_claimed": false,
+    "ophthalmologist_review_required": true
+  }
+}
