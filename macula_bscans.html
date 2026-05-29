@@ -328,7 +328,7 @@ select {
                     <div class="patient-value">Demo Patient</div>
                 </div>
                 <div>
-                    <div class="patient-label">Patient ID</div>
+                    <div class="patient-label">Case ID</div>
                     <div class="patient-value">POC-CASE-SET</div>
                 </div>
                 <div>
@@ -479,7 +479,7 @@ select {
 </div>
 
 <div class="safety">
-    <b>Clinical safety notice:</b>
+    <b>Siteal safety notice:</b>
     This is a proof-of-concept triage interface, not a diagnostic medical device.
     Model confidence and Grad-CAM heatmaps are decision-support signals only.
     Ophthalmologist review is required. Glaucoma is not classified by this model;
@@ -14790,7 +14790,7 @@ function renderCase() {
                     <b>AI findings summary:</b><br>
                     ${rec.safe_findings_summary}<br><br>
                     The heatmap highlights regions that influenced the model output.
-                    It is an explainability aid, not clinical proof.
+                    It is an explainability aid, not safety proof.
                 </div>
 
                 <div class="section glaucoma">

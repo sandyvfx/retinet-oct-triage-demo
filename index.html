@@ -231,6 +231,74 @@ th {
     .metric.wide { grid-column:span 2; }
     .macula-frame { height:calc(100vh - 126px); }
 }
+
+.viewer-layout {
+    display: flex;
+    gap: 24px;
+    margin-top: 16px;
+}
+.case-sidebar {
+    width: 300px;
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 16px;
+    flex-shrink: 0;
+}
+.case-sidebar h3 {
+    margin-top: 0;
+    font-size: 16px;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 8px;
+}
+.case-item {
+    padding: 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    margin-bottom: 4px;
+    border: 1px solid transparent;
+}
+.case-item:hover {
+    background: #f0f4f8;
+}
+.case-item.active {
+    background: var(--blue);
+    color: white;
+    border-color: var(--blue);
+}
+.viewer-main {
+    flex-grow: 1;
+}
+.bscan-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+    margin-top: 16px;
+}
+.bscan-card {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 8px;
+}
+.bscan-card img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 4px;
+}
+.bscan-label {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 5px;
+    text-align: center;
+}
+@media (max-width: 900px) {
+    .viewer-layout { flex-direction: column; }
+    .case-sidebar { width: 100%; }
+}
+    
 </style>
 </head>
 <body>
@@ -243,6 +311,7 @@ th {
         <nav class="tabs" aria-label="RetiNet OCT dashboard sections">
             <button class="tab-button active" id="tab-macula" data-tab="macula" type="button">Macula B-scans</button>
             <button class="tab-button" id="tab-glaucoma" data-tab="glaucoma" type="button">Glaucoma / Optic Nerve OCT</button>
+            <button class="tab-button" id="tab-native" data-tab="native" type="button">Native OCT Converted Viewer</button>
         </nav>
     </div>
 </div>
@@ -306,7 +375,7 @@ th {
         <div class="note-panel">
             <b>Rule-based POC bucket:</b> Normal-like, Borderline-like, Abnormal-like, or Unknown are
             assigned from available dataset labels and simple RNFL/GCC/CDR/IOP threshold cues when columns
-            are recognizable. This is risk-support visualization only and is not a clinical model.
+            are recognizable. This is risk-support visualization only and is not a safety model.
             <br>
             <b>Source CSV:</b> data\glaucoma_poc\processed\glaucoma_100_records.csv
         </div>
@@ -434,7 +503,42 @@ th {
     </section>
     
     </section>
-</main>
+    
+    <section class="tab-panel" id="panel-native" aria-labelledby="tab-native">
+        <div class="glaucoma-shell">
+            <div class="section-header">
+                <div>
+                    <h1>Native OCT Converted Viewer</h1>
+                    <p>De-identified B-scan sequences from vendor-specific native files.</p>
+                </div>
+                <div class="flag-stack">
+                    <span>native_oct_viewer_only=true</span>
+                    <span>raw_vendor_files_exposed=false</span>
+                    <span>full_metadata_exposed=false</span>
+                    <span>model_inference_run=false</span>
+                    <span>diagnosis_claimed=false</span>
+                    <span>triage_only_not_diagnosis=true</span>
+                </div>
+            </div>
+
+            <div class="safety-alert">This native OCT viewer displays converted, de-identified B-scan preview images only. It does not display raw vendor files, full metadata, or diagnosis. Ophthalmologist review is required.</div>
+
+            <div class="viewer-layout">
+                <div class="case-sidebar">
+                    <h3>Converted Cases</h3>
+                    <div id="native-case-list"></div>
+                </div>
+                <div class="viewer-main">
+                    <div id="case-details" class="note-panel">
+                        Select a case to view details and B-scan sequence.
+                    </div>
+                    <div id="bscan-viewer" class="bscan-grid"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    </main>
 
 <script>
 const PHASE16_GLAUCOMA_RECORDS = [{"phase16_record_id": "GLAUCOMA-001", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "77.92", "gcc_thickness_um": "62.46", "retinal_volume_mm3": "5.67", "macular_thickness_um": "274.02", "dataset_label": "Glaucoma", "poc_risk_support_bucket": "Abnormal-like"}, {"phase16_record_id": "GLAUCOMA-002", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "86.48", "gcc_thickness_um": "64.14", "retinal_volume_mm3": "5.63", "macular_thickness_um": "283.67", "dataset_label": "No Glaucoma", "poc_risk_support_bucket": "Normal-like"}, {"phase16_record_id": "GLAUCOMA-003", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "83.78", "gcc_thickness_um": "56.93", "retinal_volume_mm3": "5.98", "macular_thickness_um": "268.46", "dataset_label": "Glaucoma", "poc_risk_support_bucket": "Abnormal-like"}, {"phase16_record_id": "GLAUCOMA-004", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "96.88", "gcc_thickness_um": "56.48", "retinal_volume_mm3": "5.69", "macular_thickness_um": "261.48", "dataset_label": "No Glaucoma", "poc_risk_support_bucket": "Normal-like"}, {"phase16_record_id": "GLAUCOMA-005", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "91.07", "gcc_thickness_um": "66.23", "retinal_volume_mm3": "6.16", "macular_thickness_um": "273.19", "dataset_label": "Glaucoma", "poc_risk_support_bucket": "Abnormal-like"}, {"phase16_record_id": "GLAUCOMA-006", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "89.81", "gcc_thickness_um": "59.05", "retinal_volume_mm3": "5.96", "macular_thickness_um": "282.34", "dataset_label": "No Glaucoma", "poc_risk_support_bucket": "Normal-like"}, {"phase16_record_id": "GLAUCOMA-007", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "87.94", "gcc_thickness_um": "63.39", "retinal_volume_mm3": "6.13", "macular_thickness_um": "277.29", "dataset_label": "Glaucoma", "poc_risk_support_bucket": "Abnormal-like"}, {"phase16_record_id": "GLAUCOMA-008", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "87.25", "gcc_thickness_um": "63.98", "retinal_volume_mm3": "6.44", "macular_thickness_um": "262.86", "dataset_label": "No Glaucoma", "poc_risk_support_bucket": "Normal-like"}, {"phase16_record_id": "GLAUCOMA-009", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "88.87", "gcc_thickness_um": "65.26", "retinal_volume_mm3": "5.65", "macular_thickness_um": "265.95", "dataset_label": "Glaucoma", "poc_risk_support_bucket": "Abnormal-like"}, {"phase16_record_id": "GLAUCOMA-010", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "82.61", "gcc_thickness_um": "66.01", "retinal_volume_mm3": "6.16", "macular_thickness_um": "261.78", "dataset_label": "No Glaucoma", "poc_risk_support_bucket": "Normal-like"}, {"phase16_record_id": "GLAUCOMA-011", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "97.64", "gcc_thickness_um": "58.03", "retinal_volume_mm3": "6.36", "macular_thickness_um": "288.86", "dataset_label": "Glaucoma", "poc_risk_support_bucket": "Abnormal-like"}, {"phase16_record_id": "GLAUCOMA-012", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "98.01", "gcc_thickness_um": "56.11", "retinal_volume_mm3": "6.41", "macular_thickness_um": "289.94", "dataset_label": "No Glaucoma", "poc_risk_support_bucket": "Normal-like"}, {"phase16_record_id": "GLAUCOMA-013", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "86.34", "gcc_thickness_um": "64.46", "retinal_volume_mm3": "6.29", "macular_thickness_um": "288.53", "dataset_label": "Glaucoma", "poc_risk_support_bucket": "Abnormal-like"}, {"phase16_record_id": "GLAUCOMA-014", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "95.72", "gcc_thickness_um": "58.81", "retinal_volume_mm3": "6.00", "macular_thickness_um": "267.25", "dataset_label": "No Glaucoma", "poc_risk_support_bucket": "Normal-like"}, {"phase16_record_id": "GLAUCOMA-015", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "77.21", "gcc_thickness_um": "55.36", "retinal_volume_mm3": "5.98", "macular_thickness_um": "285.47", "dataset_label": "Glaucoma", "poc_risk_support_bucket": "Abnormal-like"}, {"phase16_record_id": "GLAUCOMA-016", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "80.37", "gcc_thickness_um": "67.89", "retinal_volume_mm3": "5.86", "macular_thickness_um": "268.39", "dataset_label": "No Glaucoma", "poc_risk_support_bucket": "Normal-like"}, {"phase16_record_id": "GLAUCOMA-017", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "80.47", "gcc_thickness_um": "62.54", "retinal_volume_mm3": "6.39", "macular_thickness_um": "270.87", "dataset_label": "Glaucoma", "poc_risk_support_bucket": "Abnormal-like"}, {"phase16_record_id": "GLAUCOMA-018", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "99.16", "gcc_thickness_um": "57.97", "retinal_volume_mm3": "5.98", "macular_thickness_um": "266.29", "dataset_label": "No Glaucoma", "poc_risk_support_bucket": "Normal-like"}, {"phase16_record_id": "GLAUCOMA-019", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "76.78", "gcc_thickness_um": "60.64", "retinal_volume_mm3": "6.00", "macular_thickness_um": "278.88", "dataset_label": "Glaucoma", "poc_risk_support_bucket": "Abnormal-like"}, {"phase16_record_id": "GLAUCOMA-020", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "80.14", "gcc_thickness_um": "65.84", "retinal_volume_mm3": "6.11", "macular_thickness_um": "265.42", "dataset_label": "No Glaucoma", "poc_risk_support_bucket": "Normal-like"}, {"phase16_record_id": "GLAUCOMA-021", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "82.66", "gcc_thickness_um": "63.27", "retinal_volume_mm3": "5.80", "macular_thickness_um": "276.96", "dataset_label": "Glaucoma", "poc_risk_support_bucket": "Abnormal-like"}, {"phase16_record_id": "GLAUCOMA-022", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "89.77", "gcc_thickness_um": "69.73", "retinal_volume_mm3": "5.60", "macular_thickness_um": "272.43", "dataset_label": "No Glaucoma", "poc_risk_support_bucket": "Normal-like"}, {"phase16_record_id": "GLAUCOMA-023", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "87.85", "gcc_thickness_um": "63.43", "retinal_volume_mm3": "6.10", "macular_thickness_um": "289.69", "dataset_label": "Glaucoma", "poc_risk_support_bucket": "Abnormal-like"}, {"phase16_record_id": "GLAUCOMA-024", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "82.98", "gcc_thickness_um": "69.00", "retinal_volume_mm3": "6.41", "macular_thickness_um": "265.88", "dataset_label": "No Glaucoma", "poc_risk_support_bucket": "Normal-like"}, {"phase16_record_id": "GLAUCOMA-025", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "99.01", "gcc_thickness_um": "66.25", "retinal_volume_mm3": "5.55", "macular_thickness_um": "261.58", "dataset_label": "Glaucoma", "poc_risk_support_bucket": "Abnormal-like"}, {"phase16_record_id": "GLAUCOMA-026", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "94.84", "gcc_thickness_um": "66.71", "retinal_volume_mm3": "5.95", "macular_thickness_um": "282.48", "dataset_label": "No Glaucoma", "poc_risk_support_bucket": "Normal-like"}, {"phase16_record_id": "GLAUCOMA-027", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "81.09", "gcc_thickness_um": "64.15", "retinal_volume_mm3": "5.79", "macular_thickness_um": "279.10", "dataset_label": "Glaucoma", "poc_risk_support_bucket": "Abnormal-like"}, {"phase16_record_id": "GLAUCOMA-028", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "78.02", "gcc_thickness_um": "64.66", "retinal_volume_mm3": "6.50", "macular_thickness_um": "268.11", "dataset_label": "No Glaucoma", "poc_risk_support_bucket": "Normal-like"}, {"phase16_record_id": "GLAUCOMA-029", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "82.56", "gcc_thickness_um": "62.51", "retinal_volume_mm3": "6.37", "macular_thickness_um": "286.17", "dataset_label": "Glaucoma", "poc_risk_support_bucket": "Abnormal-like"}, {"phase16_record_id": "GLAUCOMA-030", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "97.60", "gcc_thickness_um": "68.97", "retinal_volume_mm3": "5.74", "macular_thickness_um": "280.49", "dataset_label": "No Glaucoma", "poc_risk_support_bucket": "Normal-like"}, {"phase16_record_id": "GLAUCOMA-031", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "91.66", "gcc_thickness_um": "69.38", "retinal_volume_mm3": "5.79", "macular_thickness_um": "288.43", "dataset_label": "Glaucoma", "poc_risk_support_bucket": "Abnormal-like"}, {"phase16_record_id": "GLAUCOMA-032", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "99.43", "gcc_thickness_um": "68.77", "retinal_volume_mm3": "6.16", "macular_thickness_um": "261.61", "dataset_label": "No Glaucoma", "poc_risk_support_bucket": "Normal-like"}, {"phase16_record_id": "GLAUCOMA-033", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "82.75", "gcc_thickness_um": "58.50", "retinal_volume_mm3": "6.41", "macular_thickness_um": "281.03", "dataset_label": "Glaucoma", "poc_risk_support_bucket": "Abnormal-like"}, {"phase16_record_id": "GLAUCOMA-034", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "77.30", "gcc_thickness_um": "67.74", "retinal_volume_mm3": "5.72", "macular_thickness_um": "262.67", "dataset_label": "No Glaucoma", "poc_risk_support_bucket": "Normal-like"}, {"phase16_record_id": "GLAUCOMA-035", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "92.21", "gcc_thickness_um": "67.21", "retinal_volume_mm3": "6.49", "macular_thickness_um": "275.64", "dataset_label": "Glaucoma", "poc_risk_support_bucket": "Abnormal-like"}, {"phase16_record_id": "GLAUCOMA-036", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "93.29", "gcc_thickness_um": "59.18", "retinal_volume_mm3": "5.96", "macular_thickness_um": "270.25", "dataset_label": "No Glaucoma", "poc_risk_support_bucket": "Normal-like"}, {"phase16_record_id": "GLAUCOMA-037", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "92.88", "gcc_thickness_um": "63.94", "retinal_volume_mm3": "5.82", "macular_thickness_um": "262.04", "dataset_label": "Glaucoma", "poc_risk_support_bucket": "Abnormal-like"}, {"phase16_record_id": "GLAUCOMA-038", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "94.28", "gcc_thickness_um": "57.16", "retinal_volume_mm3": "5.77", "macular_thickness_um": "284.78", "dataset_label": "No Glaucoma", "poc_risk_support_bucket": "Normal-like"}, {"phase16_record_id": "GLAUCOMA-039", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "84.43", "gcc_thickness_um": "60.97", "retinal_volume_mm3": "5.72", "macular_thickness_um": "262.37", "dataset_label": "Glaucoma", "poc_risk_support_bucket": "Abnormal-like"}, {"phase16_record_id": "GLAUCOMA-040", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "89.99", "gcc_thickness_um": "66.38", "retinal_volume_mm3": "5.92", "macular_thickness_um": "273.00", "dataset_label": "No Glaucoma", "poc_risk_support_bucket": "Normal-like"}, {"phase16_record_id": "GLAUCOMA-041", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "84.15", "gcc_thickness_um": "66.23", "retinal_volume_mm3": "5.97", "macular_thickness_um": "260.28", "dataset_label": "Glaucoma", "poc_risk_support_bucket": "Abnormal-like"}, {"phase16_record_id": "GLAUCOMA-042", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "98.23", "gcc_thickness_um": "57.92", "retinal_volume_mm3": "5.54", "macular_thickness_um": "270.13", "dataset_label": "No Glaucoma", "poc_risk_support_bucket": "Normal-like"}, {"phase16_record_id": "GLAUCOMA-043", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "96.36", "gcc_thickness_um": "67.43", "retinal_volume_mm3": "5.50", "macular_thickness_um": "265.58", "dataset_label": "Glaucoma", "poc_risk_support_bucket": "Abnormal-like"}, {"phase16_record_id": "GLAUCOMA-044", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "92.25", "gcc_thickness_um": "59.42", "retinal_volume_mm3": "5.59", "macular_thickness_um": "279.26", "dataset_label": "No Glaucoma", "poc_risk_support_bucket": "Normal-like"}, {"phase16_record_id": "GLAUCOMA-045", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "75.31", "gcc_thickness_um": "55.94", "retinal_volume_mm3": "5.64", "macular_thickness_um": "268.40", "dataset_label": "Glaucoma", "poc_risk_support_bucket": "Abnormal-like"}, {"phase16_record_id": "GLAUCOMA-046", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "82.95", "gcc_thickness_um": "64.09", "retinal_volume_mm3": "6.06", "macular_thickness_um": "278.39", "dataset_label": "No Glaucoma", "poc_risk_support_bucket": "Normal-like"}, {"phase16_record_id": "GLAUCOMA-047", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "84.14", "gcc_thickness_um": "62.08", "retinal_volume_mm3": "6.11", "macular_thickness_um": "289.53", "dataset_label": "Glaucoma", "poc_risk_support_bucket": "Abnormal-like"}, {"phase16_record_id": "GLAUCOMA-048", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "92.14", "gcc_thickness_um": "56.28", "retinal_volume_mm3": "5.74", "macular_thickness_um": "276.55", "dataset_label": "No Glaucoma", "poc_risk_support_bucket": "Normal-like"}, {"phase16_record_id": "GLAUCOMA-049", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "87.67", "gcc_thickness_um": "67.12", "retinal_volume_mm3": "6.10", "macular_thickness_um": "279.46", "dataset_label": "Glaucoma", "poc_risk_support_bucket": "Abnormal-like"}, {"phase16_record_id": "GLAUCOMA-050", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "76.28", "gcc_thickness_um": "55.98", "retinal_volume_mm3": "6.36", "macular_thickness_um": "264.37", "dataset_label": "No Glaucoma", "poc_risk_support_bucket": "Normal-like"}, {"phase16_record_id": "GLAUCOMA-051", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "99.75", "gcc_thickness_um": "67.78", "retinal_volume_mm3": "5.85", "macular_thickness_um": "273.38", "dataset_label": "Glaucoma", "poc_risk_support_bucket": "Abnormal-like"}, {"phase16_record_id": "GLAUCOMA-052", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "94.20", "gcc_thickness_um": "66.13", "retinal_volume_mm3": "5.94", "macular_thickness_um": "272.37", "dataset_label": "No Glaucoma", "poc_risk_support_bucket": "Normal-like"}, {"phase16_record_id": "GLAUCOMA-053", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "83.56", "gcc_thickness_um": "62.91", "retinal_volume_mm3": "6.03", "macular_thickness_um": "287.30", "dataset_label": "Glaucoma", "poc_risk_support_bucket": "Abnormal-like"}, {"phase16_record_id": "GLAUCOMA-054", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "91.04", "gcc_thickness_um": "56.39", "retinal_volume_mm3": "5.84", "macular_thickness_um": "274.04", "dataset_label": "No Glaucoma", "poc_risk_support_bucket": "Normal-like"}, {"phase16_record_id": "GLAUCOMA-055", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "85.65", "gcc_thickness_um": "61.08", "retinal_volume_mm3": "6.03", "macular_thickness_um": "276.60", "dataset_label": "Glaucoma", "poc_risk_support_bucket": "Abnormal-like"}, {"phase16_record_id": "GLAUCOMA-056", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "85.42", "gcc_thickness_um": "55.76", "retinal_volume_mm3": "6.45", "macular_thickness_um": "273.76", "dataset_label": "No Glaucoma", "poc_risk_support_bucket": "Normal-like"}, {"phase16_record_id": "GLAUCOMA-057", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "87.58", "gcc_thickness_um": "63.12", "retinal_volume_mm3": "5.54", "macular_thickness_um": "260.28", "dataset_label": "Glaucoma", "poc_risk_support_bucket": "Abnormal-like"}, {"phase16_record_id": "GLAUCOMA-058", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "76.56", "gcc_thickness_um": "69.58", "retinal_volume_mm3": "5.60", "macular_thickness_um": "283.95", "dataset_label": "No Glaucoma", "poc_risk_support_bucket": "Normal-like"}, {"phase16_record_id": "GLAUCOMA-059", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "77.77", "gcc_thickness_um": "56.64", "retinal_volume_mm3": "6.46", "macular_thickness_um": "278.09", "dataset_label": "Glaucoma", "poc_risk_support_bucket": "Abnormal-like"}, {"phase16_record_id": "GLAUCOMA-060", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "93.25", "gcc_thickness_um": "63.85", "retinal_volume_mm3": "6.00", "macular_thickness_um": "269.39", "dataset_label": "No Glaucoma", "poc_risk_support_bucket": "Normal-like"}, {"phase16_record_id": "GLAUCOMA-061", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "90.45", "gcc_thickness_um": "64.33", "retinal_volume_mm3": "6.33", "macular_thickness_um": "269.55", "dataset_label": "Glaucoma", "poc_risk_support_bucket": "Abnormal-like"}, {"phase16_record_id": "GLAUCOMA-062", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "90.19", "gcc_thickness_um": "61.96", "retinal_volume_mm3": "6.45", "macular_thickness_um": "262.30", "dataset_label": "No Glaucoma", "poc_risk_support_bucket": "Normal-like"}, {"phase16_record_id": "GLAUCOMA-063", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "98.24", "gcc_thickness_um": "66.19", "retinal_volume_mm3": "5.63", "macular_thickness_um": "284.72", "dataset_label": "Glaucoma", "poc_risk_support_bucket": "Abnormal-like"}, {"phase16_record_id": "GLAUCOMA-064", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "83.38", "gcc_thickness_um": "66.88", "retinal_volume_mm3": "6.42", "macular_thickness_um": "279.94", "dataset_label": "No Glaucoma", "poc_risk_support_bucket": "Normal-like"}, {"phase16_record_id": "GLAUCOMA-065", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "84.34", "gcc_thickness_um": "68.80", "retinal_volume_mm3": "6.47", "macular_thickness_um": "270.03", "dataset_label": "Glaucoma", "poc_risk_support_bucket": "Abnormal-like"}, {"phase16_record_id": "GLAUCOMA-066", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "95.75", "gcc_thickness_um": "64.02", "retinal_volume_mm3": "6.29", "macular_thickness_um": "270.08", "dataset_label": "No Glaucoma", "poc_risk_support_bucket": "Normal-like"}, {"phase16_record_id": "GLAUCOMA-067", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "95.81", "gcc_thickness_um": "64.29", "retinal_volume_mm3": "5.59", "macular_thickness_um": "286.93", "dataset_label": "Glaucoma", "poc_risk_support_bucket": "Abnormal-like"}, {"phase16_record_id": "GLAUCOMA-068", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "89.63", "gcc_thickness_um": "62.59", "retinal_volume_mm3": "6.05", "macular_thickness_um": "275.68", "dataset_label": "No Glaucoma", "poc_risk_support_bucket": "Normal-like"}, {"phase16_record_id": "GLAUCOMA-069", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "98.38", "gcc_thickness_um": "62.38", "retinal_volume_mm3": "5.75", "macular_thickness_um": "269.67", "dataset_label": "Glaucoma", "poc_risk_support_bucket": "Abnormal-like"}, {"phase16_record_id": "GLAUCOMA-070", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "88.50", "gcc_thickness_um": "58.85", "retinal_volume_mm3": "6.34", "macular_thickness_um": "273.73", "dataset_label": "No Glaucoma", "poc_risk_support_bucket": "Normal-like"}, {"phase16_record_id": "GLAUCOMA-071", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "82.14", "gcc_thickness_um": "67.94", "retinal_volume_mm3": "6.35", "macular_thickness_um": "276.42", "dataset_label": "Glaucoma", "poc_risk_support_bucket": "Abnormal-like"}, {"phase16_record_id": "GLAUCOMA-072", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "77.76", "gcc_thickness_um": "66.13", "retinal_volume_mm3": "6.12", "macular_thickness_um": "271.79", "dataset_label": "No Glaucoma", "poc_risk_support_bucket": "Normal-like"}, {"phase16_record_id": "GLAUCOMA-073", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "86.15", "gcc_thickness_um": "64.73", "retinal_volume_mm3": "6.44", "macular_thickness_um": "285.04", "dataset_label": "Glaucoma", "poc_risk_support_bucket": "Abnormal-like"}, {"phase16_record_id": "GLAUCOMA-074", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "75.01", "gcc_thickness_um": "65.57", "retinal_volume_mm3": "6.12", "macular_thickness_um": "265.43", "dataset_label": "No Glaucoma", "poc_risk_support_bucket": "Normal-like"}, {"phase16_record_id": "GLAUCOMA-075", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "75.35", "gcc_thickness_um": "69.85", "retinal_volume_mm3": "6.19", "macular_thickness_um": "271.88", "dataset_label": "Glaucoma", "poc_risk_support_bucket": "Abnormal-like"}, {"phase16_record_id": "GLAUCOMA-076", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "78.97", "gcc_thickness_um": "64.68", "retinal_volume_mm3": "5.62", "macular_thickness_um": "272.30", "dataset_label": "No Glaucoma", "poc_risk_support_bucket": "Normal-like"}, {"phase16_record_id": "GLAUCOMA-077", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "95.56", "gcc_thickness_um": "62.33", "retinal_volume_mm3": "6.03", "macular_thickness_um": "280.73", "dataset_label": "Glaucoma", "poc_risk_support_bucket": "Abnormal-like"}, {"phase16_record_id": "GLAUCOMA-078", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "82.26", "gcc_thickness_um": "65.49", "retinal_volume_mm3": "6.00", "macular_thickness_um": "284.04", "dataset_label": "No Glaucoma", "poc_risk_support_bucket": "Normal-like"}, {"phase16_record_id": "GLAUCOMA-079", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "90.09", "gcc_thickness_um": "67.16", "retinal_volume_mm3": "6.43", "macular_thickness_um": "268.45", "dataset_label": "Glaucoma", "poc_risk_support_bucket": "Abnormal-like"}, {"phase16_record_id": "GLAUCOMA-080", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "93.55", "gcc_thickness_um": "59.49", "retinal_volume_mm3": "6.00", "macular_thickness_um": "283.66", "dataset_label": "No Glaucoma", "poc_risk_support_bucket": "Normal-like"}, {"phase16_record_id": "GLAUCOMA-081", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "96.58", "gcc_thickness_um": "65.64", "retinal_volume_mm3": "5.52", "macular_thickness_um": "261.38", "dataset_label": "Glaucoma", "poc_risk_support_bucket": "Abnormal-like"}, {"phase16_record_id": "GLAUCOMA-082", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "94.90", "gcc_thickness_um": "61.20", "retinal_volume_mm3": "6.42", "macular_thickness_um": "273.94", "dataset_label": "No Glaucoma", "poc_risk_support_bucket": "Normal-like"}, {"phase16_record_id": "GLAUCOMA-083", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "94.97", "gcc_thickness_um": "56.50", "retinal_volume_mm3": "6.16", "macular_thickness_um": "265.90", "dataset_label": "Glaucoma", "poc_risk_support_bucket": "Abnormal-like"}, {"phase16_record_id": "GLAUCOMA-084", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "84.71", "gcc_thickness_um": "62.66", "retinal_volume_mm3": "5.53", "macular_thickness_um": "271.41", "dataset_label": "No Glaucoma", "poc_risk_support_bucket": "Normal-like"}, {"phase16_record_id": "GLAUCOMA-085", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "82.56", "gcc_thickness_um": "63.90", "retinal_volume_mm3": "6.48", "macular_thickness_um": "288.93", "dataset_label": "Glaucoma", "poc_risk_support_bucket": "Abnormal-like"}, {"phase16_record_id": "GLAUCOMA-086", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "76.91", "gcc_thickness_um": "62.43", "retinal_volume_mm3": "5.81", "macular_thickness_um": "288.08", "dataset_label": "No Glaucoma", "poc_risk_support_bucket": "Normal-like"}, {"phase16_record_id": "GLAUCOMA-087", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "87.55", "gcc_thickness_um": "65.41", "retinal_volume_mm3": "6.48", "macular_thickness_um": "262.83", "dataset_label": "Glaucoma", "poc_risk_support_bucket": "Abnormal-like"}, {"phase16_record_id": "GLAUCOMA-088", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "88.49", "gcc_thickness_um": "62.60", "retinal_volume_mm3": "6.43", "macular_thickness_um": "267.14", "dataset_label": "No Glaucoma", "poc_risk_support_bucket": "Normal-like"}, {"phase16_record_id": "GLAUCOMA-089", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "96.29", "gcc_thickness_um": "57.82", "retinal_volume_mm3": "6.25", "macular_thickness_um": "277.03", "dataset_label": "Glaucoma", "poc_risk_support_bucket": "Abnormal-like"}, {"phase16_record_id": "GLAUCOMA-090", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "78.99", "gcc_thickness_um": "68.92", "retinal_volume_mm3": "6.06", "macular_thickness_um": "286.39", "dataset_label": "No Glaucoma", "poc_risk_support_bucket": "Normal-like"}, {"phase16_record_id": "GLAUCOMA-091", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "75.67", "gcc_thickness_um": "67.64", "retinal_volume_mm3": "6.16", "macular_thickness_um": "281.34", "dataset_label": "Glaucoma", "poc_risk_support_bucket": "Abnormal-like"}, {"phase16_record_id": "GLAUCOMA-092", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "98.58", "gcc_thickness_um": "69.21", "retinal_volume_mm3": "6.48", "macular_thickness_um": "266.10", "dataset_label": "No Glaucoma", "poc_risk_support_bucket": "Normal-like"}, {"phase16_record_id": "GLAUCOMA-093", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "85.72", "gcc_thickness_um": "55.23", "retinal_volume_mm3": "5.94", "macular_thickness_um": "284.61", "dataset_label": "Glaucoma", "poc_risk_support_bucket": "Abnormal-like"}, {"phase16_record_id": "GLAUCOMA-094", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "95.55", "gcc_thickness_um": "63.92", "retinal_volume_mm3": "5.92", "macular_thickness_um": "287.69", "dataset_label": "No Glaucoma", "poc_risk_support_bucket": "Normal-like"}, {"phase16_record_id": "GLAUCOMA-095", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "92.67", "gcc_thickness_um": "69.77", "retinal_volume_mm3": "5.61", "macular_thickness_um": "285.44", "dataset_label": "Glaucoma", "poc_risk_support_bucket": "Abnormal-like"}, {"phase16_record_id": "GLAUCOMA-096", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "76.87", "gcc_thickness_um": "63.89", "retinal_volume_mm3": "6.28", "macular_thickness_um": "287.25", "dataset_label": "No Glaucoma", "poc_risk_support_bucket": "Normal-like"}, {"phase16_record_id": "GLAUCOMA-097", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "78.38", "gcc_thickness_um": "55.67", "retinal_volume_mm3": "5.73", "macular_thickness_um": "264.38", "dataset_label": "Glaucoma", "poc_risk_support_bucket": "Abnormal-like"}, {"phase16_record_id": "GLAUCOMA-098", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "93.49", "gcc_thickness_um": "69.41", "retinal_volume_mm3": "5.96", "macular_thickness_um": "268.47", "dataset_label": "No Glaucoma", "poc_risk_support_bucket": "Normal-like"}, {"phase16_record_id": "GLAUCOMA-099", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "84.59", "gcc_thickness_um": "61.03", "retinal_volume_mm3": "6.06", "macular_thickness_um": "264.11", "dataset_label": "Glaucoma", "poc_risk_support_bucket": "Abnormal-like"}, {"phase16_record_id": "GLAUCOMA-100", "source_dataset_slug": "teamincribo/glaucoma-detection-dataset", "source_schema_status": "unverified source schema", "patient_matched_to_macula_bscan": false, "triage_only_not_diagnosis": true, "medical_diagnosis_claimed": false, "rnfl_thickness_um": "92.16", "gcc_thickness_um": "63.93", "retinal_volume_mm3": "5.60", "macular_thickness_um": "273.24", "dataset_label": "No Glaucoma", "poc_risk_support_bucket": "Normal-like"}];
@@ -453,6 +557,158 @@ function showTab(tabName) {
 for (const button of document.querySelectorAll(".tab-button")) {
     button.addEventListener("click", () => showTab(button.dataset.tab));
 }
+
+const PHASE18_NATIVE_CASES = [
+  {
+    "manifest": {
+      "case_id": "TOPCON_FDA_PUBLIC_SAMPLE",
+      "source_file_name": "eg_oct_fda[REDACTED]",
+      "source_extension": "[REDACTED]",
+      "source_sha256": "d15965c71f6df38cef27c9fb79a347c2d625244f990119665daa2c389a9d094e",
+      "conversion_status": "passed",
+      "bscan_count_detected": 128,
+      "bscan_preview_count_exported": 10,
+      "output_bscan_relative_paths": [
+        "bscans\\bscan_001.png",
+        "bscans\\bscan_002.png",
+        "bscans\\bscan_003.png",
+        "bscans\\bscan_004.png",
+        "bscans\\bscan_005.png",
+        "bscans\\bscan_006.png",
+        "bscans\\bscan_007.png",
+        "bscans\\bscan_008.png",
+        "bscans\\bscan_009.png",
+        "bscans\\bscan_010.png"
+      ],
+      "triage_ready_as_image_sequence": true,
+      "limitations": [],
+      "parser_used": "oct-converter (FDA)",
+      "metadata_redacted": true,
+      "full_metadata_printed": false,
+      "raw_metadata_dump_written": false,
+      "model_inference_run": false,
+      "diagnosis_claimed": false
+    },
+    "preview_paths": [
+      "native_cases/TOPCON_FDA_PUBLIC_SAMPLE/bscans/bscan_001.png",
+      "native_cases/TOPCON_FDA_PUBLIC_SAMPLE/bscans/bscan_002.png",
+      "native_cases/TOPCON_FDA_PUBLIC_SAMPLE/bscans/bscan_003.png",
+      "native_cases/TOPCON_FDA_PUBLIC_SAMPLE/bscans/bscan_004.png",
+      "native_cases/TOPCON_FDA_PUBLIC_SAMPLE/bscans/bscan_005.png",
+      "native_cases/TOPCON_FDA_PUBLIC_SAMPLE/bscans/bscan_006.png",
+      "native_cases/TOPCON_FDA_PUBLIC_SAMPLE/bscans/bscan_007.png",
+      "native_cases/TOPCON_FDA_PUBLIC_SAMPLE/bscans/bscan_008.png",
+      "native_cases/TOPCON_FDA_PUBLIC_SAMPLE/bscans/bscan_009.png",
+      "native_cases/TOPCON_FDA_PUBLIC_SAMPLE/bscans/bscan_010.png"
+    ]
+  },
+  {
+    "manifest": {
+      "case_id": "TOPCON_FDS_PUBLIC_SAMPLE",
+      "source_file_name": "eg_oct_fds[REDACTED]",
+      "source_extension": "[REDACTED]",
+      "source_sha256": "73abf6cd1135b9bef5d5990a983fd7ecbfdb96c33ce3654b8a81194d830733ba",
+      "conversion_status": "passed",
+      "bscan_count_detected": 128,
+      "bscan_preview_count_exported": 10,
+      "output_bscan_relative_paths": [
+        "bscans\\bscan_001.png",
+        "bscans\\bscan_002.png",
+        "bscans\\bscan_003.png",
+        "bscans\\bscan_004.png",
+        "bscans\\bscan_005.png",
+        "bscans\\bscan_006.png",
+        "bscans\\bscan_007.png",
+        "bscans\\bscan_008.png",
+        "bscans\\bscan_009.png",
+        "bscans\\bscan_010.png"
+      ],
+      "triage_ready_as_image_sequence": true,
+      "limitations": [],
+      "parser_used": "oct-converter (FDS)",
+      "metadata_redacted": true,
+      "full_metadata_printed": false,
+      "raw_metadata_dump_written": false,
+      "model_inference_run": false,
+      "diagnosis_claimed": false
+    },
+    "preview_paths": [
+      "native_cases/TOPCON_FDS_PUBLIC_SAMPLE/bscans/bscan_001.png",
+      "native_cases/TOPCON_FDS_PUBLIC_SAMPLE/bscans/bscan_002.png",
+      "native_cases/TOPCON_FDS_PUBLIC_SAMPLE/bscans/bscan_003.png",
+      "native_cases/TOPCON_FDS_PUBLIC_SAMPLE/bscans/bscan_004.png",
+      "native_cases/TOPCON_FDS_PUBLIC_SAMPLE/bscans/bscan_005.png",
+      "native_cases/TOPCON_FDS_PUBLIC_SAMPLE/bscans/bscan_006.png",
+      "native_cases/TOPCON_FDS_PUBLIC_SAMPLE/bscans/bscan_007.png",
+      "native_cases/TOPCON_FDS_PUBLIC_SAMPLE/bscans/bscan_008.png",
+      "native_cases/TOPCON_FDS_PUBLIC_SAMPLE/bscans/bscan_009.png",
+      "native_cases/TOPCON_FDS_PUBLIC_SAMPLE/bscans/bscan_010.png"
+    ]
+  }
+];
+const PHASE18_SAFETY_FLAGS = {
+  "native_oct_viewer_only": true,
+  "raw_vendor_files_exposed": false,
+  "full_metadata_exposed": false,
+  "model_inference_run": false,
+  "diagnosis_claimed": false,
+  "triage_only_not_diagnosis": true
+};
+
+function renderNativeCase(index) {
+    const caseData = PHASE18_NATIVE_CASES[index];
+    const detailsEl = document.getElementById("case-details");
+    const viewerEl = document.getElementById("bscan-viewer");
+    
+    // Details
+    const m = caseData.manifest;
+    detailsEl.innerHTML = `
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div>
+                <strong>Case ID:</strong> ${m.case_id}<br>
+                <strong>Source File:</strong> ${m.source_file_name}<br>
+                <strong>Extension:</strong> ${m.source_extension}<br>
+                <strong>Parser:</strong> ${m.parser_used}
+            </div>
+            <div>
+                <strong>B-scans Detected:</strong> ${m.bscan_count_detected}<br>
+                <strong>Previews Exported:</strong> ${m.bscan_preview_count_exported}<br>
+                <strong>Triage Ready:</strong> ${m.triage_ready_as_image_sequence}<br>
+                <strong>Limitations:</strong> ${m.limitations.join(", ") || "None"}
+            </div>
+        </div>
+        <div style="margin-top:10px; font-size:11px; color:var(--muted); word-break:break-all;">
+            SHA256: ${m.source_sha256}
+        </div>
+    `;
+    
+    // B-scans
+    viewerEl.innerHTML = caseData.preview_paths.map((path, i) => `
+        <div class="bscan-card">
+            <img src="${path}" alt="B-scan ${i+1}">
+            <div class="bscan-label">Preview Slice ${i+1}</div>
+        </div>
+    `).join("");
+    
+    // Update active class
+    document.querySelectorAll(".case-item").forEach((el, i) => {
+        el.classList.toggle("active", i === index);
+    });
+}
+
+const caseListEl = document.getElementById("native-case-list");
+PHASE18_NATIVE_CASES.forEach((caseData, i) => {
+    const item = document.createElement("div");
+    item.className = "case-item";
+    item.textContent = caseData.manifest.case_id;
+    item.onclick = () => renderNativeCase(i);
+    caseListEl.appendChild(item);
+});
+
+if (PHASE18_NATIVE_CASES.length > 0) {
+    renderNativeCase(0);
+}
+    
 </script>
 </body>
 </html>
