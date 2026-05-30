@@ -329,7 +329,50 @@ th {
 </div>
 
 <main>
+    
+    <div class="glaucoma-shell" style="padding-bottom:0;">
+        <div style="background:white; border:1px solid var(--line); border-radius:12px; padding:30px; margin-bottom:24px; box-shadow:0 4px 15px rgba(0,0,0,0.05);">
+            <h1 style="margin:0; font-size:36px; color:var(--navy);">RetiNet AI OCT POC</h1>
+            <p style="font-size:18px; color:var(--muted); margin:10px 0 24px 0;">OCT-native triage and review-support workflow for macula, glaucoma reports, and converted vendor OCT files.</p>
+            
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:30px;">
+                <div>
+                    <h3 style="color:var(--blue); border-bottom:2px solid var(--blue); padding-bottom:8px;">What’s New in This App?</h3>
+                    <ul style="line-height:1.8; font-size:15px; padding-left:20px;">
+                        <li><strong>Native OCT file conversion workflow:</strong> Direct ingestion of vendor-specific raw files.</li>
+                        <li><strong>Standardized B-scan sequence export:</strong> Unified internal format for cross-vendor consistency.</li>
+                        <li><strong>Macula OCT AI triage:</strong> Rapid automated screening for retinal pathologies.</li>
+                        <li><strong>Glaucoma / optic nerve report visualization:</strong> Structured view of complex report metrics.</li>
+                        <li><strong>Converted native OCT viewer:</strong> Purpose-built interactive tool for converted volume data.</li>
+                        <li><strong>Metadata redaction:</strong> Automated safety controls for public-demo and data privacy.</li>
+                        <li><strong>Explainable review workflow:</strong> Logic-based bucket visualization.</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 style="color:var(--teal); border-bottom:2px solid var(--teal); padding-bottom:8px;">Current Capability Matrix</h3>
+                    <table style="min-width:100%; font-size:14px;">
+                        <tr style="background:#f5f9fc;"><th>Module</th><th>Status</th><th>Boundary</th></tr>
+                        <tr><td>Macula OCT triage</td><td>Active POC</td><td>Not diagnosis</td></tr>
+                        <tr><td>Glaucoma report view</td><td>Visualization</td><td>Not glaucoma diagnosis</td></tr>
+                        <tr><td>Native OCT viewer</td><td>FDA/FDS Validated</td><td>Viewer only, no inference</td></tr>
+                        <tr><td>E2E/VOL/OCT/OCT</td><td>Registered</td><td>Requires sample validation</td></tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <section class="tab-panel active" id="panel-macula" aria-labelledby="tab-macula">
+        
+    <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:12px; margin-bottom:16px; font-size:13px;">
+        <strong>AI Triage Legend:</strong> 
+        <span style="color:#d97706; margin-left:10px;">CNV (Choroidal Neovascularization)</span>, 
+        <span style="color:#2563eb; margin-left:10px;">DME (Diabetic Macular Edema)</span>, 
+        <span style="color:#059669; margin-left:10px;">DRUSEN</span>, 
+        <span style="color:#64748b; margin-left:10px;">NORMAL</span>.
+        <br><i style="color:var(--muted); font-size:12px;">Note: This is an AI triage POC only, not a medical diagnosis.</i>
+    </div>
+    
         <iframe class="macula-frame" src="macula_bscans.html" title="Macula B-scans Phase 15 dashboard"></iframe>
     </section>
     <section class="tab-panel" id="panel-glaucoma" aria-labelledby="tab-glaucoma">
@@ -338,7 +381,10 @@ th {
         <div class="section-header">
             <div>
                 <h1>Glaucoma / Optic Nerve OCT</h1>
+                
+                <p style="color:#b91c1c; font-weight:bold; margin-top:8px;">Glaucoma AI model not yet trained. This tab visualizes de-identified optic nerve/OCT report fields only.</p>
                 <p>Report-style source records rendered separately from the macula B-scan dashboard.</p>
+    
             </div>
             <div class="flag-stack">
                 <span>triage_only_not_diagnosis=true</span>
@@ -535,6 +581,23 @@ th {
 
             <div class="safety-alert">This native OCT viewer displays converted, de-identified B-scan preview images only. It does not display raw vendor files, full metadata, or diagnosis. Ophthalmologist review is required.</div>
 
+            
+            <div style="background:white; border:1px solid var(--line); border-radius:8px; padding:16px; margin-bottom:16px; display:flex; justify-content:space-between; align-items:center;">
+                <div style="flex-grow:1;">
+                    <strong>Vendor Support Matrix:</strong>
+                    <div style="display:flex; gap:15px; margin-top:8px; font-size:12px;">
+                        <span><b style="color:var(--green);">FDA Topcon:</b> validated</span>
+                        <span><b style="color:var(--green);">FDS Topcon:</b> validated</span>
+                        <span><b>E2E Heidelberg:</b> registered, sample needed</span>
+                        <span><b>VOL Heidelberg/Spectralis:</b> registered, sample needed</span>
+                        <span><b>OCT ambiguous:</b> registered, sample needed</span>
+                    </div>
+                </div>
+                <div style="background:#ecfdf5; color:#065f46; border:1px solid #10b981; border-radius:20px; padding:6px 14px; font-weight:bold; font-size:12px;">
+                    Native conversion validated for public Topcon FDA/FDS samples
+                </div>
+            </div>
+    
             <div class="viewer-layout">
                 <div class="case-sidebar">
                     <h3>Converted Cases</h3>
@@ -549,6 +612,27 @@ th {
             </div>
         </div>
     </section>
+    
+    
+    <div class="glaucoma-shell" style="padding-top:0;">
+        <div style="background:#071827; color:white; border-radius:12px; padding:24px; margin-top:24px;">
+            <h3 style="margin-top:0; color:var(--blue);">RetiNet AI Roadmap</h3>
+            <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:20px; font-size:14px;">
+                <ul style="margin:0; padding-left:20px; line-height:1.6;">
+                    <li>More native OCT sample validation</li>
+                    <li>Heidelberg E2E/VOL support testing</li>
+                </ul>
+                <ul style="margin:0; padding-left:20px; line-height:1.6;">
+                    <li>Glaucoma-specific OCT model</li>
+                    <li>External validation dataset</li>
+                </ul>
+                <ul style="margin:0; padding-left:20px; line-height:1.6;">
+                    <li>Doctor feedback/review workflow</li>
+                    <li>Printable case report</li>
+                </ul>
+            </div>
+        </div>
+    </div>
     
     </main>
 
