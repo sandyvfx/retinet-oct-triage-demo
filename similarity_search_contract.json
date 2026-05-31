@@ -1,0 +1,79 @@
+{
+  "contract_version": "phase21a.v1",
+  "module": "knn_hybrid_similarity_search",
+  "purpose": "Find visually or clinically similar de-identified OCT cases for reviewer context and AI QA.",
+  "index_types": [
+    "macula_bscan_embedding_knn",
+    "optic_nerve_report_metric_knn",
+    "hybrid_vector_plus_metadata",
+    "lexical_journal_note_search_redacted"
+  ],
+  "operations": {
+    "upsert_embedding": {
+      "required_fields": [
+        "embedding_id",
+        "case_hash",
+        "feature_source",
+        "dimension",
+        "vector_ref",
+        "embedding_sha256"
+      ],
+      "privacy": "vectors encrypted at rest and scoped by tenant/site"
+    },
+    "query_similar": {
+      "required_fields": [
+        "case_hash",
+        "feature_source",
+        "top_k"
+      ],
+      "filters": [
+        "modality",
+        "eye_side",
+        "vendor_family",
+        "review_status",
+        "date_bucket"
+      ],
+      "metrics": [
+        "cosine",
+        "l2",
+        "inner_product"
+      ]
+    },
+    "hybrid_query": {
+      "ranking": "weighted vector similarity plus structured filters plus redacted keyword match",
+      "default_weights": {
+        "vector": 0.7,
+        "structured": 0.2,
+        "lexical": 0.1
+      }
+    },
+    "delete_or_expire": {
+      "required_fields": [
+        "case_hash",
+        "retention_policy_id"
+      ],
+      "audit_required": true
+    }
+  },
+  "sample_result": {
+    "query_case_hash": "case_a102002cafd1b3ba",
+    "top_k": 3,
+    "neighbors": [
+      {
+        "case_hash": "case_e298856c9551201d",
+        "similarity": 0.91,
+        "reason": "similar macula B-scan embedding and moderate-confidence triage bucket"
+      },
+      {
+        "case_hash": "case_2586013eaf46b6d1",
+        "similarity": 0.84,
+        "reason": "similar optic nerve metric pattern and same eye-side filter"
+      }
+    ]
+  },
+  "safety": {
+    "contains_phi": false,
+    "used_for_diagnosis": false,
+    "requires_doctor_review": true
+  }
+}

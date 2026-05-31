@@ -1,0 +1,72 @@
+{
+  "case_hash": "case_a102002cafd1b3ba",
+  "model_manifest": {
+    "model_id": "vendor_or_team_model_slug",
+    "model_version": "2026.05.31-demo",
+    "model_card_uri": "https://example.invalid/model-card",
+    "owner_team": "backend_ai_team",
+    "supported_tasks": [
+      "macula_triage",
+      "glaucoma_risk_support",
+      "explainability_heatmap",
+      "embedding_generation"
+    ],
+    "input_contract_version": "phase21a.v1",
+    "output_contract_version": "phase21a.v1",
+    "explainability_modes": [
+      "heatmap",
+      "saliency"
+    ],
+    "embedding_dimensions": {
+      "macula_bscan": 512,
+      "optic_nerve_report": 128,
+      "hybrid": 640
+    },
+    "privacy_attestation": {
+      "contains_phi_in_payload": false,
+      "stores_platform_objects": false,
+      "retention_days": 0
+    },
+    "safety_attestation": {
+      "triage_only_not_diagnosis": true,
+      "medical_diagnosis_claimed": false
+    }
+  },
+  "results": [
+    {
+      "task": "macula_triage",
+      "label": "review_recommended",
+      "score": 0.82,
+      "uncertainty": 0.18,
+      "thresholds": {
+        "review_recommended": 0.65
+      },
+      "summary": "Triage support result; doctor review required.",
+      "not_diagnosis": true
+    }
+  ],
+  "explanation_artifacts": [
+    {
+      "artifact_id": "heatmap-demo-001",
+      "artifact_type": "heatmap",
+      "object_handle": "signed://demo/heatmap-demo-001",
+      "source_slice_index": 1,
+      "sha256": "eedd53b81fbc762ef87a142e9cbfa184350bd021e16330bff6a1d6d50ca3ff83",
+      "rendering_hint": "overlay"
+    }
+  ],
+  "embeddings": [
+    {
+      "embedding_id": "emb-demo-001",
+      "feature_source": "macula_bscan",
+      "dimension": 512,
+      "vector_ref": "encrypted-vector://demo/emb-demo-001",
+      "embedding_sha256": "3be91b558504a7966b88ed956185b03f67669e002bff752e38c74d115db07ce3"
+    }
+  ],
+  "safety": {
+    "triage_only_not_diagnosis": true,
+    "medical_diagnosis_claimed": false,
+    "contains_phi": false
+  }
+}

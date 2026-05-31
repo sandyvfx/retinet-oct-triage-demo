@@ -1,0 +1,28 @@
+{
+  "cli_script": "scripts/phase21a_ai_ops_cli.py",
+  "python_import": "platform_poc.phase21a_architecture",
+  "commands": [
+    {
+      "name": "emit-contract",
+      "purpose": "write connector, similarity, privacy, and manifest template JSON"
+    },
+    {
+      "name": "validate-model-manifest",
+      "purpose": "validate a backend AI model manifest before registration"
+    },
+    {
+      "name": "validate-inference-response",
+      "purpose": "validate BYOM result payload before dashboard import"
+    },
+    {
+      "name": "hash-case",
+      "purpose": "derive the platform pseudonymous case_hash for non-PHI test IDs"
+    },
+    {
+      "name": "append-audit-event",
+      "purpose": "append a JSONL audit event using the Phase 21.A schema"
+    }
+  ],
+  "training_commands_available": false,
+  "checkpoint_commands_available": false
+}

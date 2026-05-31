@@ -1,0 +1,110 @@
+{
+  "contract_version": "phase21a.v1",
+  "connector_name": "bring_your_own_model_connector",
+  "purpose": "Allow a backend AI team to attach retinal, glaucoma, heatmap, and embedding models without changing the platform.",
+  "transport_modes": [
+    "http_json",
+    "batch_manifest",
+    "local_cli_adapter",
+    "python_sdk_adapter"
+  ],
+  "platform_responsibilities": [
+    "normalize uploaded OCT image sequences and converted native OCT exports",
+    "redact or isolate PHI before AI handoff",
+    "provide signed object handles rather than raw PHI-bearing paths",
+    "record audit events for model invocation and result import",
+    "display model outputs as triage support pending doctor review"
+  ],
+  "model_team_responsibilities": [
+    "own training, validation, model registry, and deployment",
+    "return versioned model_card and inference provenance",
+    "return calibrated scores, uncertainty, thresholds, and failure states",
+    "return optional heatmaps and embeddings using the platform artifact schema",
+    "avoid diagnostic claims in result payloads"
+  ],
+  "request_schema": {
+    "case_hash": "string",
+    "exam_bundle_id": "string",
+    "tasks": [
+      "macula_triage",
+      "glaucoma_risk_support",
+      "optic_nerve_report_extract",
+      "explainability_heatmap",
+      "embedding_generation"
+    ],
+    "inputs": {
+      "oct_bscan_sequence": [
+        {
+          "object_handle": "string",
+          "slice_index": "integer",
+          "sha256": "string",
+          "modality": "oct_bscan"
+        }
+      ],
+      "native_conversion_manifest": "object_or_null",
+      "glaucoma_report_metrics": "object_or_null",
+      "clinical_context": {
+        "eye_side": "OD|OS|OU|unknown",
+        "age_band": "optional_non_identifying_bucket",
+        "medication_classes": "optional_non_identifying_list"
+      }
+    },
+    "privacy": {
+      "contains_phi": false,
+      "signed_url_ttl_seconds": 900,
+      "minimum_transport": "TLS 1.2+"
+    }
+  },
+  "response_schema": {
+    "case_hash": "string",
+    "model_manifest": {
+      "model_id": "string",
+      "model_version": "string",
+      "model_card_uri": "string",
+      "supported_tasks": "list[string]",
+      "input_contract_version": "phase21a.v1",
+      "output_contract_version": "phase21a.v1"
+    },
+    "results": [
+      {
+        "task": "string",
+        "label": "string",
+        "score": "float_0_to_1",
+        "uncertainty": "float_0_to_1_or_null",
+        "thresholds": "object",
+        "summary": "string",
+        "not_diagnosis": true
+      }
+    ],
+    "explanation_artifacts": [
+      {
+        "artifact_id": "string",
+        "artifact_type": "heatmap|saliency|feature_importance|attention",
+        "object_handle": "string",
+        "source_slice_index": "integer_or_null",
+        "sha256": "string",
+        "rendering_hint": "overlay|side_by_side|table"
+      }
+    ],
+    "embeddings": [
+      {
+        "embedding_id": "string",
+        "feature_source": "macula_bscan|optic_nerve_report|hybrid",
+        "dimension": "integer",
+        "vector_ref": "encrypted_vector_store_reference",
+        "embedding_sha256": "string"
+      }
+    ],
+    "safety": {
+      "triage_only_not_diagnosis": true,
+      "medical_diagnosis_claimed": false,
+      "contains_phi": false
+    }
+  },
+  "failure_contract": {
+    "status": "failed|rejected|timeout|unsupported_input",
+    "safe_message": "string_for_doctor_ui",
+    "technical_message": "string_for_ai_ops_log",
+    "retryable": "boolean"
+  }
+}
