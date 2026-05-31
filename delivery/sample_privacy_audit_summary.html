@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Sample Privacy & Audit Summary</title>
+<style>
+:root {
+  --ink:#102235;
+  --muted:#627384;
+  --bg:#f5f8fa;
+  --panel:#ffffff;
+  --line:#d9e3ea;
+  --blue:#123b5f;
+  --teal:#0b8a92;
+  --green:#147553;
+  --soft-blue:#eef6fb;
+  --soft-teal:#e7f5f6;
+  --soft-green:#e8f5ee;
+  --shadow:0 18px 48px rgba(16,34,53,.09);
+}
+* { box-sizing:border-box; }
+body { margin:0; font-family:Arial, Helvetica, sans-serif; color:var(--ink); background:var(--bg); }
+header { background:linear-gradient(135deg,#fff 0%,#f0f8fa 100%); border-bottom:1px solid var(--line); }
+.wrap { max-width:1280px; margin:0 auto; padding:0 28px; }
+.hero { padding:54px 28px 58px; max-width:1280px; margin:0 auto; }
+.eyebrow { color:var(--teal); font-size:12px; text-transform:uppercase; letter-spacing:.12em; font-weight:900; }
+h1 { margin:10px 0 14px; font-size:44px; line-height:1.05; color:var(--blue); letter-spacing:-.02em; }
+h2 { margin:0 0 12px; color:var(--blue); font-size:28px; }
+h3 { margin:16px 0 8px; color:var(--blue); }
+p { color:var(--muted); line-height:1.55; }
+main { max-width:1280px; margin:0 auto; padding:34px 28px 70px; }
+.grid { display:grid; gap:18px; }
+.two { grid-template-columns:repeat(2,minmax(0,1fr)); }
+.three { grid-template-columns:repeat(3,minmax(0,1fr)); }
+.four { grid-template-columns:repeat(4,minmax(0,1fr)); }
+.card { background:var(--panel); border:1px solid var(--line); border-radius:22px; padding:22px; box-shadow:var(--shadow); }
+.soft { background:linear-gradient(180deg,#fff,#f8fbfc); }
+.chip { display:inline-block; border:1px solid var(--line); background:#fff; color:var(--blue); border-radius:999px; padding:8px 12px; margin:4px 6px 4px 0; font-size:13px; font-weight:900; }
+.chip.good { background:var(--soft-green); color:var(--green); border-color:#badfca; }
+.chip.teal { background:var(--soft-teal); color:#08727a; border-color:#b7dfe4; }
+.cta { display:inline-block; margin-top:14px; border:1px solid var(--teal); color:var(--teal); border-radius:999px; padding:10px 14px; text-decoration:none; font-weight:900; }
+.list { margin:0; padding-left:19px; color:var(--muted); line-height:1.6; }
+.safety { columns:2; background:#f8fbfc; border:1px solid var(--line); border-radius:16px; padding:18px 24px; color:var(--muted); }
+.kv { display:grid; gap:10px; }
+.kv div { display:flex; justify-content:space-between; gap:16px; border-bottom:1px solid var(--line); padding:9px 0; }
+.kv span:first-child { color:var(--muted); font-weight:800; }
+.kv span:last-child { color:var(--blue); font-weight:900; text-align:right; }
+pre { background:#102235; color:#eaf3f5; border-radius:16px; padding:18px; overflow:auto; font-size:12px; line-height:1.5; }
+footer { max-width:1280px; margin:0 auto; padding:28px; color:var(--muted); }
+@media (max-width:900px) { .two,.three,.four { grid-template-columns:1fr; } h1 { font-size:34px; } .safety { columns:1; } }
+</style>
+</head>
+<body><header><div class="hero"><div class="eyebrow">Sample Privacy & Audit Summary</div><h1>HIPAA-ready architecture</h1><p>privacy-first architecture summary for public static demo delivery. no HIPAA certification claim.</p></div></header>
+<main>
+  <section class="grid three"><div class="card"><h2>PHI minimization</h2><p>case_hash-only demo identifiers and no PHI in public demo.</p></div><div class="card"><h2>Hashing and encryption</h2><p>Hash-based tracking and encryption architecture placeholders for production.</p></div><div class="card"><h2>RBAC / access control</h2><p>Production access-control layer placeholder.</p></div></section>
+  <section style="margin-top:28px;" class="grid three"><div class="card"><h2>audit logs</h2><p>Static audit events using case_hash only.</p></div><div class="card"><h2>event hash chain</h2><p>Append-only event-chain concept for production audit storage.</p></div><div class="card"><h2>raw vendor files hidden</h2><p>full metadata not exposed. Conversion manifest only in public demo.</p></div></section>
+  <section style="margin-top:28px;"><h2>Static Audit Events</h2><div class="grid two"><div class='card'><h3>delivery_package_opened</h3><p>case_hash: case_b76f74b838afcbfd</p><p>previous: GENESIS</p><p>event: a73f61b1964b7f02ea3efd00</p></div><div class='card'><h3>sample_report_viewed</h3><p>case_hash: case_b76f74b838afcbfd</p><p>previous: a73f61b1964b7f02ea3efd00</p><p>event: 3b9f3e97db21d9b44cdfd9c6</p></div></div></section>
+  <section style="margin-top:28px;" class="card"><h2>Visible Safety Flags</h2><ul class="safety"><li>triage_only_not_diagnosis=true</li><li>medical_diagnosis_claimed=false</li><li>glaucoma_diagnosis_claimed=false</li><li>raw_vendor_files_exposed=false</li><li>full_metadata_exposed=false</li><li>model_inference_run=false</li><li>model_training_run=false</li><li>phase20_checkpoint_required=false</li><li>phase20_checkpoint_loaded=false</li><li>diagnosis_claimed=false</li><li>phi_stored_in_platform_poc=false</li></ul></section>
+</main><footer>Static POC privacy summary. Doctor review required. Not a medical diagnosis system.</footer></body></html>
