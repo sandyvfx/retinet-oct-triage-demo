@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>RetiNet AI Experimental Model Evidence Package</title>
+<style>
+:root {
+  --ink:#102235;
+  --muted:#617384;
+  --bg:#f5f8fa;
+  --panel:#ffffff;
+  --line:#d9e3ea;
+  --blue:#123b5f;
+  --teal:#0b8a92;
+  --green:#147553;
+  --amber:#9a6400;
+  --soft-blue:#eef6fb;
+  --soft-teal:#e7f5f6;
+  --soft-green:#e8f5ee;
+  --soft-amber:#fff4de;
+  --shadow:0 18px 48px rgba(16,34,53,.09);
+}
+* { box-sizing:border-box; }
+body { margin:0; font-family:Arial, Helvetica, sans-serif; color:var(--ink); background:var(--bg); }
+header { background:linear-gradient(135deg,#fff 0%,#eef7fa 100%); border-bottom:1px solid var(--line); }
+.hero { max-width:1280px; margin:0 auto; padding:54px 28px 58px; }
+.eyebrow { color:var(--teal); font-size:12px; text-transform:uppercase; letter-spacing:.12em; font-weight:900; }
+h1 { margin:10px 0 14px; font-size:44px; line-height:1.05; color:var(--blue); letter-spacing:-.02em; }
+h2 { margin:0 0 12px; color:var(--blue); font-size:28px; }
+h3 { margin:16px 0 8px; color:var(--blue); }
+p { color:var(--muted); line-height:1.55; }
+main { max-width:1280px; margin:0 auto; padding:34px 28px 70px; }
+.grid { display:grid; gap:18px; }
+.two { grid-template-columns:repeat(2,minmax(0,1fr)); }
+.three { grid-template-columns:repeat(3,minmax(0,1fr)); }
+.four { grid-template-columns:repeat(4,minmax(0,1fr)); }
+.card { background:var(--panel); border:1px solid var(--line); border-radius:22px; padding:22px; box-shadow:var(--shadow); }
+.soft { background:linear-gradient(180deg,#fff,#f8fbfc); }
+.chip { display:inline-block; border:1px solid var(--line); background:#fff; color:var(--blue); border-radius:999px; padding:8px 12px; margin:4px 6px 4px 0; font-size:13px; font-weight:900; }
+.chip.good { background:var(--soft-green); color:var(--green); border-color:#badfca; }
+.chip.warn { background:var(--soft-amber); color:var(--amber); border-color:#ecd69d; }
+.kv { display:grid; gap:10px; }
+.kv div { display:flex; justify-content:space-between; gap:16px; border-bottom:1px solid var(--line); padding:9px 0; }
+.kv span:first-child { color:var(--muted); font-weight:800; }
+.kv span:last-child { color:var(--blue); font-weight:900; text-align:right; }
+.table-wrap { overflow-x:auto; }
+table { width:100%; border-collapse:collapse; color:var(--muted); }
+th, td { border-bottom:1px solid var(--line); padding:9px; text-align:left; }
+th { color:var(--blue); background:#f8fbfc; }
+.safety { columns:2; background:#f8fbfc; border:1px solid var(--line); border-radius:16px; padding:18px 24px; color:var(--muted); }
+.safety li { margin:6px 0; }
+pre { background:#102235; color:#eaf3f5; border-radius:16px; padding:18px; overflow:auto; font-size:12px; line-height:1.5; }
+ul { color:var(--muted); line-height:1.6; }
+footer { max-width:1280px; margin:0 auto; padding:28px; color:var(--muted); }
+@media (max-width:900px) { .two,.three,.four { grid-template-columns:1fr; } h1 { font-size:34px; } .safety { columns:1; } }
+</style>
+</head>
+<body><header><div class="hero"><div class="eyebrow">Executive Evidence Overview</div><h1>RetiNet AI Experimental Model Evidence Package</h1><p>Safe, client-facing evidence package for full-dataset Colab experiment outputs. It separates platform POC, experimental model evidence, clinical validation not performed, doctor review required, and production validation still required.</p><p><span class="chip warn">technical review only</span><span class="chip good">doctor review required</span><span class="chip">not clinically validated</span></p></div></header>
+<main>
+  <section class="grid two"><div class="card soft"><h2>Executive Evidence Overview</h2><p>This is an experimental model-evidence package designed to ingest Colab/Kaggle training outputs. It does not train or load a model. It does not prove clinical performance. It supports technical review only. Experimental public-dataset model evidence only. Not clinically validated. Doctor review required. Not a medical diagnosis system. Not a regulated medical device.</p><p>These results do not prove real-world safety, device generalization, or clinical performance.</p></div><div class="card"><h2>Platform boundaries</h2><ul><li>model_training_run=false</li><li>model_inference_run=false</li><li>phase20_checkpoint_required=false</li><li>phase20_checkpoint_loaded=false</li><li>clinical_validation_claimed=false</li><li>regulated_medical_device_claimed=false</li></ul></div></section>
+  <section style="margin-top:28px;" class="card"><h2>Final Colab Evidence Summary</h2><div class="grid three"><div><h3>Dataset</h3><p><strong>Dataset family:</strong> Kermany OCT</p><p><strong>Test image count:</strong> 968</p><p><span class='chip'>CNV</span><span class='chip'>DME</span><span class='chip'>DRUSEN</span><span class='chip'>NORMAL</span></p></div><div><h3>Training</h3><p><strong>Architecture:</strong> EfficientNet-B0</p><p><strong>Image size:</strong> 224</p><p><strong>Epochs completed:</strong> 5</p><p><strong>Full training images:</strong> 83484</p><p><strong>Approximate training image passes:</strong> 417420</p></div><div><h3>Real test result</h3><p><strong>966/968 correct</strong></p><p><strong>99.793% test accuracy</strong></p><p><strong>99.793% test macro F1</strong></p><p><strong>Errors:</strong> 2</p></div></div></section>
+  <section style="margin-top:28px;" class="grid two"><div class="card"><h2>Evidence Intake Contract</h2><h3>Evidence files tracked by the contract</h3><ul><li>training_history.csv</li><li>test_summary.json</li><li>classification_report.json</li><li>confusion_matrix.csv</li><li>class_counts.json</li></ul><h3>Optional model artifact files tracked by the contract</h3><ul><li>best_model.pt - listed as model artifact, not loaded by this phase</li><li>last_model.pt - listed as model artifact, not loaded by this phase</li><li>confusion_matrix.png - listed as model artifact, not loaded by this phase</li></ul></div><div class="card"><h2>Dataset Summary</h2><p><strong>Dataset family:</strong> Kermany OCT</p><p><span class='chip'>CNV</span><span class='chip'>DME</span><span class='chip'>DRUSEN</span><span class='chip'>NORMAL</span></p><p><strong>Split names:</strong> train, val, test</p><div class="kv"><div><span>train CNV</span><span>37205</span></div><div><span>train DME</span><span>11348</span></div><div><span>train DRUSEN</span><span>8616</span></div><div><span>train NORMAL</span><span>26315</span></div><div><span>val CNV</span><span>8</span></div><div><span>val DME</span><span>8</span></div><div><span>val DRUSEN</span><span>8</span></div><div><span>val NORMAL</span><span>8</span></div><div><span>test CNV</span><span>242</span></div><div><span>test DME</span><span>242</span></div><div><span>test DRUSEN</span><span>242</span></div><div><span>test NORMAL</span><span>242</span></div></div><p>Validation split is very small and must not be over-trusted.</p></div></section>
+  <section style="margin-top:28px;" class="grid two"><div class="card"><h2>Experimental Model Card</h2><p><strong>Model name:</strong> RetiNet OCT Experimental Classifier</p><p><strong>Architecture placeholder:</strong> EfficientNet-B0</p><p><strong>Dataset:</strong> Kermany OCT</p><p><strong>Preferred artifact:</strong> last_model.pt</p><p><a href="sample_model_card.html">Open sample_model_card.html</a></p></div><div class="card"><h2>Evaluation Metrics</h2><div class="kv"><div><span>test_accuracy</span><span>99.793%</span></div><div><span>test_macro_f1</span><span>99.793%</span></div><div><span>per-class precision</span><span>available in future classification_report.json</span></div><div><span>per-class recall</span><span>available in future classification_report.json</span></div><div><span>per-class F1</span><span>available in future classification_report.json</span></div><div><span>confusion matrix</span><span>available below for best_model.pt and last_model.pt</span></div><div><span>best checkpoint epoch</span><span>1</span></div><div><span>training history</span><span>5 epochs completed</span></div></div></div></section>
+  <section style="margin-top:28px;" class="card"><h2>Checkpoint Comparison</h2><div class="table-wrap"><table><thead><tr><th>Artifact</th><th>Epoch</th><th>Test loss</th><th>Test accuracy</th><th>Test macro F1</th><th>Correct</th><th>Errors</th></tr></thead><tbody><tr><td>best_model.pt</td><td>1</td><td>0.011016966832786306</td><td>99.793%</td><td>99.793%</td><td>966/968 correct</td><td>2</td></tr><tr><td>last_model.pt</td><td>5</td><td>0.007913302505713087</td><td>99.793%</td><td>99.793%</td><td>966/968 correct</td><td>2</td></tr></tbody></table></div></section>
+  <section style="margin-top:28px;" class="card"><h2>Preferred Experimental Artifact</h2><p><strong>preferred experimental artifact:</strong> last_model.pt</p><p><strong>Reason:</strong> same test accuracy and macro F1 as best_model.pt, lower test loss, completed epoch 5</p><p>Checkpoint files are listed as model artifacts only and are not loaded by this phase.</p></section>
+  <section style="margin-top:28px;" class="card"><h2>Confusion Matrices</h2><div class="table-wrap"><h3>best_model.pt confusion matrix</h3><table><thead><tr><th></th><th>Pred CNV</th><th>Pred DME</th><th>Pred DRUSEN</th><th>Pred NORMAL</th></tr></thead><tbody><tr><th>True CNV</th><td>242</td><td>0</td><td>0</td><td>0</td></tr><tr><th>True DME</th><td>1</td><td>241</td><td>0</td><td>0</td></tr><tr><th>True DRUSEN</th><td>0</td><td>0</td><td>242</td><td>0</td></tr><tr><th>True NORMAL</th><td>0</td><td>0</td><td>1</td><td>241</td></tr></tbody></table><h3>last_model.pt confusion matrix</h3><table><thead><tr><th></th><th>Pred CNV</th><th>Pred DME</th><th>Pred DRUSEN</th><th>Pred NORMAL</th></tr></thead><tbody><tr><th>True CNV</th><td>242</td><td>0</td><td>0</td><td>0</td></tr><tr><th>True DME</th><td>0</td><td>242</td><td>0</td><td>0</td></tr><tr><th>True DRUSEN</th><td>1</td><td>0</td><td>241</td><td>0</td></tr><tr><th>True NORMAL</th><td>0</td><td>0</td><td>1</td><td>241</td></tr></tbody></table></div></section>
+  <section style="margin-top:28px;" class="grid two"><div class="card"><h2>Client-Safe Validation Summary</h2><p>Shows what the experiment can and cannot show with final Colab metrics. clinical validation not performed. These results do not prove real-world safety, device generalization, or clinical performance.</p><p><a href="sample_validation_summary.html">Open sample_validation_summary.html</a></p></div><div class="card"><h2>Platform Integration Boundary</h2><p>Connects to Phase 22.D platform demo, Phase 23 client delivery package, BYOM Model Connector Contract, Backend ML / AI Team Workspace, KNN / hybrid / similarity search, and Doctor Report Workflow.</p><p>Model evidence can be plugged into the platform as review-support metadata only, not as autonomous diagnosis.</p></div></section>
+  <section style="margin-top:28px;" class="card"><h2>Safety Flags</h2><ul class="safety"><li>triage_only_not_diagnosis=true</li><li>medical_diagnosis_claimed=false</li><li>glaucoma_diagnosis_claimed=false</li><li>raw_vendor_files_exposed=false</li><li>full_metadata_exposed=false</li><li>model_inference_run=false</li><li>model_training_run=false</li><li>phase20_checkpoint_required=false</li><li>phase20_checkpoint_loaded=false</li><li>diagnosis_claimed=false</li><li>phi_stored_in_platform_poc=false</li><li>clinical_validation_claimed=false</li><li>regulated_medical_device_claimed=false</li></ul></section>
+</main><footer>Static evidence POC. Doctor review required. Not a medical diagnosis system.</footer></body></html>
