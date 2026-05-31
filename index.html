@@ -1,1484 +1,878 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>RetiNet AI - Phase 21.A Platform POC</title>
+<title>RetiNet AI Interactive Platform POC</title>
 <style>
 :root {
-    --bg: #f5f7f8;
-    --panel: #ffffff;
-    --ink: #17212b;
-    --muted: #5d6b74;
-    --line: #d7e0e5;
-    --teal: #087f8c;
-    --green: #18805c;
-    --amber: #b46b00;
-    --red: #b42318;
-    --soft-teal: #e8f6f7;
-    --soft-green: #eaf7ef;
-    --soft-amber: #fff5df;
-    --soft-red: #fff0ee;
+    --bg:#f4f7f8;
+    --panel:#ffffff;
+    --ink:#17212b;
+    --muted:#5d6973;
+    --line:#d5dee4;
+    --teal:#0a7f86;
+    --green:#157a55;
+    --amber:#9a6400;
+    --red:#ad2f28;
+    --soft-teal:#e7f5f6;
+    --soft-green:#e8f5ee;
+    --soft-amber:#fff4db;
+    --soft-red:#fff0ef;
 }
-* { box-sizing: border-box; }
+* { box-sizing:border-box; }
 body {
-    margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
-    background: var(--bg);
-    color: var(--ink);
+    margin:0;
+    font-family:Arial, Helvetica, sans-serif;
+    background:var(--bg);
+    color:var(--ink);
 }
 header {
-    background: var(--panel);
-    border-bottom: 1px solid var(--line);
-    padding: 14px 20px;
-    position: sticky;
-    top: 0;
-    z-index: 10;
+    background:var(--panel);
+    border-bottom:1px solid var(--line);
+    padding:18px 22px;
+    position:sticky;
+    top:0;
+    z-index:10;
 }
-.topline {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    max-width: 1480px;
-    margin: 0 auto;
+.header-inner {
+    max-width:1500px;
+    margin:0 auto;
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:18px;
 }
-.brand h1 {
-    font-size: 22px;
-    margin: 0;
-    line-height: 1.2;
-}
-.brand p {
-    margin: 4px 0 0 0;
-    color: var(--muted);
-    font-size: 13px;
-}
-.badge-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    justify-content: flex-end;
-}
-.badge {
-    border: 1px solid var(--line);
-    border-radius: 999px;
-    padding: 6px 10px;
-    background: #f9fbfc;
-    font-size: 12px;
-    font-weight: 700;
-    white-space: nowrap;
-}
-.badge.good { background: var(--soft-green); color: var(--green); border-color: #b8dec9; }
-.badge.warn { background: var(--soft-amber); color: var(--amber); border-color: #edd49d; }
-.badge.neutral { background: var(--soft-teal); color: var(--teal); border-color: #b8dfe4; }
-main {
-    max-width: 1480px;
-    margin: 0 auto;
-    padding: 18px 20px 34px;
-}
-.tabs {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 14px;
-}
+h1 { margin:0; font-size:24px; }
+.subtitle { color:var(--muted); margin:6px 0 0; max-width:980px; line-height:1.45; }
+main { max-width:1500px; margin:0 auto; padding:18px 22px 40px; }
+.tabs { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px; }
 .tab-button {
-    border: 1px solid var(--line);
-    background: var(--panel);
-    color: var(--ink);
-    border-radius: 8px;
-    padding: 9px 12px;
-    cursor: pointer;
-    font-weight: 700;
+    border:1px solid var(--line);
+    border-radius:8px;
+    background:var(--panel);
+    color:var(--ink);
+    font-weight:700;
+    padding:9px 11px;
+    cursor:pointer;
 }
-.tab-button.active {
-    border-color: var(--teal);
-    background: var(--soft-teal);
-    color: var(--teal);
-}
-.tab-panel { display: none; }
-.tab-panel.active { display: block; }
-.notice {
-    background: #ffffff;
-    border: 1px solid var(--line);
-    border-left: 4px solid var(--teal);
-    border-radius: 8px;
-    padding: 12px 14px;
-    color: var(--muted);
-    margin-bottom: 14px;
-}
-.grid {
-    display: grid;
-    gap: 14px;
-}
-.grid.two { grid-template-columns: minmax(300px, 0.9fr) minmax(520px, 1.8fr); }
-.grid.three { grid-template-columns: repeat(3, minmax(240px, 1fr)); }
-.grid.four { grid-template-columns: repeat(4, minmax(180px, 1fr)); }
+.tab-button.active { border-color:var(--teal); background:var(--soft-teal); color:var(--teal); }
+.tab-panel { display:none; }
+.tab-panel.active { display:block; }
+.grid { display:grid; gap:14px; }
+.two { grid-template-columns:minmax(320px, .9fr) minmax(520px, 1.5fr); }
+.three { grid-template-columns:repeat(3, minmax(220px, 1fr)); }
+.four { grid-template-columns:repeat(4, minmax(170px, 1fr)); }
 .panel {
-    background: var(--panel);
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    padding: 14px;
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:14px;
 }
-.panel h2, .panel h3 {
-    margin: 0 0 10px;
-}
-.panel h2 { font-size: 18px; }
-.panel h3 { font-size: 15px; }
-.metric {
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    padding: 12px;
-    background: #fbfcfd;
-}
-.metric .label {
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    font-size: 11px;
-    font-weight: 700;
-}
-.metric .value {
-    font-size: 22px;
-    font-weight: 800;
-    margin-top: 4px;
-}
-.case-list {
-    display: grid;
-    gap: 8px;
-}
-.case-item {
-    width: 100%;
-    text-align: left;
-    border: 1px solid var(--line);
-    background: #fbfcfd;
-    border-radius: 8px;
-    padding: 10px;
-    cursor: pointer;
-}
-.case-item.active {
-    border-color: var(--teal);
-    background: var(--soft-teal);
-}
-.case-title {
-    font-weight: 800;
-    margin-bottom: 4px;
-}
-.case-meta {
-    font-size: 12px;
-    color: var(--muted);
-}
-.viewer-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(220px, 1fr));
-    gap: 12px;
-}
-.image-box {
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    background: #0d1115;
-    overflow: hidden;
-    min-height: 180px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.image-box img {
-    width: 100%;
-    height: auto;
-    display: block;
-}
-.image-caption {
-    color: var(--muted);
-    font-size: 12px;
-    margin-top: 6px;
-}
-.table-wrap {
-    overflow-x: auto;
-}
-table {
-    border-collapse: collapse;
-    width: 100%;
-    font-size: 13px;
-}
-th, td {
-    border-bottom: 1px solid var(--line);
-    padding: 8px;
-    text-align: left;
-    vertical-align: top;
-}
-th {
-    color: var(--muted);
-    background: #f8fafb;
-    font-size: 12px;
+.panel h2 { margin:0 0 10px; font-size:19px; }
+.panel h3 { margin:10px 0 8px; font-size:15px; }
+.notice {
+    border-left:4px solid var(--teal);
+    background:#fff;
+    border-radius:8px;
+    border-top:1px solid var(--line);
+    border-right:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    padding:12px 14px;
+    color:var(--muted);
+    margin-bottom:14px;
 }
 .pill {
-    display: inline-block;
-    border-radius: 999px;
-    padding: 4px 8px;
-    font-size: 12px;
-    font-weight: 700;
-    background: #eef2f4;
-    color: var(--muted);
-    margin: 2px 4px 2px 0;
+    display:inline-block;
+    border-radius:999px;
+    padding:5px 9px;
+    margin:3px 4px 3px 0;
+    background:#eef2f4;
+    color:var(--muted);
+    font-size:12px;
+    font-weight:800;
 }
-.pill.good { background: var(--soft-green); color: var(--green); }
-.pill.warn { background: var(--soft-amber); color: var(--amber); }
-.pill.red { background: var(--soft-red); color: var(--red); }
-.timeline {
-    display: grid;
-    gap: 8px;
+.pill.good { background:var(--soft-green); color:var(--green); }
+.pill.warn { background:var(--soft-amber); color:var(--amber); }
+.pill.red { background:var(--soft-red); color:var(--red); }
+.pill.neutral { background:var(--soft-teal); color:var(--teal); }
+.metric {
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:12px;
+    background:#fbfcfd;
 }
-.timeline-item {
-    border-left: 3px solid var(--teal);
-    padding: 6px 0 6px 10px;
-    background: #fbfcfd;
+.metric-label { color:var(--muted); text-transform:uppercase; font-size:11px; font-weight:800; letter-spacing:.04em; }
+.metric-value { font-size:21px; font-weight:900; margin-top:5px; }
+table { width:100%; border-collapse:collapse; font-size:13px; }
+th, td { border-bottom:1px solid var(--line); padding:8px; text-align:left; vertical-align:top; }
+th { color:var(--muted); background:#f8fafb; font-size:12px; }
+.table-wrap { overflow-x:auto; }
+.workflow-buttons { display:flex; flex-wrap:wrap; gap:8px; }
+.workflow-button {
+    border:1px solid var(--line);
+    background:#fbfcfd;
+    border-radius:8px;
+    padding:10px 12px;
+    cursor:pointer;
+    font-weight:800;
 }
-.mono {
-    font-family: Consolas, Monaco, monospace;
-    font-size: 12px;
-    word-break: break-all;
+.workflow-button.done { background:var(--soft-green); color:var(--green); border-color:#b8dec9; }
+.workflow-button.active { background:var(--soft-teal); color:var(--teal); border-color:#b8dfe4; }
+.case-button {
+    width:100%;
+    border:1px solid var(--line);
+    background:#fbfcfd;
+    border-radius:8px;
+    padding:10px;
+    margin-bottom:8px;
+    text-align:left;
+    cursor:pointer;
 }
+.case-button.active { border-color:var(--teal); background:var(--soft-teal); }
+.timeline { display:grid; gap:8px; max-height:360px; overflow:auto; }
+.timeline-item { border-left:3px solid var(--teal); padding:7px 0 7px 10px; background:#fbfcfd; }
+.mono { font-family:Consolas, Monaco, monospace; font-size:12px; word-break:break-all; }
 .codebox {
-    background: #111820;
-    color: #eef6f7;
-    border-radius: 8px;
-    padding: 12px;
-    overflow-x: auto;
-    font-family: Consolas, Monaco, monospace;
-    font-size: 12px;
-    line-height: 1.5;
+    background:#111820;
+    color:#eef6f7;
+    border-radius:8px;
+    padding:12px;
+    overflow:auto;
+    white-space:pre;
+    font-family:Consolas, Monaco, monospace;
+    font-size:12px;
+    line-height:1.5;
 }
-a { color: var(--teal); font-weight: 700; }
-@media (max-width: 980px) {
-    .grid.two, .grid.three, .grid.four, .viewer-grid { grid-template-columns: 1fr; }
-    .topline { align-items: flex-start; flex-direction: column; }
-    .badge-row { justify-content: flex-start; }
+.image-grid { display:grid; grid-template-columns:repeat(2, minmax(240px, 1fr)); gap:12px; }
+.image-box {
+    min-height:210px;
+    border-radius:8px;
+    border:1px solid var(--line);
+    background:#111820;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#d8e3e8;
+    overflow:hidden;
+}
+.image-box img { display:block; width:100%; height:auto; }
+input, textarea, select {
+    width:100%;
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:9px;
+    font-family:inherit;
+    background:#fff;
+}
+textarea { min-height:84px; resize:vertical; }
+.small { color:var(--muted); font-size:12px; line-height:1.45; }
+@media (max-width:980px) {
+    .header-inner, .two, .three, .four, .image-grid { grid-template-columns:1fr; flex-direction:column; }
 }
 </style>
 </head>
 <body>
 <header>
-    <div class="topline">
-        <div class="brand">
-            <h1>RetiNet AI Platform POC - Phase 21.A</h1>
-            <p>Model-agnostic retinal/glaucoma workflow with BYO-model integration.</p>
+    <div class="header-inner">
+        <div>
+            <h1>RetiNet AI Interactive Platform POC</h1>
+            <p class="subtitle">Model-agnostic retinal and glaucoma workflow platform for scan intake, native OCT conversion, biomarker review, BYO-model integration, doctor review, reporting, and backend AI team operations.</p>
         </div>
-        <div class="badge-row">
-            <span class="badge good">model_training_run=false</span>
-            <span class="badge good">phase20_checkpoint_required=false</span>
-            <span class="badge neutral">BYOM connector ready</span>
-            <span class="badge warn">triage support only</span>
-        </div>
+        <div><span class="pill warn">doctor review required</span> <span class="pill good">model_training_run=false</span> <span class="pill good">phase20_checkpoint_loaded=false</span></div>
     </div>
 </header>
 <main>
-    <nav class="tabs" aria-label="Phase 21.A sections">
-        <button class="tab-button active" data-tab="dashboard" type="button">Case Dashboard</button>
-        <button class="tab-button" data-tab="native" type="button">Native Conversion</button>
-        <button class="tab-button" data-tab="connector" type="button">AI Connector</button>
-        <button class="tab-button" data-tab="glaucoma" type="button">Glaucoma Reports</button>
-        <button class="tab-button" data-tab="history" type="button">Notes & Meds</button>
-        <button class="tab-button" data-tab="privacy" type="button">Privacy & Audit</button>
-        <button class="tab-button" data-tab="search" type="button">Similarity & Export</button>
-    </nav>
+    <nav class="tabs"><button class="tab-button active" data-tab="0" type="button">Executive Overview</button>
+<button class="tab-button" data-tab="1" type="button">Interactive Case Workflow</button>
+<button class="tab-button" data-tab="2" type="button">Case Intake</button>
+<button class="tab-button" data-tab="3" type="button">Scan Upload Workflow</button>
+<button class="tab-button" data-tab="4" type="button">Native OCT Conversion</button>
+<button class="tab-button" data-tab="5" type="button">Biomarker Review</button>
+<button class="tab-button" data-tab="6" type="button">Model Connector Contract</button>
+<button class="tab-button" data-tab="7" type="button">AI Result Review</button>
+<button class="tab-button" data-tab="8" type="button">Heatmap / Explainability</button>
+<button class="tab-button" data-tab="9" type="button">Doctor Report Input</button>
+<button class="tab-button" data-tab="10" type="button">Report Export</button>
+<button class="tab-button" data-tab="11" type="button">Backend ML / AI Team Workspace</button>
+<button class="tab-button" data-tab="12" type="button">Similarity Search</button>
+<button class="tab-button" data-tab="13" type="button">Privacy &amp; Audit</button>
+<button class="tab-button" data-tab="14" type="button">Client Demo Summary</button></nav>
 
-    <section class="tab-panel active" id="panel-dashboard">
-        <div class="notice">
-            Platform POC scope: upload/viewer, native conversion, scan workflow, biomarker review, doctor report input, Backend ML / AI Team Workspace, Bring Your Own Model integration, KNN / hybrid similarity search, and privacy-first architecture. No model training or checkpoint loading is part of this phase.
+    <section class="tab-panel active" data-panel="0">
+        <div class="notice">Executive Overview: this demo is a static, client-facing workflow prototype for triage support and review support. No diagnosis claim is made and doctor review required appears throughout the workflow.</div>
+        <div class="grid three">
+            <div class="panel"><h2>Who this platform serves</h2><p><span class="pill neutral">Medical officer / diagnostic center</span> <span class="pill neutral">Doctor / reviewer</span> <span class="pill neutral">Backend ML / AI team</span></p></div>
+            <div class="panel"><h2>POC boundaries</h2><p><span class="pill warn">No real upload backend</span> <span class="pill warn">No real authentication</span> <span class="pill warn">No real database writes</span> <span class="pill warn">No external API calls</span></p></div>
+            <div class="panel"><h2>Current status</h2><p><span class="pill good">interactive static prototype</span> <span class="pill good">review support</span> <span class="pill warn">doctor review required</span></p></div>
         </div>
-        <div class="panel" style="margin-bottom:14px;">
-            <h2>Phase 21.A.1 Safety Flags</h2>
-            <p>
-                <span class="pill good">triage_only_not_diagnosis=true</span>
-                <span class="pill good">medical_diagnosis_claimed=false</span>
-                <span class="pill good">raw_vendor_files_exposed=false</span>
-                <span class="pill good">full_metadata_exposed=false</span>
-                <span class="pill good">model_inference_run=false</span>
-                <span class="pill good">diagnosis_claimed=false</span>
-            </p>
+        <div class="panel" style="margin-top:14px;"><h2>Visible Safety Flags</h2><p><span class="pill good">triage_only_not_diagnosis=true</span> <span class="pill good">medical_diagnosis_claimed=false</span> <span class="pill good">glaucoma_diagnosis_claimed=false</span> <span class="pill good">raw_vendor_files_exposed=false</span> <span class="pill good">full_metadata_exposed=false</span> <span class="pill good">model_inference_run=false</span> <span class="pill good">model_training_run=false</span> <span class="pill good">phase20_checkpoint_required=false</span> <span class="pill good">phase20_checkpoint_loaded=false</span> <span class="pill good">diagnosis_claimed=false</span> <span class="pill good">phi_stored_in_platform_poc=false</span></p></div>
+    </section>
+
+    <section class="tab-panel" data-panel="1">
+        <div class="grid two">
+            <div class="panel"><h2>Interactive Case Workflow</h2><p class="small">Click each mock workflow action. Buttons update workflow status, selected case state, timeline, audit log, and status badges in the browser only.</p><div class="workflow-buttons"><button class="workflow-button" type="button" data-step="Start Intake">Start Intake</button>
+<button class="workflow-button" type="button" data-step="Validate Scan">Validate Scan</button>
+<button class="workflow-button" type="button" data-step="Convert Native OCT">Convert Native OCT</button>
+<button class="workflow-button" type="button" data-step="Review Biomarkers">Review Biomarkers</button>
+<button class="workflow-button" type="button" data-step="Select AI Tasks">Select AI Tasks</button>
+<button class="workflow-button" type="button" data-step="Generate BYOM Request">Generate BYOM Request</button>
+<button class="workflow-button" type="button" data-step="Import BYOM Response">Import BYOM Response</button>
+<button class="workflow-button" type="button" data-step="Review Heatmap">Review Heatmap</button>
+<button class="workflow-button" type="button" data-step="Add Doctor Note">Add Doctor Note</button>
+<button class="workflow-button" type="button" data-step="Override AI Result">Override AI Result</button>
+<button class="workflow-button" type="button" data-step="Sign Report">Sign Report</button>
+<button class="workflow-button" type="button" data-step="Export Report">Export Report</button></div></div>
+            <div class="panel"><h2>Workflow Status</h2><div id="workflow-metrics" class="grid three"></div><h3>Visible Status Badges</h3><div id="workflow-badges"></div></div>
         </div>
-        <div class="grid two" style="margin-bottom:14px;">
-            <div class="panel">
-                <h2>Scan Input Workflow</h2>
-                <div class="table-wrap">
-                    <table>
-                        <thead><tr><th>Input</th><th>Workflow Role</th><th>Scan Status</th></tr></thead>
-                        <tbody>
-                            <tr><td>OCT scan input</td><td>Primary macula B-scan upload and viewer path</td><td>uploaded / reviewed / exported</td></tr>
-                            <tr><td>Native vendor scan input</td><td>Encrypted quarantine, vendor conversion, standardized B-scan sequence export</td><td>uploaded / converted / reviewed / exported</td></tr>
-                            <tr><td>Converted B-scan sequence viewer</td><td>Reviewer-facing converted slice sequence; raw vendor files remain hidden</td><td>converted / reviewed</td></tr>
-                            <tr><td>Fundus scan input</td><td>Future optional extension for multimodal retinal context</td><td>future optional extension</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="panel">
-                <h2>Biomarker Layer</h2>
-                <p>
-                    <span class="pill good">Macula biomarkers</span>
-                    <span class="pill good">Glaucoma / optic nerve biomarkers</span>
-                    <span class="pill">RNFL</span>
-                    <span class="pill">GCC</span>
-                    <span class="pill">CDR</span>
-                    <span class="pill">retinal thickness</span>
-                    <span class="pill">fluid / cyst indicators</span>
-                    <span class="pill">drusen markers</span>
-                    <span class="pill">CNV markers</span>
-                    <span class="pill">DME-related markers</span>
-                </p>
-                <p>Biomarker history and trend support are represented as longitudinal review contracts for doctor interpretation, not automated diagnosis.</p>
-            </div>
-            <div class="panel">
-                <h2>Doctor Report Input</h2>
-                <div class="table-wrap">
-                    <table>
-                        <tbody>
-                            <tr><th>Doctor report upload</th><td>Upload a de-identified doctor report attachment for case review.</td></tr>
-                            <tr><th>Manual doctor report entry</th><td>Structured manual entry for doctor impression field, review status, and follow-up recommendation.</td></tr>
-                            <tr><th>Journal Notes</th><td>Journal notes history remains available in the case timeline.</td></tr>
-                            <tr><th>Medication History</th><td>Medication history is captured as structured, PHI-minimized clinical context.</td></tr>
-                            <tr><th>Report export</th><td>Draft export is held until doctor review/sign-off.</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="panel">
-                <h2>Backend ML / AI Team Workspace</h2>
-                <p>
-                    <span class="pill good">OCT image data registry</span>
-                    <span class="pill good">Native/vendor OCT file data registry</span>
-                    <span class="pill good">Macula triage data registry</span>
-                    <span class="pill good">Glaucoma / optic nerve report data registry</span>
-                    <span class="pill">Biomarker extraction outputs</span>
-                    <span class="pill">Model connector registry</span>
-                    <span class="pill">Bring Your Own Model integration</span>
-                    <span class="pill">Inference logs</span>
-                    <span class="pill">Model versioning</span>
-                    <span class="pill">Visualization tools</span>
-                    <span class="pill">KNN / hybrid / similarity search</span>
-                    <span class="pill">SDK / CLI operations</span>
-                    <span class="pill">Audit trail</span>
-                </p>
-            </div>
-        </div>
-        <div class="panel" style="margin-bottom:14px;">
-            <h2>Privacy / Security</h2>
-            <p>
-                The platform POC uses privacy-first architecture and HIPAA-ready architecture wording only; HIPAA certification is not asserted.
-                Required controls include PHI minimization, hashing, encryption, access control, and audit logs.
-            </p>
-        </div>
-        <div class="grid four" id="summary-metrics"></div>
         <div class="grid two" style="margin-top:14px;">
-            <div class="panel">
-                <h2>Case Queue</h2>
-                <div class="case-list" id="case-list"></div>
-            </div>
-            <div class="panel">
-                <h2 id="selected-case-title">Selected Case</h2>
-                <div class="viewer-grid" id="viewer-grid"></div>
-                <div class="grid three" style="margin-top:12px;" id="case-workflow"></div>
-            </div>
+            <div class="panel"><h2>Timeline</h2><div id="workflow-timeline" class="timeline"></div></div>
+            <div class="panel"><h2>Audit Log</h2><div id="workflow-audit" class="timeline"></div></div>
         </div>
     </section>
 
-    <section class="tab-panel" id="panel-native">
+    <section class="tab-panel" data-panel="2">
         <div class="grid two">
-            <div class="panel">
-                <h2>Conversion Contract</h2>
-                <div id="native-contract"></div>
-            </div>
-            <div class="panel">
-                <h2>Vendor Registry</h2>
-                <div class="table-wrap" id="vendor-registry"></div>
-            </div>
+            <div class="panel"><h2>Case Intake</h2><p class="small">Mock de-identified case queue. case_hash only; no direct person identifiers are displayed.</p><div id="case-list"></div></div>
+            <div class="panel"><h2>Selected Case State</h2><div id="case-detail"></div></div>
         </div>
     </section>
 
-    <section class="tab-panel" id="panel-connector">
+    <section class="tab-panel" data-panel="3">
+        <div class="panel"><h2>Scan Upload Workflow</h2><div id="scan-workflow"></div></div>
+    </section>
+
+    <section class="tab-panel" data-panel="4">
         <div class="grid two">
-            <div class="panel">
-                <h2>Model Connector Contract / BYO-Model Connector</h2>
-                <div id="connector-summary"></div>
-            </div>
-            <div class="panel">
-                <h2>SDK / CLI Operations</h2>
-                <div id="cli-ops"></div>
-            </div>
-        </div>
-        <div class="panel" style="margin-top:14px;">
-            <h2>Sample Commands</h2>
-            <div class="codebox">python scripts/phase21a_ai_ops_cli.py emit-contract --output-dir data/phase21a_ai_ops_contract
-python scripts/phase21a_ai_ops_cli.py validate-model-manifest --manifest data/final_dashboards/retinet_phase21a_platform_architecture/model_manifest_template.json
-python scripts/phase21a_ai_ops_cli.py validate-inference-response --response data/final_dashboards/retinet_phase21a_platform_architecture/byom_sample_response.json
-python scripts/phase21a_ai_ops_cli.py hash-case --case-key demo-case-for-ai-team</div>
+            <div class="panel"><h2>Native OCT Conversion</h2><p><span class="pill good">Raw vendor files hidden</span> <span class="pill good">Metadata redacted</span> <span class="pill good">Conversion manifest only</span> <span class="pill good">model_inference_run=false</span></p><div id="vendor-table" class="table-wrap"></div></div>
+            <div class="panel"><h2>Conversion Manifest</h2><div class="codebox" id="conversion-manifest"></div></div>
         </div>
     </section>
 
-    <section class="tab-panel" id="panel-glaucoma">
-        <div class="notice">Glaucoma section is report visualization and risk-support workflow only. It does not claim glaucoma diagnosis and is not automatically matched to macula B-scans.</div>
-        <div class="grid four" id="glaucoma-metrics"></div>
-        <div class="panel" style="margin-top:14px;">
-            <h2>Optic Nerve Report Mode</h2>
-            <div id="glaucoma-details"></div>
-        </div>
+    <section class="tab-panel" data-panel="5">
+        <div class="panel"><h2>Biomarker Review</h2><p><span class="pill good">Macula biomarkers</span> <span class="pill good">Glaucoma / optic nerve biomarkers</span> <span class="pill warn">doctor interpretation required</span></p><div id="biomarker-table"></div></div>
     </section>
 
-    <section class="tab-panel" id="panel-history">
+    <section class="tab-panel" data-panel="6">
         <div class="grid two">
-            <div class="panel">
-                <h2>Journal Notes History</h2>
-                <div class="timeline" id="journal-notes"></div>
-            </div>
-            <div class="panel">
-                <h2>Medication History</h2>
-                <div class="timeline" id="medication-history"></div>
-            </div>
+            <div class="panel"><h2>Model Connector Contract / Bring Your Own Model</h2><p><span class="pill good">Model Connector Contract</span> <span class="pill good">Bring Your Own Model</span></p><h3>Selectable mock tasks</h3><div id="ai-task-list"></div><h3>Safety validation</h3><p><span class="pill good">triage_only_not_diagnosis=true</span> <span class="pill good">medical_diagnosis_claimed=false</span> <span class="pill good">glaucoma_diagnosis_claimed=false</span> <span class="pill good">raw_vendor_files_exposed=false</span> <span class="pill good">full_metadata_exposed=false</span> <span class="pill good">model_inference_run=false</span> <span class="pill good">model_training_run=false</span> <span class="pill good">phase20_checkpoint_required=false</span> <span class="pill good">phase20_checkpoint_loaded=false</span> <span class="pill good">diagnosis_claimed=false</span> <span class="pill good">phi_stored_in_platform_poc=false</span></p></div>
+            <div class="panel"><h2>Connector JSON</h2><h3>Request</h3><div class="codebox" id="connector-request"></div><h3>Response</h3><div class="codebox" id="connector-response"></div></div>
         </div>
     </section>
 
-    <section class="tab-panel" id="panel-privacy">
+    <section class="tab-panel" data-panel="7">
+        <div class="panel"><h2>AI Result Review</h2><p><span class="pill warn">Mock BYOM response only</span> <span class="pill good">not_diagnosis=true</span> <span class="pill warn">doctor review required</span> <span class="pill good">model_training_run=false</span> <span class="pill good">phase20_checkpoint_loaded=false</span></p><div id="ai-result"></div></div>
+    </section>
+
+    <section class="tab-panel" data-panel="8">
+        <div class="panel"><h2>Heatmap / Explainability</h2><p>Explanation support only, not clinical proof.</p><div id="heatmap-panel" class="image-grid"></div></div>
+    </section>
+
+    <section class="tab-panel" data-panel="9">
         <div class="grid two">
-            <div class="panel">
-                <h2>Privacy-First Architecture</h2>
-                <div id="privacy-controls"></div>
-            </div>
-            <div class="panel">
-                <h2>Hashing / Encryption / Audit</h2>
-                <div id="audit-log"></div>
-            </div>
+            <div class="panel"><h2>Doctor Report Input</h2><label>Manual doctor impression field</label><textarea id="doctor-impression">Review support note pending doctor sign-off.</textarea><label>Doctor report upload placeholder</label><input disabled value="Static demo only - no upload backend"><label>Follow-up recommendation</label><select id="follow-up"><option>Routine follow-up</option><option>Earlier review support</option><option>External referral consideration</option></select><label>Review status</label><select id="review-status"><option>pending</option><option>accepted</option><option>overridden</option><option>signed</option></select><label>Override reason required when overridden</label><textarea id="override-reason" placeholder="Required for overridden status"></textarea></div>
+            <div class="panel"><h2>Journal Notes History</h2><div id="journal-notes" class="timeline"></div><h2 style="margin-top:14px;">Medication History</h2><div id="med-history" class="timeline"></div></div>
         </div>
     </section>
 
-    <section class="tab-panel" id="panel-search">
+    <section class="tab-panel" data-panel="10">
+        <div class="panel"><h2>Report Export</h2><p><span class="pill neutral">Draft export</span> <span class="pill warn">Doctor-signed export future placeholder</span> <span class="pill good">JSON / HTML export contract</span> <span class="pill good">No PHI in export</span> <span class="pill warn">Export requires doctor sign-off</span></p><div class="codebox" id="report-export-json"></div></div>
+    </section>
+
+    <section class="tab-panel" data-panel="11">
+        <div class="panel"><h2>Backend ML / AI Team Workspace</h2><p><span class="pill good">SDK / CLI operations</span> <span class="pill good">Audit trail</span></p><div id="workspace-grid" class="grid three"></div></div>
+    </section>
+
+    <section class="tab-panel" data-panel="12">
+        <div class="panel"><h2>Similarity Search</h2><p><span class="pill good">KNN image similarity placeholder</span> <span class="pill good">Hybrid search placeholder</span> <span class="pill neutral">image embeddings</span> <span class="pill neutral">structured biomarkers</span> <span class="pill neutral">redacted report text</span></p><p>Reviewer context only, not diagnosis.</p><div id="similarity-results"></div></div>
+    </section>
+
+    <section class="tab-panel" data-panel="13">
         <div class="grid two">
-            <div class="panel">
-                <h2>KNN / Hybrid Similarity Search</h2>
-                <div id="similarity-search"></div>
-            </div>
-            <div class="panel">
-                <h2>Report Export</h2>
-                <div id="report-export"></div>
-            </div>
+            <div class="panel"><h2>Privacy & Audit</h2><p><span class="pill good">HIPAA-ready architecture</span> <span class="pill good">privacy-first architecture</span> <span class="pill good">PHI minimization</span> <span class="pill good">hashing</span> <span class="pill good">encryption</span> <span class="pill good">RBAC / access control</span> <span class="pill good">audit logs</span> <span class="pill good">event hash chain</span></p><p>HIPAA certification is not asserted.</p></div>
+            <div class="panel"><h2>Event Hash Chain</h2><div id="audit-chain" class="timeline"></div></div>
         </div>
+    </section>
+
+    <section class="tab-panel" data-panel="14">
+        <div class="panel"><h2>Client Demo Summary</h2><div class="grid two"><div><h3>What is working in this POC</h3><ul><li>Interactive static workflow and de-identified case queue.</li><li>Scan intake, native conversion, biomarker review, BYOM request/response, doctor review, report export, workspace, similarity, and audit panels.</li></ul><h3>What is mocked</h3><ul><li>Uploads, authentication, database writes, model inference, heatmap creation, and report signing.</li></ul></div><div><h3>What needs real client integration</h3><ul><li>Storage, identity, EHR/report feeds, native converter deployment, model endpoints, vector index, and export signing.</li></ul><h3>What remains out of scope</h3><ul><li>Diagnosis, final compliance certification, production model training, and regulated product claims.</li></ul></div></div></div>
     </section>
 </main>
-
 <script>
-const PHASE21A_STATE = {
-  "phase": "21.A",
-  "platform_name": "RetiNet AI Platform POC",
-  "created_utc": "2026-05-31T10:48:39.314439+00:00",
-  "contract_version": "phase21a.v1",
-  "scope": "model_agnostic_platform_architecture_poc",
-  "phase20_dependency": "none",
-  "checkpoint_dependency": "none",
-  "model_training_run": false,
-  "safety_flags": {
-    "platform_poc_not_medical_device": true,
-    "triage_only_not_diagnosis": true,
-    "medical_diagnosis_claimed": false,
-    "glaucoma_diagnosis_claimed": false,
-    "model_training_run": false,
-    "phase20_checkpoint_required": false,
-    "phase20_checkpoint_loaded": false,
-    "byom_connector_required_for_ai_inference": true,
-    "platform_runs_vendor_conversion_only": true,
-    "raw_vendor_files_exposed_to_viewer": false,
-    "full_metadata_exposed_to_viewer": false,
-    "phi_stored_in_platform_poc": false
-  },
-  "capability_matrix": [
+const DEMO_STATE = {
+  "audit_events": [
     {
-      "capability_id": "oct_upload_viewer",
-      "label": "OCT upload/viewer",
-      "poc_status": "architecture_and_dashboard",
-      "surface": "Upload queue, B-scan viewer, quality/intake metadata",
-      "backend_contract": "file intake audit, case asset registry, signed object handles",
-      "privacy_control": "SHA256 file hash, de-identified object handle, role-scoped access"
+      "action": "demo_loaded",
+      "actor": "system",
+      "case_hash": "case_a32651048853c8db",
+      "contains_phi": false,
+      "created_utc": "2026-05-31T11:14:37.328899+00:00",
+      "event_hash": "8879a5daeda7bcaf45fb5359a37632a6847d06a40df0a7cb103c3546d818410b",
+      "previous_event_hash": "GENESIS",
+      "sequence": 1
     },
     {
-      "capability_id": "native_oct_vendor_file_conversion",
-      "label": "Native OCT/vendor file conversion",
-      "poc_status": "contract_plus_existing_phase17_18_path",
-      "surface": "Conversion status, B-scan sequence preview, manifest inspection",
-      "backend_contract": "encrypted quarantine to standardized export manifest",
-      "privacy_control": "raw vendor files hidden from viewer, metadata redaction required"
-    },
-    {
-      "capability_id": "macula_oct_triage_workflow",
-      "label": "Macula OCT triage workflow",
-      "poc_status": "byom_ready",
-      "surface": "Triage queue, score bands, doctor review state",
-      "backend_contract": "BYOM task macula_triage",
-      "privacy_control": "de-identified case_hash and signed image handles"
-    },
-    {
-      "capability_id": "glaucoma_optic_nerve_report_visualization",
-      "label": "Glaucoma / optic nerve report visualization",
-      "poc_status": "report_visualization",
-      "surface": "RNFL/GCC/CDR/IOP metric cards and trend table",
-      "backend_contract": "structured report metric ingest",
-      "privacy_control": "de-identified metrics only; no patient matching unless authorized"
-    },
-    {
-      "capability_id": "heatmap_explainability_layer",
-      "label": "Heatmap/explainability layer",
-      "poc_status": "artifact_contract",
-      "surface": "Overlay and side-by-side heatmap review",
-      "backend_contract": "BYOM explanation_artifacts array",
-      "privacy_control": "artifact SHA256, signed handle, no raw PHI labels"
-    },
-    {
-      "capability_id": "doctor_review_workflow",
-      "label": "Doctor review workflow",
-      "poc_status": "workflow_contract",
-      "surface": "Review status, final impression, override reason, sign-off",
-      "backend_contract": "review event API and append-only audit",
-      "privacy_control": "role-based write permissions and audit hash chain"
-    },
-    {
-      "capability_id": "case_dashboard",
-      "label": "Case dashboard",
-      "poc_status": "static_dashboard",
-      "surface": "Case queue, status tiles, modules per case",
-      "backend_contract": "case aggregate read model",
-      "privacy_control": "case_hash identifiers only in POC output"
-    },
-    {
-      "capability_id": "report_export",
-      "label": "Report export",
-      "poc_status": "json_html_export_contract",
-      "surface": "Doctor-reviewed export bundle",
-      "backend_contract": "versioned report generator input schema",
-      "privacy_control": "export redaction policy, signer, audit event"
-    },
-    {
-      "capability_id": "journal_notes_history",
-      "label": "Journal notes history",
-      "poc_status": "redacted_history_contract",
-      "surface": "Chronological notes timeline",
-      "backend_contract": "redacted note append/list API",
-      "privacy_control": "free-text PHI detection/redaction gate before AI handoff"
-    },
-    {
-      "capability_id": "medication_history",
-      "label": "Medication history",
-      "poc_status": "structured_history_contract",
-      "surface": "Medication class timeline and adherence notes",
-      "backend_contract": "structured med history API",
-      "privacy_control": "medication classes only in AI payload unless consented"
-    },
-    {
-      "capability_id": "privacy_hipaa_ready_architecture",
-      "label": "Privacy-first / HIPAA-ready architecture",
-      "poc_status": "architecture_controls",
-      "surface": "Privacy controls panel",
-      "backend_contract": "PHI vault, KMS, RBAC, audit, retention",
-      "privacy_control": "no PHI stored in POC artifacts; compliance certification out of scope"
-    },
-    {
-      "capability_id": "hashing_encryption_audit_logs",
-      "label": "Hashing/encryption/audit logs",
-      "poc_status": "contract_plus_demo_hash_chain",
-      "surface": "Audit timeline and object hash display",
-      "backend_contract": "SHA256, KMS envelope references, event hash chain",
-      "privacy_control": "tamper-evident logs and encrypted object references"
-    },
-    {
-      "capability_id": "bring_your_own_model_connector",
-      "label": "Bring-your-own-model connector",
-      "poc_status": "sdk_cli_contract",
-      "surface": "Registered model manifest and result import state",
-      "backend_contract": "HTTP, batch manifest, local CLI, Python SDK adapters",
-      "privacy_control": "no PHI payload, signed handles, strict safety attestation"
-    },
-    {
-      "capability_id": "knn_hybrid_similarity_search",
-      "label": "KNN / hybrid / similarity search",
-      "poc_status": "vector_contract",
-      "surface": "Similar cases panel",
-      "backend_contract": "embedding upsert/query/delete APIs",
-      "privacy_control": "encrypted vector refs and tenant/site scoping"
-    },
-    {
-      "capability_id": "sdk_cli_backend_ai_ops",
-      "label": "SDK / CLI for backend AI team operations",
-      "poc_status": "cli_script_and_contract_json",
-      "surface": "AI ops command examples and validation results",
-      "backend_contract": "manifest validation, response validation, audit append, similarity operations",
-      "privacy_control": "CLI rejects diagnostic claims and PHI-bearing safety flags"
+      "action": "case_selected",
+      "actor": "reviewer",
+      "case_hash": "case_a32651048853c8db",
+      "contains_phi": false,
+      "created_utc": "2026-05-31T11:14:37.328939+00:00",
+      "event_hash": "c7623b5ce4878000184022ac9b33fc23551e67915ef54c5c6863ea5e4ccbb9ce",
+      "previous_event_hash": "8879a5daeda7bcaf45fb5359a37632a6847d06a40df0a7cb103c3546d818410b",
+      "sequence": 2
     }
   ],
-  "model_connector_contract": {
-    "contract_version": "phase21a.v1",
-    "connector_name": "bring_your_own_model_connector",
-    "purpose": "Allow a backend AI team to attach retinal, glaucoma, heatmap, and embedding models without changing the platform.",
-    "transport_modes": [
-      "http_json",
-      "batch_manifest",
-      "local_cli_adapter",
-      "python_sdk_adapter"
+  "byom_request": {
+    "case_hash": "case_a32651048853c8db",
+    "contract": "Model Connector Contract",
+    "input_refs": {
+      "native_conversion_manifest": "signed-demo-object://conversion-manifest",
+      "oct_bscan_sequence": "signed-demo-object://oct-sequence",
+      "optic_nerve_report_metrics": "structured-deidentified-metrics"
+    },
+    "integration": "Bring Your Own Model",
+    "privacy": {
+      "contains_phi": false,
+      "raw_vendor_files_exposed": false,
+      "signed_ref_ttl_seconds": 900
+    },
+    "safety": {
+      "diagnosis_claimed": false,
+      "full_metadata_exposed": false,
+      "glaucoma_diagnosis_claimed": false,
+      "medical_diagnosis_claimed": false,
+      "model_inference_run": false,
+      "model_training_run": false,
+      "phase20_checkpoint_loaded": false,
+      "phase20_checkpoint_required": false,
+      "phi_stored_in_platform_poc": false,
+      "raw_vendor_files_exposed": false,
+      "triage_only_not_diagnosis": true
+    },
+    "tasks": [
+      "macula_triage",
+      "glaucoma_risk_support",
+      "optic_nerve_report_extract",
+      "explainability_heatmap",
+      "embedding_generation"
+    ]
+  },
+  "byom_response": {
+    "case_hash": "case_a32651048853c8db",
+    "embeddings": [
+      {
+        "dimension": 512,
+        "type": "image_embedding",
+        "use": "KNN reviewer context only"
+      }
     ],
-    "platform_responsibilities": [
-      "normalize uploaded OCT image sequences and converted native OCT exports",
-      "redact or isolate PHI before AI handoff",
-      "provide signed object handles rather than raw PHI-bearing paths",
-      "record audit events for model invocation and result import",
-      "display model outputs as triage support pending doctor review"
+    "explanation_artifacts": [
+      {
+        "display": "side_by_side",
+        "text": "Explanation support only, not clinical proof.",
+        "type": "heatmap"
+      }
     ],
-    "model_team_responsibilities": [
-      "own training, validation, model registry, and deployment",
-      "return versioned model_card and inference provenance",
-      "return calibrated scores, uncertainty, thresholds, and failure states",
-      "return optional heatmaps and embeddings using the platform artifact schema",
-      "avoid diagnostic claims in result payloads"
-    ],
-    "request_schema": {
-      "case_hash": "string",
-      "exam_bundle_id": "string",
+    "model_manifest": {
+      "model_id": "external_ai_team_model",
+      "model_training_run_by_platform": false,
+      "model_version": "demo-connector-v1",
+      "phase20_checkpoint_loaded": false,
       "tasks": [
         "macula_triage",
         "glaucoma_risk_support",
         "optic_nerve_report_extract",
         "explainability_heatmap",
         "embedding_generation"
-      ],
-      "inputs": {
-        "oct_bscan_sequence": [
-          {
-            "object_handle": "string",
-            "slice_index": "integer",
-            "sha256": "string",
-            "modality": "oct_bscan"
-          }
-        ],
-        "native_conversion_manifest": "object_or_null",
-        "glaucoma_report_metrics": "object_or_null",
-        "clinical_context": {
-          "eye_side": "OD|OS|OU|unknown",
-          "age_band": "optional_non_identifying_bucket",
-          "medication_classes": "optional_non_identifying_list"
-        }
-      },
-      "privacy": {
-        "contains_phi": false,
-        "signed_url_ttl_seconds": 900,
-        "minimum_transport": "TLS 1.2+"
-      }
-    },
-    "response_schema": {
-      "case_hash": "string",
-      "model_manifest": {
-        "model_id": "string",
-        "model_version": "string",
-        "model_card_uri": "string",
-        "supported_tasks": "list[string]",
-        "input_contract_version": "phase21a.v1",
-        "output_contract_version": "phase21a.v1"
-      },
-      "results": [
-        {
-          "task": "string",
-          "label": "string",
-          "score": "float_0_to_1",
-          "uncertainty": "float_0_to_1_or_null",
-          "thresholds": "object",
-          "summary": "string",
-          "not_diagnosis": true
-        }
-      ],
-      "explanation_artifacts": [
-        {
-          "artifact_id": "string",
-          "artifact_type": "heatmap|saliency|feature_importance|attention",
-          "object_handle": "string",
-          "source_slice_index": "integer_or_null",
-          "sha256": "string",
-          "rendering_hint": "overlay|side_by_side|table"
-        }
-      ],
-      "embeddings": [
-        {
-          "embedding_id": "string",
-          "feature_source": "macula_bscan|optic_nerve_report|hybrid",
-          "dimension": "integer",
-          "vector_ref": "encrypted_vector_store_reference",
-          "embedding_sha256": "string"
-        }
-      ],
-      "safety": {
-        "triage_only_not_diagnosis": true,
-        "medical_diagnosis_claimed": false,
-        "contains_phi": false
-      }
-    },
-    "failure_contract": {
-      "status": "failed|rejected|timeout|unsupported_input",
-      "safe_message": "string_for_doctor_ui",
-      "technical_message": "string_for_ai_ops_log",
-      "retryable": "boolean"
-    }
-  },
-  "model_manifest_template": {
-    "model_id": "vendor_or_team_model_slug",
-    "model_version": "2026.05.31-demo",
-    "model_card_uri": "https://example.invalid/model-card",
-    "owner_team": "backend_ai_team",
-    "supported_tasks": [
-      "macula_triage",
-      "glaucoma_risk_support",
-      "explainability_heatmap",
-      "embedding_generation"
-    ],
-    "input_contract_version": "phase21a.v1",
-    "output_contract_version": "phase21a.v1",
-    "explainability_modes": [
-      "heatmap",
-      "saliency"
-    ],
-    "embedding_dimensions": {
-      "macula_bscan": 512,
-      "optic_nerve_report": 128,
-      "hybrid": 640
-    },
-    "privacy_attestation": {
-      "contains_phi_in_payload": false,
-      "stores_platform_objects": false,
-      "retention_days": 0
-    },
-    "safety_attestation": {
-      "triage_only_not_diagnosis": true,
-      "medical_diagnosis_claimed": false
-    }
-  },
-  "native_conversion_contract": {
-    "module": "native_oct_vendor_file_conversion",
-    "input": "raw vendor file uploaded into encrypted quarantine",
-    "output": "standardized de-identified B-scan sequence plus conversion manifest",
-    "conversion_manifest_required_fields": [
-      "case_hash",
-      "source_sha256",
-      "source_extension_display",
-      "parser_used",
-      "bscan_count_detected",
-      "bscan_preview_count_exported",
-      "metadata_redacted",
-      "raw_metadata_dump_written",
-      "model_inference_run"
-    ],
-    "registered_formats": [
-      {
-        "extension_display": "OCT",
-        "likely_vendor": "ambiguous (Optovue/Others)",
-        "parser_candidates": [
-          "oct-converter"
-        ],
-        "status": "requires_sample_validation",
-        "raw_vendor_file_exposed": false
-      },
-      {
-        "extension_display": "E2E",
-        "likely_vendor": "Heidelberg",
-        "parser_candidates": [
-          "oct-converter",
-          "eyepy"
-        ],
-        "status": "requires_sample_validation",
-        "raw_vendor_file_exposed": false
-      },
-      {
-        "extension_display": "FDA",
-        "likely_vendor": "Topcon",
-        "parser_candidates": [
-          "oct-converter"
-        ],
-        "status": "requires_sample_validation",
-        "raw_vendor_file_exposed": false
-      },
-      {
-        "extension_display": "FDS",
-        "likely_vendor": "Topcon",
-        "parser_candidates": [
-          "oct-converter"
-        ],
-        "status": "requires_sample_validation",
-        "raw_vendor_file_exposed": false
-      },
-      {
-        "extension_display": "OCT",
-        "likely_vendor": "ambiguous (Bioptigen/Others)",
-        "parser_candidates": [
-          "oct-converter"
-        ],
-        "status": "requires_sample_validation",
-        "raw_vendor_file_exposed": false
-      },
-      {
-        "extension_display": "VOL",
-        "likely_vendor": "Heidelberg/Spectralis",
-        "parser_candidates": [
-          "eyepy",
-          "heyexReader",
-          "oct-vol"
-        ],
-        "status": "requires_sample_validation",
-        "raw_vendor_file_exposed": false
-      }
-    ],
-    "privacy": {
-      "quarantine_encrypted": true,
-      "metadata_redacted": true,
-      "raw_vendor_files_exposed_to_viewer": false,
-      "model_inference_run_during_conversion": false
-    }
-  },
-  "similarity_search_contract": {
-    "contract_version": "phase21a.v1",
-    "module": "knn_hybrid_similarity_search",
-    "purpose": "Find visually or clinically similar de-identified OCT cases for reviewer context and AI QA.",
-    "index_types": [
-      "macula_bscan_embedding_knn",
-      "optic_nerve_report_metric_knn",
-      "hybrid_vector_plus_metadata",
-      "lexical_journal_note_search_redacted"
-    ],
-    "operations": {
-      "upsert_embedding": {
-        "required_fields": [
-          "embedding_id",
-          "case_hash",
-          "feature_source",
-          "dimension",
-          "vector_ref",
-          "embedding_sha256"
-        ],
-        "privacy": "vectors encrypted at rest and scoped by tenant/site"
-      },
-      "query_similar": {
-        "required_fields": [
-          "case_hash",
-          "feature_source",
-          "top_k"
-        ],
-        "filters": [
-          "modality",
-          "eye_side",
-          "vendor_family",
-          "review_status",
-          "date_bucket"
-        ],
-        "metrics": [
-          "cosine",
-          "l2",
-          "inner_product"
-        ]
-      },
-      "hybrid_query": {
-        "ranking": "weighted vector similarity plus structured filters plus redacted keyword match",
-        "default_weights": {
-          "vector": 0.7,
-          "structured": 0.2,
-          "lexical": 0.1
-        }
-      },
-      "delete_or_expire": {
-        "required_fields": [
-          "case_hash",
-          "retention_policy_id"
-        ],
-        "audit_required": true
-      }
-    },
-    "sample_result": {
-      "query_case_hash": "case_a102002cafd1b3ba",
-      "top_k": 3,
-      "neighbors": [
-        {
-          "case_hash": "case_e298856c9551201d",
-          "similarity": 0.91,
-          "reason": "similar macula B-scan embedding and moderate-confidence triage bucket"
-        },
-        {
-          "case_hash": "case_2586013eaf46b6d1",
-          "similarity": 0.84,
-          "reason": "similar optic nerve metric pattern and same eye-side filter"
-        }
       ]
+    },
+    "result": {
+      "confidence_band": "moderate",
+      "doctor_review_required": true,
+      "label": "review_recommended",
+      "not_diagnosis": true,
+      "score": 0.82,
+      "uncertainty": 0.18
     },
     "safety": {
-      "contains_phi": false,
-      "used_for_diagnosis": false,
-      "requires_doctor_review": true
+      "diagnosis_claimed": false,
+      "full_metadata_exposed": false,
+      "glaucoma_diagnosis_claimed": false,
+      "medical_diagnosis_claimed": false,
+      "model_inference_run": false,
+      "model_training_run": false,
+      "phase20_checkpoint_loaded": false,
+      "phase20_checkpoint_required": false,
+      "phi_stored_in_platform_poc": false,
+      "raw_vendor_files_exposed": false,
+      "triage_only_not_diagnosis": true
     }
-  },
-  "privacy_architecture": {
-    "hipaa_ready_positioning": "Architecture support only. This POC is not a HIPAA compliance certification and stores no PHI in generated demo artifacts.",
-    "controls": [
-      {
-        "control": "data_minimization",
-        "implementation": "store case_hash and de-identified clinical context in platform records"
-      },
-      {
-        "control": "segregated_phi_vault",
-        "implementation": "PHI lookup remains in a separate encrypted service boundary"
-      },
-      {
-        "control": "least_privilege_access",
-        "implementation": "doctor, technician, ai_service, admin, and auditor roles are separated"
-      },
-      {
-        "control": "hashing",
-        "implementation": "file SHA256 and pseudonymous case_hash are generated before workflow routing"
-      },
-      {
-        "control": "encryption",
-        "implementation": "KMS-backed envelope encryption is required for PHI and raw vendor objects"
-      },
-      {
-        "control": "audit_logs",
-        "implementation": "append-only audit event stream with event_hash and previous_event_hash"
-      },
-      {
-        "control": "break_glass_review",
-        "implementation": "emergency access requires reason code and elevated audit severity"
-      },
-      {
-        "control": "retention_delete",
-        "implementation": "retention class is bound to tenant policy and legal hold state"
-      }
-    ],
-    "encryption": {
-      "status": "required_for_production",
-      "poc_implementation": "contract_and_references_only_no_phi_stored",
-      "at_rest": {
-        "required": true,
-        "recommended_pattern": "object_storage_sse_kms_or_database_tde",
-        "key_scope": "tenant_or_site_key_alias",
-        "rotation": "managed_by_external_kms"
-      },
-      "in_transit": {
-        "required": true,
-        "minimum": "TLS 1.2+",
-        "service_to_service": "mutual_tls_or_signed_service_identity"
-      },
-      "field_level": {
-        "required_for_phi": true,
-        "pattern": "envelope_encryption_with_external_kms",
-        "phi_vault_boundary": "separate_store_from_poc_case_dashboard"
-      },
-      "demo_encrypted_object_reference": {
-        "object_ref": "kms://retinet-demo/cases/demo-object",
-        "ciphertext_sha256": "51d6f87f6c42b597ca0c205beed20ca43aab96cc3b92849ff7c837e74d481b5f",
-        "mock_reference_only": true
-      }
-    },
-    "audit_log_schema": {
-      "required_fields": [
-        "created_utc",
-        "actor_role",
-        "action",
-        "case_hash",
-        "resource_type",
-        "result",
-        "previous_event_hash",
-        "event_hash"
-      ],
-      "forbidden_field_categories": [
-        "direct_patient_identifier",
-        "birth_date_or_contact_detail",
-        "medical_record_identifier",
-        "free_text_phi"
-      ]
-    }
-  },
-  "backend_ai_ops_contract": {
-    "cli_script": "scripts/phase21a_ai_ops_cli.py",
-    "python_import": "platform_poc.phase21a_architecture",
-    "commands": [
-      {
-        "name": "emit-contract",
-        "purpose": "write connector, similarity, privacy, and manifest template JSON"
-      },
-      {
-        "name": "validate-model-manifest",
-        "purpose": "validate a backend AI model manifest before registration"
-      },
-      {
-        "name": "validate-inference-response",
-        "purpose": "validate BYOM result payload before dashboard import"
-      },
-      {
-        "name": "hash-case",
-        "purpose": "derive the platform pseudonymous case_hash for non-PHI test IDs"
-      },
-      {
-        "name": "append-audit-event",
-        "purpose": "append a JSONL audit event using the Phase 21.A schema"
-      }
-    ],
-    "training_commands_available": false,
-    "checkpoint_commands_available": false
   },
   "cases": [
     {
-      "case_hash": "case_a102002cafd1b3ba",
-      "case_label": "CASE-21A-001",
-      "modality_mix": [
-        "macula_oct_bscan",
-        "native_oct_conversion_manifest",
-        "glaucoma_report_metrics"
-      ],
-      "eye_side": "OD",
-      "review_status": "doctor_review_pending",
-      "upload_viewer": {
-        "uploaded_asset_count": 3,
-        "selected_view": "macula_bscan_with_heatmap",
-        "original_image_path": "assets/macula_original.png",
-        "heatmap_overlay_path": "assets/macula_heatmap_overlay.png",
-        "quality_status": "viewable_demo_asset",
-        "file_hashes": {
-          "original_sha256": "c0a959cb3cfdc8ef5bd8b959b7cb356024cc1551b8d431bfb9f831f2b4aee371",
-          "heatmap_sha256": "941ae94e48d21c5c26c0a638ada90904a606330109758a085b553809b130d8a0"
-        }
-      },
-      "native_oct_conversion": {
-        "source_extension_display": "FDS",
-        "likely_vendor": "Topcon",
-        "parser_status": "validated_public_sample_path_available",
-        "standard_export_ready": true,
-        "raw_vendor_file_exposed": false,
-        "metadata_redacted": true,
-        "model_inference_run": false,
-        "bscan_preview_count": 8
-      },
-      "macula_triage": {
-        "task": "macula_triage",
-        "source": "byom_connector_demo_payload",
-        "model_training_run_by_platform": false,
-        "platform_checkpoint_loaded": false,
-        "label": "review_recommended",
-        "score": 0.82,
+      "ai_result": {
         "confidence_band": "moderate",
-        "summary": "Connector-supplied triage support result awaiting doctor review.",
-        "not_diagnosis": true
+        "doctor_review_required": true,
+        "label": "review_recommended",
+        "model_training_run": false,
+        "not_diagnosis": true,
+        "phase20_checkpoint_loaded": false,
+        "score": 0.82,
+        "uncertainty": 0.18
       },
-      "glaucoma_report": {
-        "mode": "optic_nerve_report_visualization",
-        "patient_matched_to_macula_bscan": false,
-        "metrics": {
-          "rnfl_thickness_um": 72,
-          "gcc_thickness_um": 68,
-          "cdr_cup_disc_ratio": 0.62,
-          "iop_mm_hg": 19
-        },
-        "risk_support_bucket": "borderline_like_for_review",
-        "glaucoma_diagnosis_claimed": false
+      "biomarkers": {
+        "cdr": 0.62,
+        "cnv_markers": "possible_support_signal",
+        "dme_related_markers": "noted_for_review",
+        "drusen_markers": "present_for_review",
+        "fluid_cyst_indicators": "review_support_flag",
+        "gcc_um": 68,
+        "retinal_thickness_um": 286,
+        "rnfl_um": 72,
+        "trend_placeholder": "baseline plus next-scan trend slot"
       },
-      "explainability": {
-        "artifact_source": "byom_connector_or_legacy_demo_artifact",
-        "artifact_type": "heatmap_overlay",
-        "display_mode": "side_by_side",
-        "not_clinical_proof": true
-      },
-      "doctor_review": {
-        "assigned_role": "ophthalmologist",
-        "status": "pending",
-        "required_actions": [
-          "review_images",
-          "review_ai_summary",
-          "accept_or_override",
-          "sign_report"
-        ],
-        "override_reason_required": true
-      },
-      "journal_notes": [
-        {
-          "created_date": "2026-05-29",
-          "author_role": "technician",
-          "note_type": "intake",
-          "text_redacted": "OCT uploaded. Blurry slices removed from review queue.",
-          "contains_phi": false
-        },
-        {
-          "created_date": "2026-05-30",
-          "author_role": "doctor",
-          "note_type": "review_note",
-          "text_redacted": "Review requested for macula triage and optic nerve metrics.",
-          "contains_phi": false
-        }
-      ],
-      "medication_history": [
+      "case_hash": "case_a32651048853c8db",
+      "eye_side": "OD",
+      "heatmap_path": "assets/macula_heatmap_overlay.png",
+      "medications": [
         {
           "class": "prostaglandin_analog",
-          "status": "active_from_external_ehr",
-          "source": "structured_history_demo",
-          "contains_phi": false
+          "status": "active"
         },
         {
-          "class": "artificial_tears",
-          "status": "historical",
-          "source": "structured_history_demo",
-          "contains_phi": false
+          "class": "lubricating_drop",
+          "status": "history"
         }
       ],
-      "report_export": {
-        "available_formats": [
-          "json",
-          "html",
-          "doctor_signed_pdf_future"
-        ],
-        "current_state": "draft_pending_doctor_signoff",
-        "contains_phi": false
-      }
+      "modality_mix": [
+        "macula_oct",
+        "native_oct",
+        "optic_nerve_report"
+      ],
+      "notes": [
+        {
+          "date": "2026-05-31",
+          "role": "technician",
+          "text": "Scan quality validated for review workflow."
+        },
+        {
+          "date": "2026-05-31",
+          "role": "doctor",
+          "text": "doctor review required before export."
+        }
+      ],
+      "oct_image_path": "assets/macula_original.png",
+      "priority_bucket": "review_pending",
+      "review_status": "pending",
+      "scan_status": {
+        "converted_bscan_sequence_viewer": "reviewed",
+        "export": "pending",
+        "fundus_scan_input": "future_optional_extension",
+        "native_vendor_scan_input": "converted",
+        "oct_scan_input": "uploaded"
+      },
+      "selected_state": "intake_ready"
     },
     {
-      "case_hash": "case_e298856c9551201d",
-      "case_label": "CASE-21A-002",
-      "modality_mix": [
-        "native_oct_conversion_manifest",
-        "glaucoma_report_metrics"
-      ],
-      "eye_side": "OS",
-      "review_status": "conversion_complete",
-      "upload_viewer": {
-        "uploaded_asset_count": 1,
-        "selected_view": "native_bscan_sequence",
-        "original_image_path": "assets/native_bscan_preview.png",
-        "heatmap_overlay_path": null,
-        "quality_status": "native_conversion_preview_ready",
-        "file_hashes": {
-          "native_preview_sha256": "4448e6e3a8bc42b185c9418ab909f190a7e84263736c1e31cc9adf4bbd149634"
-        }
-      },
-      "native_oct_conversion": {
-        "source_extension_display": "FDA",
-        "likely_vendor": "Topcon",
-        "parser_status": "validated_public_sample_path_available",
-        "standard_export_ready": true,
-        "raw_vendor_file_exposed": false,
-        "metadata_redacted": true,
-        "model_inference_run": false,
-        "bscan_preview_count": 5
-      },
-      "macula_triage": {
-        "task": "macula_triage",
-        "source": "not_requested",
-        "model_training_run_by_platform": false,
-        "platform_checkpoint_loaded": false,
-        "label": "not_run",
-        "score": null,
+      "ai_result": {
         "confidence_band": "not_applicable",
-        "summary": "Case is ready for backend AI connector invocation.",
-        "not_diagnosis": true
+        "doctor_review_required": true,
+        "label": "not_run",
+        "model_training_run": false,
+        "not_diagnosis": true,
+        "phase20_checkpoint_loaded": false,
+        "score": null,
+        "uncertainty": null
       },
-      "glaucoma_report": {
-        "mode": "optic_nerve_report_visualization",
-        "patient_matched_to_macula_bscan": false,
-        "metrics": {
-          "rnfl_thickness_um": 88,
-          "gcc_thickness_um": 82,
-          "cdr_cup_disc_ratio": 0.48,
-          "iop_mm_hg": 15
-        },
-        "risk_support_bucket": "normal_like_for_review",
-        "glaucoma_diagnosis_claimed": false
+      "biomarkers": {
+        "cdr": 0.48,
+        "cnv_markers": "not_requested",
+        "dme_related_markers": "not_requested",
+        "drusen_markers": "trend_slot_ready",
+        "fluid_cyst_indicators": "not_flagged_in_mock",
+        "gcc_um": 82,
+        "retinal_thickness_um": 274,
+        "rnfl_um": 88,
+        "trend_placeholder": "awaiting follow-up scan"
       },
-      "explainability": {
-        "artifact_source": "awaiting_byom_connector",
-        "artifact_type": null,
-        "display_mode": "none",
-        "not_clinical_proof": true
-      },
-      "doctor_review": {
-        "assigned_role": "ophthalmologist",
-        "status": "not_started",
-        "required_actions": [
-          "review_conversion_manifest",
-          "select_ai_tasks"
-        ],
-        "override_reason_required": false
-      },
-      "journal_notes": [
+      "case_hash": "case_8a4f0249a96d28be",
+      "eye_side": "OS",
+      "heatmap_path": null,
+      "medications": [],
+      "modality_mix": [
+        "native_oct",
+        "optic_nerve_report"
+      ],
+      "notes": [
         {
-          "created_date": "2026-05-29",
-          "author_role": "technician",
-          "note_type": "conversion",
-          "text_redacted": "Native OCT conversion completed. Metadata redaction verified.",
-          "contains_phi": false
+          "date": "2026-05-31",
+          "role": "technician",
+          "text": "Native OCT conversion manifest is ready for review."
         }
       ],
-      "medication_history": [],
-      "report_export": {
-        "available_formats": [
-          "json",
-          "html"
-        ],
-        "current_state": "not_requested",
-        "contains_phi": false
-      }
+      "oct_image_path": "assets/native_bscan_preview.png",
+      "priority_bucket": "routine_review",
+      "review_status": "pending",
+      "scan_status": {
+        "converted_bscan_sequence_viewer": "converted",
+        "export": "pending",
+        "fundus_scan_input": "future_optional_extension",
+        "native_vendor_scan_input": "converted",
+        "oct_scan_input": "uploaded"
+      },
+      "selected_state": "conversion_complete"
+    },
+    {
+      "ai_result": {
+        "confidence_band": "low_to_moderate",
+        "doctor_review_required": true,
+        "label": "trend_review_recommended",
+        "model_training_run": false,
+        "not_diagnosis": true,
+        "phase20_checkpoint_loaded": false,
+        "score": 0.67,
+        "uncertainty": 0.23
+      },
+      "biomarkers": {
+        "cdr": 0.56,
+        "cnv_markers": "noted_for_review",
+        "dme_related_markers": "trend_support_marker",
+        "drusen_markers": "present_for_review",
+        "fluid_cyst_indicators": "small_support_marker",
+        "gcc_um": 75,
+        "retinal_thickness_um": 292,
+        "rnfl_um": 79,
+        "trend_placeholder": "two-point trend mock"
+      },
+      "case_hash": "case_f1105b3060e351b3",
+      "eye_side": "OU",
+      "heatmap_path": "assets/macula_heatmap_overlay.png",
+      "medications": [
+        {
+          "class": "anti_vegf_history",
+          "status": "external_summary"
+        }
+      ],
+      "modality_mix": [
+        "macula_oct",
+        "biomarker_history"
+      ],
+      "notes": [
+        {
+          "date": "2026-05-31",
+          "role": "doctor",
+          "text": "Biomarker trend support is available for review."
+        }
+      ],
+      "oct_image_path": "assets/macula_original.png",
+      "priority_bucket": "trend_review",
+      "review_status": "pending",
+      "scan_status": {
+        "converted_bscan_sequence_viewer": "pending",
+        "export": "pending",
+        "fundus_scan_input": "future_optional_extension",
+        "native_vendor_scan_input": "pending",
+        "oct_scan_input": "validated"
+      },
+      "selected_state": "biomarker_review"
     }
   ],
-  "audit_events": [
+  "created_utc": "2026-05-31T11:14:37.328857+00:00",
+  "phase": "21.B-C-D",
+  "poc_boundaries": [
+    "No real upload backend",
+    "No real authentication",
+    "No real database writes",
+    "No external API calls",
+    "No model training",
+    "No Phase 20 checkpoint loading",
+    "Doctor review required",
+    "No diagnosis claim"
+  ],
+  "safety_flags": {
+    "diagnosis_claimed": false,
+    "full_metadata_exposed": false,
+    "glaucoma_diagnosis_claimed": false,
+    "medical_diagnosis_claimed": false,
+    "model_inference_run": false,
+    "model_training_run": false,
+    "phase20_checkpoint_loaded": false,
+    "phase20_checkpoint_required": false,
+    "phi_stored_in_platform_poc": false,
+    "raw_vendor_files_exposed": false,
+    "triage_only_not_diagnosis": true
+  },
+  "selected_case_hash": "case_a32651048853c8db",
+  "similarity_results": [
     {
-      "created_utc": "2026-05-31T10:48:39.314439+00:00",
-      "actor_role": "technician",
-      "action": "upload_oct_asset",
-      "case_hash": "case_a102002cafd1b3ba",
-      "resource_type": "oct_asset",
-      "result": "allowed",
-      "metadata": {
-        "asset_count": 3
-      },
-      "contains_phi": false,
-      "sequence": 1,
-      "previous_event_hash": "GENESIS",
-      "event_hash": "5a13e9d2dc3fd87ae393102e8a09c58b363fdbab93c3771acc02c5fecaccaef6"
+      "basis": "image embeddings plus RNFL/GCC/CDR structured biomarkers",
+      "case_hash": "case_4fe9a8f5c457ce93",
+      "similarity": 0.91
     },
     {
-      "created_utc": "2026-05-31T10:48:39.314439+00:00",
-      "actor_role": "system",
-      "action": "native_oct_conversion_manifest_created",
-      "case_hash": "case_a102002cafd1b3ba",
-      "resource_type": "conversion_manifest",
-      "result": "allowed",
-      "metadata": {
-        "raw_vendor_file_exposed": false
-      },
-      "contains_phi": false,
-      "sequence": 2,
-      "previous_event_hash": "5a13e9d2dc3fd87ae393102e8a09c58b363fdbab93c3771acc02c5fecaccaef6",
-      "event_hash": "5bc66f97afef4ef970d461c0b2b2d14c1e27a83a73fff977ac5ffe247cff15c6"
-    },
-    {
-      "created_utc": "2026-05-31T10:48:39.314439+00:00",
-      "actor_role": "ai_service",
-      "action": "byom_result_imported",
-      "case_hash": "case_a102002cafd1b3ba",
-      "resource_type": "model_connector_result",
-      "result": "allowed",
-      "metadata": {
-        "model_training_run": false,
-        "phase20_checkpoint_loaded": false
-      },
-      "contains_phi": false,
-      "sequence": 3,
-      "previous_event_hash": "5bc66f97afef4ef970d461c0b2b2d14c1e27a83a73fff977ac5ffe247cff15c6",
-      "event_hash": "ad94801562a4b98c50cd1ac3fa321b3a799af2062da13a9af67cf41608a8514c"
-    },
-    {
-      "created_utc": "2026-05-31T10:48:39.314439+00:00",
-      "actor_role": "doctor",
-      "action": "review_opened",
-      "case_hash": "case_a102002cafd1b3ba",
-      "resource_type": "case_review",
-      "result": "allowed",
-      "metadata": {
-        "review_status": "pending"
-      },
-      "contains_phi": false,
-      "sequence": 4,
-      "previous_event_hash": "ad94801562a4b98c50cd1ac3fa321b3a799af2062da13a9af67cf41608a8514c",
-      "event_hash": "2184a2ddeb5c7b606c438de40b842482d5c36b42babfa1b30194330c90b5f958"
+      "basis": "hybrid search using image embeddings, structured biomarkers, and redacted report text",
+      "case_hash": "case_d29c7bfd2c631f49",
+      "similarity": 0.84
     }
+  ],
+  "subtitle": "Model-agnostic retinal and glaucoma workflow platform for scan intake, native OCT conversion, biomarker review, BYO-model integration, doctor review, reporting, and backend AI team operations.",
+  "target_users": [
+    "Medical officer / diagnostic center",
+    "Doctor / reviewer",
+    "Backend ML / AI team"
+  ],
+  "title": "RetiNet AI Interactive Platform POC",
+  "vendor_registry": [
+    {
+      "format": "FDA",
+      "status": "validated public sample path",
+      "vendor_family": "Topcon",
+      "viewer_boundary": "conversion manifest and B-scan previews only"
+    },
+    {
+      "format": "FDS",
+      "status": "validated public sample path",
+      "vendor_family": "Topcon",
+      "viewer_boundary": "conversion manifest and B-scan previews only"
+    },
+    {
+      "format": "E2E",
+      "status": "registered; sample validation required",
+      "vendor_family": "Heidelberg",
+      "viewer_boundary": "raw vendor files hidden"
+    },
+    {
+      "format": "VOL",
+      "status": "registered; sample validation required",
+      "vendor_family": "Heidelberg/Spectralis",
+      "viewer_boundary": "metadata redacted"
+    },
+    {
+      "format": "OCT",
+      "status": "registered; sample validation required",
+      "vendor_family": "ambiguous vendor family",
+      "viewer_boundary": "conversion manifest only"
+    }
+  ],
+  "workflow_steps": [
+    "Start Intake",
+    "Validate Scan",
+    "Convert Native OCT",
+    "Review Biomarkers",
+    "Select AI Tasks",
+    "Generate BYOM Request",
+    "Import BYOM Response",
+    "Review Heatmap",
+    "Add Doctor Note",
+    "Override AI Result",
+    "Sign Report",
+    "Export Report"
+  ],
+  "workspace_modules": [
+    "OCT image data registry",
+    "Native/vendor OCT file data registry",
+    "Macula triage data registry",
+    "Glaucoma / optic nerve report data registry",
+    "Biomarker extraction outputs",
+    "Model connector registry",
+    "Inference logs",
+    "Model versioning",
+    "Visualization tools",
+    "KNN / hybrid / similarity search",
+    "SDK / CLI operations",
+    "Audit trail"
   ]
 };
 let selectedCaseIndex = 0;
+let completedSteps = [];
+let activeStep = null;
+let timeline = ["Demo loaded", "Case selected: " + DEMO_STATE.selected_case_hash];
+let auditLog = DEMO_STATE.audit_events.slice();
 
 function escapeHtml(value) {
-    return String(value ?? "").replace(/[&<>"']/g, function (char) {
-        return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" })[char];
-    });
+    return String(value ?? "").replace(/[&<>"']/g, char => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"})[char]);
 }
-
-function pill(text, kind = "") {
+function pill(text, kind="neutral") {
     return `<span class="pill ${kind}">${escapeHtml(text)}</span>`;
 }
-
 function metric(label, value) {
-    return `<div class="metric"><div class="label">${escapeHtml(label)}</div><div class="value">${escapeHtml(value)}</div></div>`;
+    return `<div class="metric"><div class="metric-label">${escapeHtml(label)}</div><div class="metric-value">${escapeHtml(value)}</div></div>`;
 }
-
-function renderSummary() {
-    const state = PHASE21A_STATE;
-    const pending = state.cases.filter(item => item.review_status.includes("pending")).length;
-    document.getElementById("summary-metrics").innerHTML = [
-        metric("Cases", state.cases.length),
-        metric("Capabilities", state.capability_matrix.length),
-        metric("Pending Reviews", pending),
-        metric("Model Training", state.model_training_run ? "enabled" : "disabled")
+function activeCase() {
+    return DEMO_STATE.cases[selectedCaseIndex];
+}
+function makeHash(text) {
+    let hash = 0;
+    for (let i = 0; i < text.length; i += 1) {
+        hash = ((hash << 5) - hash) + text.charCodeAt(i);
+        hash |= 0;
+    }
+    return "event_" + Math.abs(hash).toString(16).padStart(8, "0");
+}
+function appendAudit(action) {
+    const previous = auditLog.length ? auditLog[auditLog.length - 1].event_hash : "GENESIS";
+    const event = {
+        action,
+        actor: "demo_user",
+        case_hash: activeCase().case_hash,
+        previous_event_hash: previous,
+        contains_phi: false
+    };
+    event.event_hash = makeHash(JSON.stringify(event));
+    auditLog.push(event);
+}
+function runWorkflowStep(step) {
+    activeStep = step;
+    if (!completedSteps.includes(step)) completedSteps.push(step);
+    activeCase().selected_state = step.toLowerCase().replaceAll(" ", "_");
+    if (step === "Convert Native OCT") activeCase().scan_status.native_vendor_scan_input = "converted";
+    if (step === "Review Biomarkers") activeCase().scan_status.converted_bscan_sequence_viewer = "reviewed";
+    if (step === "Sign Report") activeCase().review_status = "signed";
+    if (step === "Export Report") activeCase().scan_status.export = "exported";
+    timeline.push(step + " completed for " + activeCase().case_hash);
+    appendAudit(step);
+    renderAll();
+}
+function renderWorkflow() {
+    document.querySelectorAll(".workflow-button").forEach(button => {
+        const step = button.dataset.step;
+        button.classList.toggle("done", completedSteps.includes(step));
+        button.classList.toggle("active", activeStep === step);
+    });
+    const current = activeStep || "ready";
+    document.getElementById("workflow-metrics").innerHTML = [
+        metric("workflow status", current),
+        metric("selected case state", activeCase().selected_state),
+        metric("steps completed", completedSteps.length)
     ].join("");
+    document.getElementById("workflow-badges").innerHTML = DEMO_STATE.workflow_steps.map(step => pill(step, completedSteps.includes(step) ? "good" : "neutral")).join("");
+    document.getElementById("workflow-timeline").innerHTML = timeline.map(item => `<div class="timeline-item">${escapeHtml(item)}</div>`).join("");
+    document.getElementById("workflow-audit").innerHTML = auditLog.map(event => `<div class="timeline-item"><strong>${escapeHtml(event.action)}</strong><br><span class="mono">${escapeHtml(event.case_hash)}</span><br><span class="mono">${escapeHtml(event.event_hash)}</span></div>`).join("");
 }
-
-function renderCaseList() {
-    const el = document.getElementById("case-list");
-    el.innerHTML = PHASE21A_STATE.cases.map((item, index) => `
-        <button class="case-item ${index === selectedCaseIndex ? "active" : ""}" type="button" onclick="selectCase(${index})">
-            <div class="case-title">${escapeHtml(item.case_label)}</div>
-            <div class="case-meta">${escapeHtml(item.case_hash)}<br>${escapeHtml(item.eye_side)} - ${escapeHtml(item.review_status)}</div>
+function renderCases() {
+    document.getElementById("case-list").innerHTML = DEMO_STATE.cases.map((item, index) => `
+        <button class="case-button ${index === selectedCaseIndex ? "active" : ""}" type="button" onclick="selectCase(${index})">
+            <strong>${escapeHtml(item.case_hash)}</strong><br>
+            <span class="small">eye_side: ${escapeHtml(item.eye_side)} | priority: ${escapeHtml(item.priority_bucket)} | review: ${escapeHtml(item.review_status)}</span><br>
+            ${item.modality_mix.map(value => pill(value)).join("")}
         </button>
     `).join("");
+    document.getElementById("case-detail").innerHTML = `
+        <p>${pill("case_hash=" + activeCase().case_hash, "neutral")} ${pill("eye_side=" + activeCase().eye_side, "neutral")} ${pill("review_status=" + activeCase().review_status, activeCase().review_status === "signed" ? "good" : "warn")}</p>
+        <p><strong>Selected case state:</strong> ${escapeHtml(activeCase().selected_state)}</p>
+        <p><strong>Modality mix:</strong> ${activeCase().modality_mix.map(value => pill(value)).join("")}</p>
+    `;
 }
-
-function imageBlock(path, label) {
-    if (!path) {
-        return `<div><div class="image-box"><span class="pill">No artifact yet</span></div><div class="image-caption">${escapeHtml(label)}</div></div>`;
-    }
-    return `<div><div class="image-box"><img src="${escapeHtml(path)}" alt="${escapeHtml(label)}"></div><div class="image-caption">${escapeHtml(label)}</div></div>`;
-}
-
-function renderSelectedCase() {
-    const item = PHASE21A_STATE.cases[selectedCaseIndex];
-    document.getElementById("selected-case-title").textContent = `${item.case_label} - ${item.review_status}`;
-    document.getElementById("viewer-grid").innerHTML = [
-        imageBlock(item.upload_viewer.original_image_path, "OCT / native B-scan viewer"),
-        imageBlock(item.upload_viewer.heatmap_overlay_path, "Heatmap / explainability overlay")
-    ].join("");
-    document.getElementById("case-workflow").innerHTML = [
-        metric("Macula Triage", item.macula_triage.label),
-        metric("Glaucoma Bucket", item.glaucoma_report.risk_support_bucket),
-        metric("Doctor Review", item.doctor_review.status)
-    ].join("");
-    renderGlaucoma();
-    renderHistory();
-    renderReportExport();
-}
-
 function selectCase(index) {
     selectedCaseIndex = index;
-    renderCaseList();
-    renderSelectedCase();
+    timeline.push("Case selected: " + activeCase().case_hash);
+    appendAudit("case_selected");
+    renderAll();
 }
-
-function renderNative() {
-    const contract = PHASE21A_STATE.native_conversion_contract;
-    document.getElementById("native-contract").innerHTML = `
-        <p><strong>Input:</strong> ${escapeHtml(contract.input)}</p>
-        <p><strong>Output:</strong> ${escapeHtml(contract.output)}</p>
-        <p>${contract.conversion_manifest_required_fields.map(field => pill(field)).join("")}</p>
-        <p>${pill("raw_vendor_files_exposed_to_viewer=false", "good")} ${pill("model_inference_run_during_conversion=false", "good")}</p>
+function renderScanWorkflow() {
+    const rows = Object.entries(activeCase().scan_status).map(([key, value]) => `<tr><td>${escapeHtml(key)}</td><td>${pill(value, value === "pending" ? "warn" : "good")}</td></tr>`).join("");
+    document.getElementById("scan-workflow").innerHTML = `
+        <p>${pill("OCT scan input", "good")} ${pill("Native vendor scan input", "good")} ${pill("Converted B-scan sequence viewer", "good")} ${pill("Fundus scan input as future optional extension", "warn")}</p>
+        <div class="table-wrap"><table><thead><tr><th>Scan input or output</th><th>Upload status badges</th></tr></thead><tbody>${rows}</tbody></table></div>
+        <p>${pill("uploaded")} ${pill("validated")} ${pill("converted")} ${pill("reviewed")} ${pill("exported")}</p>
     `;
-    const rows = contract.registered_formats.map(item => `
-        <tr>
-            <td>${escapeHtml(item.extension_display)}</td>
-            <td>${escapeHtml(item.likely_vendor)}</td>
-            <td>${escapeHtml(item.parser_candidates.join(", "))}</td>
-            <td>${escapeHtml(item.status)}</td>
-        </tr>
-    `).join("");
-    document.getElementById("vendor-registry").innerHTML = `<table><thead><tr><th>Format</th><th>Likely Vendor</th><th>Parser Candidates</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table>`;
 }
-
+function renderVendor() {
+    const rows = DEMO_STATE.vendor_registry.map(item => `<tr><td>${escapeHtml(item.format)}</td><td>${escapeHtml(item.vendor_family)}</td><td>${escapeHtml(item.status)}</td><td>${escapeHtml(item.viewer_boundary)}</td></tr>`).join("");
+    document.getElementById("vendor-table").innerHTML = `<table><thead><tr><th>Format</th><th>Vendor family</th><th>Status</th><th>Boundary</th></tr></thead><tbody>${rows}</tbody></table>`;
+    document.getElementById("conversion-manifest").textContent = JSON.stringify({
+        case_hash: activeCase().case_hash,
+        source_formats: ["FDA", "FDS"],
+        e2e_vol_oct: "registered but sample validation required",
+        raw_vendor_files_exposed: false,
+        metadata_redacted: true,
+        conversion_manifest_only: true,
+        model_inference_run: false
+    }, null, 2);
+}
+function renderBiomarkers() {
+    const b = activeCase().biomarkers;
+    document.getElementById("biomarker-table").innerHTML = `
+        <div class="grid four">${metric("RNFL", b.rnfl_um + " um")}${metric("GCC", b.gcc_um + " um")}${metric("CDR", b.cdr)}${metric("retinal thickness", b.retinal_thickness_um + " um")}</div>
+        <p>${pill("fluid / cyst indicators: " + b.fluid_cyst_indicators, "warn")} ${pill("drusen markers: " + b.drusen_markers, "neutral")} ${pill("CNV markers: " + b.cnv_markers, "neutral")} ${pill("DME-related markers: " + b.dme_related_markers, "neutral")}</p>
+        <p><strong>biomarker trend placeholder:</strong> ${escapeHtml(b.trend_placeholder)}. doctor interpretation required.</p>
+    `;
+}
 function renderConnector() {
-    const connector = PHASE21A_STATE.model_connector_contract;
-    const aiOps = PHASE21A_STATE.backend_ai_ops_contract;
-    document.getElementById("connector-summary").innerHTML = `
-        <p><strong>Version:</strong> ${escapeHtml(connector.contract_version)}</p>
-        <p>${connector.transport_modes.map(mode => pill(mode, "good")).join("")}</p>
-        <h3>Platform responsibilities</h3>
-        <ul>${connector.platform_responsibilities.map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
-        <h3>Model team responsibilities</h3>
-        <ul>${connector.model_team_responsibilities.map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
-    `;
-    document.getElementById("cli-ops").innerHTML = `
-        <p><strong>CLI:</strong> <span class="mono">${escapeHtml(aiOps.cli_script)}</span></p>
-        <p>${pill("training_commands_available=false", "good")} ${pill("checkpoint_commands_available=false", "good")}</p>
-        <div class="table-wrap">
-        <table><thead><tr><th>Command</th><th>Purpose</th></tr></thead><tbody>
-        ${aiOps.commands.map(command => `<tr><td class="mono">${escapeHtml(command.name)}</td><td>${escapeHtml(command.purpose)}</td></tr>`).join("")}
-        </tbody></table></div>
-    `;
+    document.getElementById("ai-task-list").innerHTML = DEMO_STATE.byom_request.tasks.map(task => `<label><input type="checkbox" checked> ${escapeHtml(task)}</label>`).join("<br>");
+    const request = {...DEMO_STATE.byom_request, case_hash: activeCase().case_hash};
+    const response = {...DEMO_STATE.byom_response, case_hash: activeCase().case_hash};
+    document.getElementById("connector-request").textContent = JSON.stringify(request, null, 2);
+    document.getElementById("connector-response").textContent = JSON.stringify(response, null, 2);
 }
-
-function renderGlaucoma() {
-    const item = PHASE21A_STATE.cases[selectedCaseIndex];
-    const metrics = item.glaucoma_report.metrics;
-    document.getElementById("glaucoma-metrics").innerHTML = [
-        metric("RNFL", `${metrics.rnfl_thickness_um} um`),
-        metric("GCC", `${metrics.gcc_thickness_um} um`),
-        metric("CDR", metrics.cdr_cup_disc_ratio),
-        metric("IOP", `${metrics.iop_mm_hg} mmHg`)
-    ].join("");
-    document.getElementById("glaucoma-details").innerHTML = `
-        <p>${pill(item.glaucoma_report.mode, "good")} ${pill("glaucoma_diagnosis_claimed=false", "good")} ${pill(`matched_to_macula=${item.glaucoma_report.patient_matched_to_macula_bscan}`, "warn")}</p>
-        <p><strong>Risk-support bucket:</strong> ${escapeHtml(item.glaucoma_report.risk_support_bucket)}</p>
-    `;
+function renderAiResult() {
+    const r = activeCase().ai_result;
+    document.getElementById("ai-result").innerHTML = `<div class="grid four">${metric("label", r.label)}${metric("score", r.score ?? "not_run")}${metric("uncertainty", r.uncertainty ?? "not_applicable")}${metric("confidence band", r.confidence_band)}</div>`;
 }
-
-function renderHistory() {
-    const item = PHASE21A_STATE.cases[selectedCaseIndex];
-    document.getElementById("journal-notes").innerHTML = item.journal_notes.map(note => `
-        <div class="timeline-item"><strong>${escapeHtml(note.created_date)} - ${escapeHtml(note.author_role)}</strong><br>${escapeHtml(note.text_redacted)}<br>${pill(`contains_phi=${note.contains_phi}`, "good")}</div>
-    `).join("") || "<p>No journal notes for this demo case.</p>";
-    document.getElementById("medication-history").innerHTML = item.medication_history.map(med => `
-        <div class="timeline-item"><strong>${escapeHtml(med.class)}</strong><br>${escapeHtml(med.status)}<br>${pill(`contains_phi=${med.contains_phi}`, "good")}</div>
-    `).join("") || "<p>No medication history for this demo case.</p>";
+function imageBox(path, label) {
+    if (!path) return `<div><div class="image-box">Clean placeholder panel</div><p class="small">${escapeHtml(label)}</p></div>`;
+    return `<div><div class="image-box"><img src="${escapeHtml(path)}" alt="${escapeHtml(label)}"></div><p class="small">${escapeHtml(label)}</p></div>`;
 }
-
-function renderPrivacy() {
-    const privacy = PHASE21A_STATE.privacy_architecture;
-    document.getElementById("privacy-controls").innerHTML = `
-        <p>${escapeHtml(privacy.hipaa_ready_positioning)}</p>
-        <div class="table-wrap"><table><thead><tr><th>Control</th><th>Implementation</th></tr></thead><tbody>
-        ${privacy.controls.map(item => `<tr><td>${escapeHtml(item.control)}</td><td>${escapeHtml(item.implementation)}</td></tr>`).join("")}
-        </tbody></table></div>
-    `;
-    document.getElementById("audit-log").innerHTML = `
-        <p>${pill("at_rest_encryption_required=true", "good")} ${pill("field_level_phi_encryption_required=true", "good")} ${pill("audit_hash_chain=true", "good")}</p>
-        <div class="timeline">
-        ${PHASE21A_STATE.audit_events.map(event => `
-            <div class="timeline-item">
-                <strong>${escapeHtml(event.action)}</strong> by ${escapeHtml(event.actor_role)}<br>
-                <span class="mono">${escapeHtml(event.case_hash)}</span><br>
-                <span class="mono">event_hash=${escapeHtml(event.event_hash.slice(0, 24))}...</span>
-            </div>
-        `).join("")}
-        </div>
-    `;
+function renderHeatmap() {
+    document.getElementById("heatmap-panel").innerHTML = imageBox(activeCase().oct_image_path, "OCT image") + imageBox(activeCase().heatmap_path, "Heatmap mock");
 }
-
+function renderDoctorInput() {
+    document.getElementById("journal-notes").innerHTML = activeCase().notes.map(note => `<div class="timeline-item"><strong>${escapeHtml(note.date)} - ${escapeHtml(note.role)}</strong><br>${escapeHtml(note.text)}</div>`).join("");
+    document.getElementById("med-history").innerHTML = activeCase().medications.map(item => `<div class="timeline-item"><strong>${escapeHtml(item.class)}</strong><br>${escapeHtml(item.status)}</div>`).join("") || "<p class='small'>No medication history in this mock case.</p>";
+}
+function renderExport() {
+    document.getElementById("report-export-json").textContent = JSON.stringify({
+        case_hash: activeCase().case_hash,
+        export_state: activeCase().review_status === "signed" ? "ready_for_mock_export" : "draft_export_requires_sign_off",
+        formats: ["json", "html"],
+        future_placeholder: "doctor_signed_export",
+        contains_phi: false,
+        doctor_sign_off_required: true
+    }, null, 2);
+}
+function renderWorkspace() {
+    document.getElementById("workspace-grid").innerHTML = DEMO_STATE.workspace_modules.map(item => `<div class="metric"><div class="metric-label">workspace module</div><div class="metric-value" style="font-size:16px">${escapeHtml(item)}</div></div>`).join("");
+}
 function renderSimilarity() {
-    const search = PHASE21A_STATE.similarity_search_contract;
-    const sample = search.sample_result;
-    document.getElementById("similarity-search").innerHTML = `
-        <p>${search.index_types.map(item => pill(item, "good")).join("")}</p>
-        <p><strong>Hybrid ranking:</strong> ${escapeHtml(search.operations.hybrid_query.ranking)}</p>
-        <div class="table-wrap"><table><thead><tr><th>Neighbor</th><th>Similarity</th><th>Reason</th></tr></thead><tbody>
-        ${sample.neighbors.map(item => `<tr><td class="mono">${escapeHtml(item.case_hash)}</td><td>${escapeHtml(item.similarity)}</td><td>${escapeHtml(item.reason)}</td></tr>`).join("")}
-        </tbody></table></div>
-    `;
+    const rows = DEMO_STATE.similarity_results.map(item => `<tr><td class="mono">${escapeHtml(item.case_hash)}</td><td>${escapeHtml(item.similarity)}</td><td>${escapeHtml(item.basis)}</td></tr>`).join("");
+    document.getElementById("similarity-results").innerHTML = `<table><thead><tr><th>Similar case_hash</th><th>Score</th><th>Reviewer context basis</th></tr></thead><tbody>${rows}</tbody></table>`;
 }
-
-function renderReportExport() {
-    const item = PHASE21A_STATE.cases[selectedCaseIndex];
-    document.getElementById("report-export").innerHTML = `
-        <p><strong>State:</strong> ${escapeHtml(item.report_export.current_state)}</p>
-        <p>${item.report_export.available_formats.map(format => pill(format, "good")).join("")}</p>
-        <p>${pill(`contains_phi=${item.report_export.contains_phi}`, "good")} ${pill("doctor_signoff_required=true", "warn")}</p>
-        <p><a href="platform_contract.json" download>Download platform contract JSON</a></p>
-        <p><a href="backend_ai_sdk_cli_contract.json" download>Download backend AI SDK/CLI contract</a></p>
-        <p><a href="byom_sample_response.json" download>Download sample BYOM response</a></p>
-    `;
+function renderAuditChain() {
+    document.getElementById("audit-chain").innerHTML = auditLog.map(event => `<div class="timeline-item"><strong>${escapeHtml(event.action)}</strong><br><span class="mono">previous=${escapeHtml(event.previous_event_hash)}</span><br><span class="mono">event=${escapeHtml(event.event_hash)}</span></div>`).join("");
 }
-
+function renderAll() {
+    renderWorkflow();
+    renderCases();
+    renderScanWorkflow();
+    renderVendor();
+    renderBiomarkers();
+    renderConnector();
+    renderAiResult();
+    renderHeatmap();
+    renderDoctorInput();
+    renderExport();
+    renderWorkspace();
+    renderSimilarity();
+    renderAuditChain();
+}
 document.querySelectorAll(".tab-button").forEach(button => {
     button.addEventListener("click", () => {
         document.querySelectorAll(".tab-button").forEach(item => item.classList.remove("active"));
         document.querySelectorAll(".tab-panel").forEach(item => item.classList.remove("active"));
         button.classList.add("active");
-        document.getElementById(`panel-${button.dataset.tab}`).classList.add("active");
+        document.querySelector(`[data-panel="${button.dataset.tab}"]`).classList.add("active");
     });
 });
-
-renderSummary();
-renderCaseList();
-renderSelectedCase();
-renderNative();
-renderConnector();
-renderPrivacy();
-renderSimilarity();
+document.querySelectorAll(".workflow-button").forEach(button => button.addEventListener("click", () => runWorkflowStep(button.dataset.step)));
+document.getElementById("review-status").addEventListener("change", event => {
+    activeCase().review_status = event.target.value;
+    if (event.target.value === "overridden") {
+        timeline.push("Override AI Result selected; override reason required");
+        appendAudit("override_reason_required");
+    }
+    renderAll();
+});
+renderAll();
 </script>
 </body>
 </html>
