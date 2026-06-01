@@ -38,6 +38,36 @@
 
     <section><div class="grid three"><article class="card"><h3>Main Platform Demo</h3><p>Return to the public product demo overview.</p><a class="cta" href="../index.html">Open</a></article><article class="card"><h3>Client Delivery Package</h3><p>Open doctor report, backend AI payload, and privacy audit samples.</p><a class="cta" href="../delivery/">Open</a></article><article class="card"><h3>Experimental Model Evidence</h3><p>Open Kermany OCT model evidence and validation summary.</p><a class="cta" href="../model-evidence/">Open</a></article><article class="card"><h3>Production Roadmap</h3><p>Review the production implementation stages.</p><a class="cta" href="production_implementation_roadmap.html">Open</a></article><article class="card"><h3>Readiness Risk Register</h3><p>Review open readiness risks and gates.</p><a class="cta" href="client_readiness_risk_register.html">Open</a></article><article class="card"><h3>Architecture Summary</h3><p>Review the future production architecture boundary.</p><a class="cta" href="technical_architecture_summary.html">Open</a></article></div></section>
     <section>
+      <div class="section-head">
+        <div>
+          <h2>For Medical Officer / Diagnostic Center & Doctor</h2>
+          <p>A review-support workflow for OCT case intake, doctor-led review, and report export.</p>
+        </div>
+      </div>
+      <div class="grid four">
+        <article class="card"><h3>Upload / View OCT</h3><p>Upload or review de-identified OCT images.</p></article>
+        <article class="card"><h3>Doctor Review</h3><p>Doctor-led notes and sign-off boundary.</p></article>
+        <article class="card"><h3>Case Dashboard</h3><p>Case-level view for scan status and doctor action.</p></article>
+        <article class="card"><h3>Report Export</h3><p>Future workflow for report and medication history.</p></article>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <div>
+          <h2>For Backend ML / AI Team</h2>
+          <p>A technical handoff layer for model integration and evidence tracking.</p>
+        </div>
+      </div>
+      <div class="grid four">
+        <article class="card"><h3>BYOM Integration</h3><p>Plug backend AI models into a stable contract.</p></article>
+        <article class="card"><h3>Model Connector</h3><p>Defines expected inputs, outputs, and safety flags.</p></article>
+        <article class="card"><h3>Evidence Registry</h3><p>Track model versions and artifact lineage.</p></article>
+        <article class="card"><h3>Validation Layer</h3><p>Preserve dataset evidence and audit history.</p></article>
+      </div>
+    </section>
+
+    <section>
       <div class="section-head"><h2>Evidence overview</h2><p>Kermany OCT model evidence and ORIGA metadata evidence are shown as separate evidence types.</p></div>
       <div class="grid two">
         <article class="card"><h3>Kermany OCT Evidence Snapshot</h3><div class="kv"><div><span>Dataset</span><span>Kermany OCT</span></div><div><span>Architecture</span><span>EfficientNet-B0</span></div><div><span>Training images</span><span>83,484</span></div><div><span>Held-out test images</span><span>968</span></div><div><span>Result</span><span>966/968 correct</span></div><div><span>Test accuracy</span><span>99.793%</span></div><div><span>Test macro F1</span><span>99.793%</span></div><div><span>Preferred artifact</span><span>last_model.pt</span></div></div><p>Experimental public-dataset model evidence only. Not clinically validated.</p></article>
@@ -46,8 +76,9 @@
     </section>
     <section class="grid two">
       <article class="card"><h2>ORIGA Evidence Boundary</h2><p>This evidence card is separate from the Kermany OCT experimental model evidence. It is fundus optic-nerve metadata only and not OCT glaucoma.</p><p>doctor review required. not diagnosis. not clinically validated. No autonomous use, regulatory approval claim, model training, inference, or checkpoint loading.</p></article>
-      <div class="card safety-card"><h2>Portal Scope & Safety</h2><ul><li>doctor review required</li><li>not diagnosis</li><li>not clinically validated</li><li>not a regulated medical device</li><li>no PHI exposed</li><li>no production backend implemented</li><li>not OCT glaucoma</li><li>fundus optic-nerve metadata only</li></ul></div>
+      <div class="card safety-card"><h2>Portal Scope & Safety</h2><ul><li>doctor review required</li><li>not diagnosis</li><li>not clinically validated</li><li>not a regulated medical device</li><li>no PHI exposed</li><li>no production backend implemented</li><li>ORIGA glaucoma evidence is fundus optic-nerve metadata only</li><li>not OCT glaucoma</li></ul></div>
     </section>
+
 
   </main>
   <footer class="shell footer-note">Static product POC for review-support workflow demonstration. doctor review required. not diagnosis. not clinically validated. not a regulated medical device.</footer>

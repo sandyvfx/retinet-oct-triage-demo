@@ -32,10 +32,13 @@
   <main class="shell">
 
     <section class="grid two">
-      <article class="card"><h2>Kermany OCT Model Evidence</h2><p>EfficientNet-B0 experiment on Kermany OCT. 83,484 training images, 968 held-out test images, 966/968 correct, 99.793% test accuracy, and 99.793% macro F1.</p><p>Preferred artifact: last_model.pt. Artifact is listed for evidence lineage only; this public demo does not load checkpoints.</p></article>
-      <article class="card"><h2>Evidence Boundary</h2><p>Experimental public dataset evidence only. doctor review required. not diagnosis. not clinically validated. not a regulated medical device.</p><p><a class="cta" href="sample_model_card.html">Model Card</a> <a class="cta secondary" href="sample_validation_summary.html">Validation Summary</a></p></article>
+      <article class="card"><h2>Kermany OCT Model Evidence</h2><p>EfficientNet-B0 experiment on Kermany OCT. 83,484 training images, 968 held-out test images, 966/968 correct, 99.793% test accuracy, and 99.793% macro F1.</p><p>Preferred artifact: last_model.pt. Artifact is listed for evidence lineage only; this public demo does not load checkpoints.</p><p><a class="cta" href="sample_model_card.html">Model Card</a> <a class="cta secondary" href="sample_validation_summary.html">Validation Summary</a></p></article>
+      <article class="card"><h2>ORIGA Metadata Evidence Reference</h2><p>ORIGA CDR/ExpCDR metadata evidence is fundus optic-nerve metadata only. It is not OCT glaucoma.</p><p>AUC range 0.823-0.828 with mean AUC 0.8253. Recall-oriented glaucoma recall 0.7397-0.8421.</p></article>
     </section>
-    <section class="grid two"><article class="card"><h2>ORIGA Metadata Reference</h2><p>ORIGA CDR/ExpCDR metadata evidence is shown in the portal as fundus optic-nerve metadata only. It is not OCT glaucoma.</p></article><div class="card safety-card"><h2>Evidence Safety Boundary</h2><ul><li>doctor review required</li><li>not diagnosis</li><li>not clinically validated</li><li>not a regulated medical device</li><li>no PHI exposed</li><li>no production backend implemented</li><li>not OCT glaucoma</li><li>fundus optic-nerve metadata only</li></ul></div></section>
+    <section class="grid two">
+      <article class="card"><h2>Backend ML Evidence Boundary</h2><p>The platform supports a technical handoff layer for model integration, version tracking, and evidence generation. Backend AI teams can plug models into the stable contract without changing the doctor-led review workflow.</p></article>
+      <div class="card safety-card"><h2>Evidence Safety Boundary</h2><ul><li>doctor review required</li><li>not diagnosis</li><li>not clinically validated</li><li>not a regulated medical device</li><li>no PHI exposed</li><li>no production backend implemented</li><li>ORIGA glaucoma evidence is fundus optic-nerve metadata only</li><li>not OCT glaucoma</li></ul></div>
+    </section>
 
   </main>
   <footer class="shell footer-note">Static product POC for review-support workflow demonstration. doctor review required. not diagnosis. not clinically validated. not a regulated medical device.</footer>

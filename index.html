@@ -22,8 +22,8 @@
         <div>
           <div class="eyebrow">Public Demo</div>
           <h1>RetiNet AI Platform POC</h1>
-          <p>Retinal and OCT workflow review-support platform for scan intake, doctor review, AI evidence, and backend model integration.</p>
-          <p><span class="chip">Triage support</span><span class="chip">Doctor review required</span><span class="chip">BYOM ready</span><span class="chip">Privacy-first architecture</span></p>
+          <p>Retinal and OCT workflow review-support platform for diagnostic centers, doctors, and backend AI teams.</p>
+          <p><span class="chip">Diagnostic center workflow</span><span class="chip">Doctor review required</span><span class="chip">BYOM ready</span><span class="chip">Privacy-first architecture</span></p>
         </div>
       <aside class="hero-panel">
         <div class="mini-row"><strong>Evidence</strong><span>966/968 correct</span></div>
@@ -36,11 +36,51 @@
   </header>
   <main class="shell">
 
-    <section class="grid four"><article class="card"><h3>Unified Client Portal</h3><p>Client-ready overview with evidence, roadmap, risk, and architecture links.</p><a class="cta" href="portal/">Open</a></article><article class="card"><h3>Experimental Model Evidence</h3><p>Kermany OCT evidence summary and model-card boundary.</p><a class="cta" href="model-evidence/">Open</a></article><article class="card"><h3>Client Delivery Package</h3><p>Doctor report, backend AI payload, and privacy audit samples.</p><a class="cta" href="delivery/">Open</a></article><article class="card"><h3>Production Roadmap</h3><p>Stage-by-stage path from static POC to production implementation.</p><a class="cta" href="portal/production_implementation_roadmap.html">Open</a></article></section>
-    <section>
-      <div class="section-head"><h2>What this POC demonstrates</h2><p>A focused view of the workflow surface a client can review without exposing raw vendor files, PHI, backend services, or model checkpoints.</p></div>
-      <div class="grid four"><article class="card"><h3>OCT / retinal scan intake workflow</h3><p>De-identified case intake, modality routing, and review-ready scan context.</p></article><article class="card"><h3>Doctor review and report workflow</h3><p>Reviewer notes, override reason, sign-off boundary, and draft report handoff.</p></article><article class="card"><h3>BYOM / backend AI integration contract</h3><p>Model connector expectations for safe review-support outputs.</p></article><article class="card"><h3>Privacy and audit boundary</h3><p>Public demo exposes no PHI and keeps production backend work clearly scoped.</p></article></div>
+    <section class="grid four">
+      <article class="card"><h3>Unified Client Portal</h3><p>Unified hub for evidence, roadmap, risk, and architecture.</p><a class="cta" href="portal/">Open</a></article>
+      <article class="card"><h3>Model Evidence</h3><p>Kermany OCT and ORIGA metadata evidence summary.</p><a class="cta" href="model-evidence/">Open</a></article>
+      <article class="card"><h3>Delivery Package</h3><p>Doctor report, backend AI payload, and privacy audit samples.</p><a class="cta" href="delivery/">Open</a></article>
+      <article class="card"><h3>Production Roadmap</h3><p>Implementation path from POC to production.</p><a class="cta" href="portal/production_implementation_roadmap.html">Open</a></article>
     </section>
+
+    <section>
+      <div class="section-head">
+        <div>
+          <h2>For Medical Officer / Diagnostic Center & Doctor</h2>
+          <p>A review-support workflow for OCT/macula case intake, doctor-led review, report export, and optic nerve/glaucoma metadata visualization.</p>
+        </div>
+      </div>
+      <div class="grid four">
+        <article class="card"><h3>1. Upload / View OCT Images</h3><p>Upload or review de-identified OCT and retinal images inside a case-based workflow.</p></article>
+        <article class="card"><h3>2. Native OCT / Vendor File Conversion</h3><p>Production roadmap supports native vendor OCT conversion into normalized B-scan and metadata views.</p></article>
+        <article class="card"><h3>3. Macula OCT Triage Workflow</h3><p>Public Kermany OCT evidence demonstrates experimental macula-category model evidence for CNV, DME, DRUSEN, and NORMAL classes.</p></article>
+        <article class="card"><h3>4. Glaucoma / Optic Nerve Report Visualization</h3><p>ORIGA CDR/ExpCDR evidence is shown as fundus optic-nerve metadata only, not OCT glaucoma.</p></article>
+        <article class="card"><h3>5. Heatmap / Explainability Layer</h3><p>Visual explanation and heatmap layer planned for doctor review support and audit discussion.</p></article>
+        <article class="card"><h3>6. Doctor Review Workflow</h3><p>Doctor-led notes, impression, override reason, and sign-off boundary before report export.</p></article>
+        <article class="card"><h3>7. Case Dashboard</h3><p>Case-level view for scan status, AI evidence summary, review state, and doctor action.</p></article>
+        <article class="card"><h3>8. Report Export / Journal Notes / Medication History</h3><p>Future workflow can attach report export, journal notes history, and medication history to the review case.</p></article>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <div>
+          <h2>For Backend ML / AI Team</h2>
+          <p>A technical handoff layer for model integration, evidence tracking, validation, and safe review-support outputs.</p>
+        </div>
+      </div>
+      <div class="grid four">
+        <article class="card"><h3>1. Bring-Your-Own-Model Integration</h3><p>Plug backend AI models into a stable request/response contract without changing the doctor workflow.</p></article>
+        <article class="card"><h3>2. Model Connector Contract</h3><p>Defines expected inputs, outputs, uncertainty, safety flags, and review-support boundaries.</p></article>
+        <article class="card"><h3>3. Evidence / Model Registry</h3><p>Track model versions, metrics, model cards, validation summaries, and artifact lineage.</p></article>
+        <article class="card"><h3>4. KNN / Hybrid Similarity Search</h3><p>Future reviewer context layer using embeddings, structured biomarkers, and case_hash-based retrieval.</p></article>
+        <article class="card"><h3>5. SDK / CLI Operations</h3><p>Support batch validation, evidence generation, and backend AI team workflows through scripted operations.</p></article>
+        <article class="card"><h3>6. Validation & Audit Layer</h3><p>Preserve dataset evidence, external validation gates, calibration review, and audit history before production claims.</p></article>
+        <article class="card"><h3>7. Privacy / PHI Boundary</h3><p>Public demo exposes no PHI or raw vendor files; production requires secure storage, RBAC, retention, and audit logs.</p></article>
+        <article class="card"><h3>8. Deployment Boundary</h3><p>Static POC only; no production backend, auth, database writes, model inference service, or checkpoint loading is implemented here.</p></article>
+      </div>
+    </section>
+
     <section>
       <div class="section-head"><h2>Evidence snapshot</h2><p>Concise public-dataset evidence summary for technical review. Metrics are not clinical validation.</p></div>
       <div class="grid two">
@@ -56,7 +96,8 @@
         </article>
       </div>
     </section>
-    <section><div class="card safety-card"><h2>Scope & Safety</h2><ul><li>doctor review required</li><li>not diagnosis</li><li>not clinically validated</li><li>not a regulated medical device</li><li>no PHI exposed</li><li>no production backend implemented</li><li>not OCT glaucoma</li><li>fundus optic-nerve metadata only</li></ul></div></section>
+    <section><div class="card safety-card"><h2>Scope & Safety</h2><ul><li>doctor review required</li><li>not diagnosis</li><li>not clinically validated</li><li>not a regulated medical device</li><li>no PHI exposed</li><li>no production backend implemented</li><li>ORIGA glaucoma evidence is fundus optic-nerve metadata only</li><li>not OCT glaucoma</li></ul></div></section>
+
 
   </main>
   <footer class="shell footer-note">Static product POC for review-support workflow demonstration. doctor review required. not diagnosis. not clinically validated. not a regulated medical device.</footer>
