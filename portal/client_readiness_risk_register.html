@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Client Readiness Risk Register</title>
+<style>
+:root {
+  --ink:#102235;
+  --muted:#607181;
+  --bg:#f5f8fb;
+  --panel:#ffffff;
+  --line:#d9e5ed;
+  --blue:#123b5f;
+  --teal:#0b8a92;
+  --green:#147553;
+  --amber:#9a6400;
+  --soft-blue:#eef6fb;
+  --soft-teal:#e8f6f7;
+  --soft-amber:#fff5df;
+  --shadow:0 18px 46px rgba(16,34,53,.08);
+}
+* { box-sizing:border-box; }
+body { margin:0; font-family:Arial, Helvetica, sans-serif; color:var(--ink); background:var(--bg); }
+a { color:var(--teal); font-weight:800; text-decoration:none; }
+header { background:linear-gradient(135deg,#ffffff 0%,#edf7fb 100%); border-bottom:1px solid var(--line); }
+.hero { max-width:1240px; margin:0 auto; padding:56px 28px 54px; }
+.eyebrow { color:var(--teal); text-transform:uppercase; letter-spacing:.12em; font-size:12px; font-weight:900; }
+h1 { margin:10px 0 14px; color:var(--blue); font-size:44px; line-height:1.05; }
+h2 { margin:0 0 14px; color:var(--blue); font-size:27px; }
+h3 { margin:14px 0 8px; color:var(--blue); }
+p { color:var(--muted); line-height:1.58; }
+main { max-width:1240px; margin:0 auto; padding:34px 28px 72px; }
+.grid { display:grid; gap:18px; }
+.two { grid-template-columns:repeat(2,minmax(0,1fr)); }
+.three { grid-template-columns:repeat(3,minmax(0,1fr)); }
+.four { grid-template-columns:repeat(4,minmax(0,1fr)); }
+.card { background:var(--panel); border:1px solid var(--line); border-radius:22px; padding:22px; box-shadow:var(--shadow); }
+.hero-card { background:linear-gradient(180deg,#fff,#f8fbfd); }
+.chip { display:inline-block; border:1px solid var(--line); background:#fff; color:var(--blue); border-radius:999px; padding:8px 12px; margin:4px 6px 4px 0; font-size:13px; font-weight:900; }
+.chip.good { background:#e8f5ee; color:var(--green); border-color:#b9dfca; }
+.chip.warn { background:var(--soft-amber); color:var(--amber); border-color:#ecd69d; }
+.cta { display:inline-block; margin-top:10px; padding:10px 13px; border-radius:12px; background:var(--blue); color:#fff; font-weight:900; }
+.placeholder { margin-top:10px; padding:12px; border-radius:14px; background:var(--soft-blue); border:1px solid var(--line); color:var(--blue); font-weight:800; }
+.kv { display:grid; gap:8px; }
+.kv div { display:flex; justify-content:space-between; gap:16px; border-bottom:1px solid var(--line); padding:9px 0; }
+.kv span:first-child { color:var(--muted); font-weight:800; }
+.kv span:last-child { color:var(--blue); font-weight:900; text-align:right; }
+ul { color:var(--muted); line-height:1.6; padding-left:20px; }
+.table-wrap { overflow-x:auto; }
+table { width:100%; border-collapse:collapse; color:var(--muted); }
+th, td { border-bottom:1px solid var(--line); padding:10px; text-align:left; vertical-align:top; }
+th { color:var(--blue); background:#f8fbfd; }
+.safety { columns:2; background:#f8fbfd; border:1px solid var(--line); border-radius:16px; padding:18px 24px; }
+footer { max-width:1240px; margin:0 auto; padding:28px; color:var(--muted); }
+@media (max-width:900px) { .two,.three,.four { grid-template-columns:1fr; } h1 { font-size:34px; } .safety { columns:1; } }
+</style>
+</head>
+<body><header><div class="hero"><div class="eyebrow">Phase 25.C</div><h1>Client Readiness Risk Register</h1><p>Client readiness risks, mitigations, ownership, and before-production gates for the RetiNet AI platform POC.</p><p><span class="chip good">doctor review required</span><span class="chip warn">not clinically validated</span><span class="chip">privacy-first architecture</span></p></div></header>
+<main>
+<section class="card"><h2>Client Readiness Risk Register</h2><p>Risk and readiness view for client, clinical, security, product, and backend AI stakeholders before production investment.</p><div class="table-wrap"><table><thead><tr><th>Risk</th><th>Severity</th><th>Current status</th><th>Mitigation</th><th>Owner role</th><th>Before-production gate</th></tr></thead><tbody><tr><td>clinical validation not performed</td><td>High</td><td>Open</td><td>Define external validation protocol with ophthalmologist review before production.</td><td>Clinical lead</td><td>External validation report accepted.</td></tr><tr><td>public dataset bias</td><td>High</td><td>Open</td><td>Evaluate on de-identified client data and independent external test sets.</td><td>Backend AI / ML team</td><td>Bias review and subgroup review completed.</td></tr><tr><td>device/vendor distribution shift</td><td>High</td><td>Open</td><td>Run multi-device validation and native conversion QA per vendor format.</td><td>AI lead and imaging engineer</td><td>Device coverage matrix approved.</td></tr><tr><td>glaucoma evidence limitation</td><td>High</td><td>Open</td><td>Collect glaucoma-specific evidence; do not infer glaucoma validation from Kermany OCT.</td><td>Clinical lead</td><td>Glaucoma evidence package reviewed.</td></tr><tr><td>PHI/security architecture not implemented</td><td>High</td><td>Open</td><td>Implement secure storage, encryption, RBAC, audit logs, and privacy review.</td><td>Security lead</td><td>Security architecture review completed.</td></tr><tr><td>native OCT vendor format variability</td><td>Medium</td><td>Open</td><td>Maintain vendor registry and require sample validation per format.</td><td>Imaging platform lead</td><td>Vendor conversion test pack passes.</td></tr><tr><td>doctor sign-off workflow not productionized</td><td>High</td><td>Open</td><td>Build enforced status transitions, override reason, and signed export controls.</td><td>Product lead</td><td>Sign-off workflow acceptance test passes.</td></tr><tr><td>regulatory pathway not assessed</td><td>High</td><td>Open</td><td>Assess regulatory pathway if product direction moves beyond review-support POC.</td><td>Regulatory advisor</td><td>Regulatory assessment completed.</td></tr><tr><td>model monitoring/calibration not implemented</td><td>Medium</td><td>Open</td><td>Add calibration analysis, drift monitoring, and post-deployment review plan.</td><td>Backend AI / ML team</td><td>Monitoring plan approved.</td></tr><tr><td>external test set not completed</td><td>High</td><td>Open</td><td>Define and execute external test set evaluation before production claims.</td><td>Clinical lead and AI lead</td><td>External test metrics reviewed.</td></tr><tr><td>backend auth/storage not implemented</td><td>High</td><td>Open</td><td>Implement role-based auth, secure storage, retention controls, and audit logs.</td><td>Backend lead</td><td>Backend security acceptance tests pass.</td></tr></tbody></table></div></section>
+<section class='card' style='margin-top:28px;'><h2>Safety Flags</h2><ul class='safety'><li>triage_only_not_diagnosis=true</li><li>medical_diagnosis_claimed=false</li><li>glaucoma_diagnosis_claimed=false</li><li>raw_vendor_files_exposed=false</li><li>full_metadata_exposed=false</li><li>model_inference_run=false</li><li>model_training_run=false</li><li>phase20_checkpoint_required=false</li><li>phase20_checkpoint_loaded=false</li><li>diagnosis_claimed=false</li><li>phi_stored_in_platform_poc=false</li><li>clinical_validation_claimed=false</li><li>regulated_medical_device_claimed=false</li><li>production_backend_implemented=false</li><li>auth_implemented=false</li><li>database_write_implemented=false</li></ul></section>
+</main><footer>Static Phase 25 client portal package. Doctor review required. Not a medical diagnosis system. Not a regulated medical device.</footer></body></html>
