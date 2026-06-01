@@ -1,459 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>RetiNet AI Platform POC</title>
-<style>
-:root {
-  --ink:#102235;
-  --muted:#607080;
-  --soft:#f5f8fa;
-  --line:#d9e3ea;
-  --blue:#0d4777;
-  --blue2:#123b5f;
-  --teal:#0b8a92;
-  --teal-soft:#e7f5f6;
-  --green:#147553;
-  --green-soft:#e8f5ee;
-  --amber:#98640c;
-  --amber-soft:#fff4df;
-  --white:#ffffff;
-  --shadow:0 18px 48px rgba(16,34,53,.10);
-}
-* { box-sizing:border-box; }
-body { margin:0; font-family:Arial, Helvetica, sans-serif; color:var(--ink); background:var(--soft); }
-a { color:inherit; }
-.site-header { background:linear-gradient(135deg,#ffffff 0%,#f2f8fb 52%,#e8f4f6 100%); border-bottom:1px solid var(--line); }
-.nav { max-width:1440px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; padding:20px 30px; }
-.brand { font-weight:900; letter-spacing:.02em; color:var(--blue2); }
-.nav-links { display:flex; gap:22px; color:var(--muted); font-size:14px; }
-.hero { max-width:1440px; margin:0 auto; padding:58px 30px 64px; display:grid; grid-template-columns:1.12fr .88fr; gap:42px; align-items:center; }
-.eyebrow { color:var(--teal); font-weight:900; text-transform:uppercase; letter-spacing:.12em; font-size:12px; }
-h1 { font-size:52px; line-height:1.02; margin:12px 0 18px; letter-spacing:-.02em; color:var(--blue2); }
-.subtitle { font-size:18px; line-height:1.58; color:#40586d; margin:0 0 22px; max-width:790px; }
-.hero-chips { display:flex; flex-wrap:wrap; gap:10px; margin:20px 0 24px; }
-.chip { display:inline-flex; align-items:center; border-radius:999px; padding:9px 13px; font-weight:800; font-size:13px; background:#fff; border:1px solid var(--line); color:var(--blue2); }
-.chip.teal { background:var(--teal-soft); color:#086a70; border-color:#b9dfe2; }
-.statement { border-left:4px solid var(--teal); padding:13px 16px; background:#fff; color:#40586d; border-radius:0 12px 12px 0; box-shadow:0 8px 24px rgba(16,34,53,.06); }
-.hero-visual { background:#fff; border:1px solid var(--line); border-radius:28px; box-shadow:var(--shadow); padding:22px; }
-.visual-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; }
-.visual-screen { border-radius:20px; background:linear-gradient(145deg,#102235,#17496f); padding:18px; color:#fff; min-height:310px; display:grid; align-content:space-between; }
-.screen-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-.screen-card { background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.18); border-radius:14px; padding:14px; }
-main { max-width:1440px; margin:0 auto; padding:0 30px 70px; }
-section { margin-top:54px; }
-.section-head { display:flex; justify-content:space-between; gap:24px; align-items:flex-end; margin-bottom:18px; }
-.section-head h2 { font-size:32px; margin:0; letter-spacing:-.01em; color:var(--blue2); }
-.section-head p { color:var(--muted); margin:0; max-width:700px; line-height:1.5; }
-.portfolio { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:18px; }
-.product-card { background:#fff; border:1px solid var(--line); border-radius:20px; padding:22px; min-height:220px; display:flex; flex-direction:column; justify-content:space-between; box-shadow:0 10px 32px rgba(16,34,53,.06); }
-.product-card h3 { margin:0 0 10px; font-size:19px; color:var(--blue2); }
-.product-card p { margin:0; color:var(--muted); line-height:1.5; }
-.status { display:inline-block; margin-top:18px; color:var(--green); background:var(--green-soft); border-radius:999px; padding:7px 10px; font-size:12px; font-weight:900; }
-.cta { margin-top:16px; border:1px solid var(--blue); color:var(--blue); border-radius:999px; padding:9px 12px; font-weight:900; display:inline-block; width:max-content; }
-.workflow-panel,.console,.integration,.trust,.handoff { background:#fff; border:1px solid var(--line); border-radius:24px; box-shadow:var(--shadow); padding:24px; }
-.workflow-grid { display:grid; grid-template-columns:.9fr 1.1fr; gap:24px; }
-.stepper { display:grid; gap:10px; }
-.step { border:1px solid var(--line); background:#fff; border-radius:14px; padding:13px 14px; display:flex; align-items:center; gap:12px; cursor:pointer; color:var(--ink); font-weight:850; text-align:left; }
-.step span { width:32px; height:32px; border-radius:50%; display:grid; place-items:center; background:#edf4f7; color:var(--blue); font-size:12px; }
-.step.active { border-color:var(--teal); background:var(--teal-soft); }
-.step.done span { background:var(--green); color:#fff; }
-.progress-track { height:12px; background:#e6eef2; border-radius:999px; overflow:hidden; margin:8px 0 18px; }
-.progress-fill { height:100%; width:0%; background:linear-gradient(90deg,var(--blue),var(--teal)); transition:width .2s ease; }
-.metrics { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
-.metric { background:#f8fbfc; border:1px solid var(--line); border-radius:16px; padding:15px; }
-.metric small { display:block; color:var(--muted); font-weight:900; text-transform:uppercase; letter-spacing:.06em; font-size:11px; }
-.metric strong { display:block; margin-top:6px; font-size:20px; color:var(--blue2); }
-.timeline { display:grid; gap:9px; max-height:275px; overflow:auto; }
-.event { border-left:3px solid var(--teal); background:#f8fbfc; padding:9px 12px; border-radius:0 10px 10px 0; color:#40586d; }
-.console-grid { display:grid; grid-template-columns:.74fr 1.36fr .9fr; gap:18px; }
-.case-button { width:100%; border:1px solid var(--line); background:#fff; border-radius:16px; padding:14px; margin-bottom:10px; text-align:left; cursor:pointer; }
-.case-button.active { border-color:var(--teal); background:var(--teal-soft); }
-.case-button strong { display:block; color:var(--blue2); margin-bottom:5px; }
-.viewer-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
-.image-box { min-height:235px; background:#102235; border-radius:18px; overflow:hidden; display:grid; place-items:center; color:#dce8ef; border:1px solid var(--line); }
-.image-box img { width:100%; height:auto; display:block; }
-.bio-list { display:grid; gap:10px; }
-.bio-item { display:flex; justify-content:space-between; gap:12px; background:#f8fbfc; border:1px solid var(--line); border-radius:12px; padding:10px 12px; }
-.bio-item span:first-child { color:var(--muted); font-weight:800; }
-.bio-item span:last-child { font-weight:900; color:var(--blue2); text-align:right; }
-.form-grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
-label { display:block; margin-top:12px; font-size:13px; font-weight:900; color:var(--blue2); }
-textarea,input,select { width:100%; border:1px solid var(--line); border-radius:12px; padding:12px; font:inherit; background:#fff; }
-textarea { min-height:92px; resize:vertical; }
-.integration-grid { display:grid; grid-template-columns:.85fr 1.15fr; gap:18px; }
-.task-list { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-top:12px; }
-.task { background:#f8fbfc; border:1px solid var(--line); border-radius:12px; padding:11px; font-weight:850; color:var(--blue2); }
-details { border:1px solid var(--line); border-radius:14px; background:#f8fbfc; margin-bottom:12px; overflow:hidden; }
-summary { padding:13px 14px; font-weight:900; cursor:pointer; color:var(--blue2); }
-pre { margin:0; padding:14px; overflow:auto; color:#eaf3f5; background:#102235; font-size:12px; line-height:1.5; }
-.workspace-grid,.trust-grid,.handoff-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:14px; }
-.mini-card { border:1px solid var(--line); border-radius:16px; background:#fff; padding:16px; color:#40586d; min-height:96px; }
-.mini-card strong { color:var(--blue2); display:block; margin-bottom:7px; }
-.similar-list { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }
-.safety-flags { columns:2; background:#f8fbfc; border:1px solid var(--line); border-radius:16px; padding:18px 24px; color:#40586d; }
-.safety-flags li { margin:6px 0; }
-@media (max-width:1100px) {
-  .hero,.workflow-grid,.console-grid,.integration-grid,.form-grid { grid-template-columns:1fr; }
-  .portfolio,.workspace-grid,.trust-grid,.handoff-grid,.metrics,.similar-list { grid-template-columns:repeat(2,1fr); }
-}
-@media (max-width:700px) {
-  .nav,.section-head { display:block; }
-  .nav-links { display:none; }
-  .hero { padding-top:34px; }
-  h1 { font-size:36px; }
-  .portfolio,.workspace-grid,.trust-grid,.handoff-grid,.metrics,.similar-list,.viewer-grid,.task-list { grid-template-columns:1fr; }
-  .safety-flags { columns:1; }
-}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RetiNet AI Platform POC</title>
+  <link rel="stylesheet" href="assets/public_demo.css">
 </head>
 <body>
-<header class="site-header">
-  <div class="nav">
-    <div class="brand">RetiNet AI</div>
-    <div class="nav-links"><a href="#portfolio">Modules</a><a href="#workflow">Workflow</a><a href="#clinical">Clinical Review</a><a href="#ai">AI / Backend</a><a href="#trust">Privacy & Audit</a></div>
-  </div>
-  <div class="hero" id="overview">
-    <div>
-      <div class="eyebrow">Hero / Product Overview</div>
-      <h1>RetiNet AI Platform POC</h1>
-      <p class="subtitle">Model-agnostic retinal and glaucoma workflow platform for OCT scan intake, native OCT conversion, biomarker review, BYO-model integration, doctor review, reporting, and backend AI operations.</p>
-      <div class="hero-chips"><span class="chip teal">Triage Support</span><span class="chip">Doctor Review Required</span><span class="chip">BYOM Ready</span><span class="chip">Privacy-First Architecture</span></div>
-      <div class="statement">Static platform POC for review support only. Not a medical diagnosis system.</div>
-    </div>
-    <div class="hero-visual" aria-label="Platform preview">
-      <div class="visual-top"><strong>Clinical workflow console</strong><span class="status">doctor review required</span></div>
-      <div class="visual-screen">
-        <div><div class="eyebrow" style="color:#7ad5dc;">Live demo shell</div><h2 style="margin:8px 0 0;">Scan to signed review workflow</h2></div>
-        <div class="screen-grid">
-          <div class="screen-card">OCT scan input<br><strong>Ready</strong></div>
-          <div class="screen-card">Native OCT conversion<br><strong>Manifest only</strong></div>
-          <div class="screen-card">Biomarker Review<br><strong>Doctor-led</strong></div>
-          <div class="screen-card">Model Connector Contract<br><strong>BYOM</strong></div>
+  <header>
+    <div class="shell">
+      <div class="topbar">
+        <a class="brand" href="index.html">RetiNet AI</a>
+        <nav class="nav" aria-label="Demo sections">
+          <a href="portal/">Portal</a>
+          <a href="model-evidence/">Model Evidence</a>
+          <a href="delivery/">Delivery</a>
+          <a href="portal/production_implementation_roadmap.html">Roadmap</a>
+        </nav>
+      </div>
+      <div class="hero">
+        <div>
+          <div class="eyebrow">Public Demo</div>
+          <h1>RetiNet AI Platform POC</h1>
+          <p>Retinal and OCT workflow review-support platform for scan intake, doctor review, AI evidence, and backend model integration.</p>
+          <p><span class="chip">Triage support</span><span class="chip">Doctor review required</span><span class="chip">BYOM ready</span><span class="chip">Privacy-first architecture</span></p>
         </div>
+      <aside class="hero-panel">
+        <div class="mini-row"><strong>Evidence</strong><span>966/968 correct</span></div>
+        <div class="mini-row"><strong>AI contract</strong><span>BYOM ready</span></div>
+        <div class="mini-row"><strong>Review</strong><span>doctor review required</span></div>
+        <div class="mini-row"><strong>Boundary</strong><span>no PHI exposed</span></div>
+      </aside>
       </div>
     </div>
-  </div>
-</header>
-<main>
-  <section id="portfolio">
-    <div class="section-head"><h2>Product Portfolio Modules</h2><p>Premium platform modules organized like a medical technology product portfolio, with concise product value and clear demo boundaries.</p></div>
-    <div class="portfolio">
-      <article class="product-card"><div><h3>OCT Scan Intake</h3><p>Structured OCT scan input and validation path for de-identified review.</p><span class="status">Static demo</span></div><a class="cta" href="#workflow">View Workflow</a></article>
-      <article class="product-card"><div><h3>Native OCT Conversion</h3><p>Conversion manifest and B-scan preview workflow with raw vendor files hidden.</p><span class="status">Manifest only</span></div><a class="cta" href="#clinical">View Workflow</a></article>
-      <article class="product-card"><div><h3>Biomarker Review</h3><p>RNFL, GCC, CDR, retinal thickness, and macula marker review support.</p><span class="status">Doctor-led</span></div><a class="cta" href="#clinical">Review Biomarkers</a></article>
-      <article class="product-card"><div><h3>Glaucoma / Optic Nerve Review</h3><p>Optic nerve and glaucoma report metrics presented for review support.</p><span class="status">Review support</span></div><a class="cta" href="#clinical">Review Biomarkers</a></article>
-      <article class="product-card"><div><h3>BYOM Model Connector</h3><p>Bring Your Own Model integration through a Model Connector Contract.</p><span class="status">BYOM ready</span></div><a class="cta" href="#ai">Open Connector</a></article>
-      <article class="product-card"><div><h3>Doctor Report Workflow</h3><p>Doctor impression, notes, override reason, sign-off, and export path.</p><span class="status">Review required</span></div><a class="cta" href="#doctor">View Workflow</a></article>
-      <article class="product-card"><div><h3>Similarity Search</h3><p>KNN and hybrid reviewer-context search using case_hash only.</p><span class="status">Context only</span></div><a class="cta" href="#similarity">View Workflow</a></article>
-      <article class="product-card"><div><h3>Privacy & Audit Layer</h3><p>HIPAA-ready architecture, privacy-first architecture, hashing, encryption, and audit logs.</p><span class="status">Trust layer</span></div><a class="cta" href="#trust">View Audit Layer</a></article>
-    </div>
-  </section>
+  </header>
+  <main class="shell">
 
-  <section id="workflow">
-    <div class="section-head"><h2>Interactive Workflow</h2><p>A guided clinical process stepper. Click each step to update progress, current case state, timeline, audit log, and status indicators.</p></div>
-    <div class="workflow-panel workflow-grid">
-      <div class="stepper"><button class="step" type="button" data-step="Start Intake"><span>01</span>Start Intake</button><button class="step" type="button" data-step="Validate Scan"><span>02</span>Validate Scan</button><button class="step" type="button" data-step="Convert Native OCT"><span>03</span>Convert Native OCT</button><button class="step" type="button" data-step="Review Biomarkers"><span>04</span>Review Biomarkers</button><button class="step" type="button" data-step="Select AI Tasks"><span>05</span>Select AI Tasks</button><button class="step" type="button" data-step="Generate BYOM Request"><span>06</span>Generate BYOM Request</button><button class="step" type="button" data-step="Import BYOM Response"><span>07</span>Import BYOM Response</button><button class="step" type="button" data-step="Review Heatmap"><span>08</span>Review Heatmap</button><button class="step" type="button" data-step="Add Doctor Note"><span>09</span>Add Doctor Note</button><button class="step" type="button" data-step="Override AI Result"><span>10</span>Override AI Result</button><button class="step" type="button" data-step="Sign Report"><span>11</span>Sign Report</button><button class="step" type="button" data-step="Export Report"><span>12</span>Export Report</button></div>
-      <div>
-        <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
-        <div class="metrics" id="workflowMetrics"></div>
-        <div class="section-head" style="margin:22px 0 12px;"><h2 style="font-size:22px;">Timeline</h2><p>Browser-only workflow events.</p></div>
-        <div class="timeline" id="timeline"></div>
-        <div class="section-head" style="margin:22px 0 12px;"><h2 style="font-size:22px;">Audit log</h2><p>Event hash chain mock.</p></div>
-        <div class="timeline" id="auditLog"></div>
+    <section class="grid four"><article class="card"><h3>Unified Client Portal</h3><p>Client-ready overview with evidence, roadmap, risk, and architecture links.</p><a class="cta" href="portal/">Open</a></article><article class="card"><h3>Experimental Model Evidence</h3><p>Kermany OCT evidence summary and model-card boundary.</p><a class="cta" href="model-evidence/">Open</a></article><article class="card"><h3>Client Delivery Package</h3><p>Doctor report, backend AI payload, and privacy audit samples.</p><a class="cta" href="delivery/">Open</a></article><article class="card"><h3>Production Roadmap</h3><p>Stage-by-stage path from static POC to production implementation.</p><a class="cta" href="portal/production_implementation_roadmap.html">Open</a></article></section>
+    <section>
+      <div class="section-head"><h2>What this POC demonstrates</h2><p>A focused view of the workflow surface a client can review without exposing raw vendor files, PHI, backend services, or model checkpoints.</p></div>
+      <div class="grid four"><article class="card"><h3>OCT / retinal scan intake workflow</h3><p>De-identified case intake, modality routing, and review-ready scan context.</p></article><article class="card"><h3>Doctor review and report workflow</h3><p>Reviewer notes, override reason, sign-off boundary, and draft report handoff.</p></article><article class="card"><h3>BYOM / backend AI integration contract</h3><p>Model connector expectations for safe review-support outputs.</p></article><article class="card"><h3>Privacy and audit boundary</h3><p>Public demo exposes no PHI and keeps production backend work clearly scoped.</p></article></div>
+    </section>
+    <section>
+      <div class="section-head"><h2>Evidence snapshot</h2><p>Concise public-dataset evidence summary for technical review. Metrics are not clinical validation.</p></div>
+      <div class="grid two">
+        <article class="card">
+          <h3>Kermany OCT</h3>
+          <p>EfficientNet-B0 on Kermany OCT. 966/968 correct; 99.793% test accuracy and 99.793% macro F1. Experimental public dataset evidence only.</p>
+          <div class="kpis"><div class="kpi"><span>Training images</span><strong>83,484</strong></div><div class="kpi"><span>Held-out test</span><strong>968</strong></div><div class="kpi"><span>Artifact</span><strong>last_model.pt</strong></div></div>
+        </article>
+        <article class="card">
+          <h3>ORIGA glaucoma metadata</h3>
+          <p>CDR/ExpCDR triage-support signal with AUC 0.823-0.828. fundus optic-nerve metadata only; not OCT glaucoma.</p>
+          <div class="kpis"><div class="kpi"><span>Rows</span><strong>650</strong></div><div class="kpi"><span>NORMAL / GLAUCOMA</span><strong>482 / 168</strong></div><div class="kpi"><span>Mean AUC</span><strong>0.8253</strong></div></div>
+        </article>
       </div>
-    </div>
-  </section>
+    </section>
+    <section><div class="card safety-card"><h2>Scope & Safety</h2><ul><li>doctor review required</li><li>not diagnosis</li><li>not clinically validated</li><li>not a regulated medical device</li><li>no PHI exposed</li><li>no production backend implemented</li><li>not OCT glaucoma</li><li>fundus optic-nerve metadata only</li></ul></div></section>
 
-  <section id="clinical">
-    <div class="section-head"><h2>Clinical Review Workspace</h2><p>Premium review console with de-identified case queue, OCT / B-scan viewer mock, Heatmap, biomarker summary, and doctor review required.</p></div>
-    <div class="console console-grid">
-      <aside><h3>De-identified case queue</h3><div id="caseQueue"></div></aside>
-      <div>
-        <h3>OCT / B-scan viewer mock + Heatmap</h3>
-        <div class="viewer-grid" id="viewerGrid"></div>
-        <p style="color:var(--muted);">Explanation support only, not clinical proof.</p>
-      </div>
-      <aside><h3>Biomarker Review</h3><div class="bio-list" id="biomarkers"></div><p style="color:var(--muted); margin-top:14px;">doctor review required</p></aside>
-    </div>
-  </section>
-
-  <section id="doctor">
-    <div class="section-head"><h2>Doctor Report Workflow</h2><p>Polished mock review forms for doctor impression, report placeholder, Journal Notes, Medication History, override reason, and Report Export.</p></div>
-    <div class="workflow-panel form-grid">
-      <div>
-        <h3>Doctor Report Input</h3>
-        <label>Manual doctor impression field</label><textarea>Review support note pending doctor sign-off.</textarea>
-        <label>Doctor report upload placeholder</label><input disabled value="Static demo only - no upload backend">
-        <label>Follow-up recommendation</label><select><option>Routine review support follow-up</option><option>Earlier review support</option></select>
-        <label>Review status</label><select id="reviewStatus"><option>pending</option><option>accepted</option><option>overridden</option><option>signed</option></select>
-        <label>Override reason required when overridden</label><textarea placeholder="Required when overridden"></textarea>
-      </div>
-      <div>
-        <h3>Journal Notes History</h3><div class="timeline" id="journalNotes"></div>
-        <h3>Medication History</h3><div class="timeline" id="medHistory"></div>
-        <h3>Report Export</h3>
-        <div class="mini-card"><strong>draft export</strong>JSON/HTML export contract, no PHI in export, export requires doctor sign-off. doctor-signed export future placeholder.</div>
-      </div>
-    </div>
-  </section>
-
-  <section id="ai">
-    <div class="section-head"><h2>AI / Backend Integration</h2><p>Backend AI team integration console with Bring Your Own Model, Model Connector Contract, AI Result Review, and contained JSON details.</p></div>
-    <div class="integration integration-grid">
-      <div>
-        <h3>Bring Your Own Model</h3>
-        <p style="color:var(--muted);">Selectable mock model tasks for the Model Connector Contract.</p>
-        <div class="task-list"><div class="task">macula_triage</div><div class="task">glaucoma_risk_support</div><div class="task">optic_nerve_report_extract</div><div class="task">explainability_heatmap</div><div class="task">embedding_generation</div></div>
-        <h3>AI Result Review</h3>
-        <div class="metrics" id="aiMetrics"></div>
-        <p style="color:var(--muted);">not_diagnosis=true · doctor review required · model_training_run=false · phase20_checkpoint_loaded=false</p>
-      </div>
-      <div>
-        <details><summary>Connector request JSON</summary><pre id="requestJson"></pre></details>
-        <details><summary>Connector response JSON</summary><pre id="responseJson"></pre></details>
-      </div>
-    </div>
-    <div class="section-head" style="margin-top:28px;"><h2>Backend ML / AI Team Workspace</h2><p>Production integration points available to the backend AI team.</p></div>
-    <div class="workspace-grid" id="workspaceGrid"></div>
-  </section>
-
-  <section id="similarity">
-    <div class="section-head"><h2>Similarity Search</h2><p>Clean reviewer-context module for KNN image similarity placeholder and hybrid search placeholder. reviewer context only, not diagnosis.</p></div>
-    <div class="workflow-panel">
-      <div class="similar-list" id="similarCases"></div>
-      <p style="color:var(--muted); margin-top:16px;">Signals: image embeddings, structured biomarkers, redacted report text. Includes KNN / hybrid / similarity search, SDK / CLI operations, and Audit trail handoff.</p>
-    </div>
-  </section>
-
-  <section id="trust">
-    <div class="section-head"><h2>Privacy & Audit</h2><p>Premium trust section with HIPAA-ready architecture and privacy-first architecture wording only. No HIPAA certification claim.</p></div>
-    <div class="trust">
-      <div class="trust-grid">
-        <div class="mini-card"><strong>PHI minimization</strong>No PHI in public demo.</div>
-        <div class="mini-card"><strong>Hashing</strong>case_hash-only identifiers.</div>
-        <div class="mini-card"><strong>Encryption</strong>Architecture placeholder for secure storage.</div>
-        <div class="mini-card"><strong>RBAC / access control</strong>Production control layer placeholder.</div>
-        <div class="mini-card"><strong>audit logs</strong>Event hash chain mock.</div>
-        <div class="mini-card"><strong>raw vendor files hidden</strong>Conversion manifest only.</div>
-        <div class="mini-card"><strong>full metadata not exposed</strong>Public demo is redacted.</div>
-        <div class="mini-card"><strong>HIPAA-ready architecture</strong>privacy-first architecture, no certification claim.</div>
-      </div>
-      <h3>Visible safety flags</h3>
-      <ul class="safety-flags"><li>triage_only_not_diagnosis=true</li><li>medical_diagnosis_claimed=false</li><li>glaucoma_diagnosis_claimed=false</li><li>raw_vendor_files_exposed=false</li><li>full_metadata_exposed=false</li><li>model_inference_run=false</li><li>model_training_run=false</li><li>phase20_checkpoint_required=false</li><li>phase20_checkpoint_loaded=false</li><li>diagnosis_claimed=false</li><li>phi_stored_in_platform_poc=false</li></ul>
-    </div>
-  </section>
-
-  <section id="handoff">
-    <div class="section-head"><h2>Handoff / Client Summary</h2><p>Client-ready summary of what works, what is mocked, integration needs, backend AI handoff, next steps, and out-of-scope boundaries.</p></div>
-    <div class="handoff handoff-grid">
-      <div class="mini-card"><strong>What is working in this POC</strong>Premium static product page, workflow stepper, clinical review console, BYOM connector, similarity context, and audit layer.</div>
-      <div class="mini-card"><strong>What is mocked</strong>Uploads, auth, database writes, model endpoint calls, heatmap generation, and report signing.</div>
-      <div class="mini-card"><strong>What client needs to integrate</strong>Secure storage, identity, native conversion service, model endpoints, vector index, export signing, and security review.</div>
-      <div class="mini-card"><strong>Backend AI team integration points</strong>Model connector registry, inference logs, model versioning, visualization tools, SDK / CLI operations, and embeddings.</div>
-      <div class="mini-card"><strong>Suggested next production steps</strong>Upload service, secure storage, role-based auth, model endpoint integration, vector index, native conversion service, report export/signing.</div>
-      <div class="mini-card"><strong>Out of scope</strong>Diagnosis, regulated product claims, certification claims, and production clinical validation.</div>
-      <div class="mini-card"><strong>Medical boundary</strong>This is not a medical diagnosis system and is not a regulated medical device.</div>
-      <div class="mini-card"><strong>Demo use</strong>Client presentation and product workflow alignment only.</div>
-    </div>
-  </section>
-</main>
-<script>
-const STATE = {
-  "created_utc": "2026-05-31T11:43:05.273521+00:00",
-  "cases": [
-    {
-      "case_hash": "case_1d8bb001afcbcdc4",
-      "eye_side": "OD",
-      "priority": "Review support",
-      "status": "doctor review required",
-      "state": "Ready for intake",
-      "modalities": [
-        "OCT scan input",
-        "Native OCT conversion",
-        "Glaucoma / optic nerve review"
-      ],
-      "oct_image": "assets/macula_original.png",
-      "heatmap": "assets/macula_heatmap_overlay.png",
-      "native_preview": "assets/native_bscan_preview.png",
-      "biomarkers": {
-        "RNFL": "72 um",
-        "GCC": "68 um",
-        "CDR": "0.62",
-        "retinal thickness": "286 um",
-        "fluid/cyst indicators": "review marker",
-        "drusen markers": "present for review",
-        "CNV markers": "possible support signal",
-        "DME-related markers": "noted for review"
-      },
-      "notes": [
-        "Scan quality validated for review support.",
-        "doctor review required before export."
-      ],
-      "medications": [
-        "prostaglandin_analog: active",
-        "lubricating_drop: history"
-      ]
-    },
-    {
-      "case_hash": "case_e4a8b457f4a8fb4f",
-      "eye_side": "OS",
-      "priority": "Routine review",
-      "status": "conversion ready",
-      "state": "Conversion manifest available",
-      "modalities": [
-        "Native OCT conversion",
-        "Biomarker Review"
-      ],
-      "oct_image": "assets/native_bscan_preview.png",
-      "heatmap": null,
-      "native_preview": "assets/native_bscan_preview.png",
-      "biomarkers": {
-        "RNFL": "88 um",
-        "GCC": "82 um",
-        "CDR": "0.48",
-        "retinal thickness": "274 um",
-        "fluid/cyst indicators": "not flagged in mock",
-        "drusen markers": "trend slot ready",
-        "CNV markers": "not requested",
-        "DME-related markers": "not requested"
-      },
-      "notes": [
-        "Native OCT conversion manifest ready."
-      ],
-      "medications": []
-    }
-  ],
-  "selected_case_hash": "case_1d8bb001afcbcdc4",
-  "workflow_steps": [
-    "Start Intake",
-    "Validate Scan",
-    "Convert Native OCT",
-    "Review Biomarkers",
-    "Select AI Tasks",
-    "Generate BYOM Request",
-    "Import BYOM Response",
-    "Review Heatmap",
-    "Add Doctor Note",
-    "Override AI Result",
-    "Sign Report",
-    "Export Report"
-  ],
-  "safety_flags": [
-    "triage_only_not_diagnosis=true",
-    "medical_diagnosis_claimed=false",
-    "glaucoma_diagnosis_claimed=false",
-    "raw_vendor_files_exposed=false",
-    "full_metadata_exposed=false",
-    "model_inference_run=false",
-    "model_training_run=false",
-    "phase20_checkpoint_required=false",
-    "phase20_checkpoint_loaded=false",
-    "diagnosis_claimed=false",
-    "phi_stored_in_platform_poc=false"
-  ],
-  "byom_request": {
-    "case_hash": "case_1d8bb001afcbcdc4",
-    "contract": "Model Connector Contract",
-    "mode": "Bring Your Own Model",
-    "tasks": [
-      "macula_triage",
-      "glaucoma_risk_support",
-      "optic_nerve_report_extract",
-      "explainability_heatmap",
-      "embedding_generation"
-    ],
-    "object_refs": {
-      "oct_sequence": "signed-demo-ref://oct-sequence",
-      "conversion_manifest": "signed-demo-ref://conversion-manifest",
-      "redacted_report_text": "redacted-review-support-text"
-    },
-    "safety": {
-      "contains_phi": false,
-      "raw_vendor_files_exposed": false,
-      "model_training_run": false,
-      "phase20_checkpoint_loaded": false
-    }
-  },
-  "byom_response": {
-    "case_hash": "case_1d8bb001afcbcdc4",
-    "result": {
-      "label": "review_recommended",
-      "score": 0.82,
-      "uncertainty": 0.18,
-      "confidence_band": "moderate",
-      "not_diagnosis": true,
-      "doctor_review_required": true,
-      "model_training_run": false,
-      "phase20_checkpoint_loaded": false
-    }
-  },
-  "similar_cases": [
-    {
-      "case_hash": "case_8253e380f7bc5070",
-      "score": 0.91,
-      "basis": "KNN image similarity with structured biomarkers"
-    },
-    {
-      "case_hash": "case_a3716319f1020ce7",
-      "score": 0.84,
-      "basis": "hybrid search using image embeddings and redacted report text"
-    }
-  ]
-};
-let selectedCaseIndex = 0;
-let completed = [];
-let activeStep = "";
-let timeline = ["Demo ready", "Selected " + STATE.selected_case_hash];
-let audit = [{ action: "demo_ready", previous: "GENESIS", event_hash: "event_" + STATE.selected_case_hash.slice(-8) }];
-const workspace = ["OCT image data registry","Native/vendor OCT file data registry","Macula triage data registry","Glaucoma / optic nerve report data registry","Biomarker extraction outputs","Model connector registry","Inference logs","Model versioning","Visualization tools","KNN / hybrid / similarity search","SDK / CLI operations","Audit trail"];
-
-function esc(v) { return String(v ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"})[c]); }
-function activeCase() { return STATE.cases[selectedCaseIndex]; }
-function hash(text) { let h = 0; for (let i = 0; i < text.length; i++) { h = ((h << 5) - h) + text.charCodeAt(i); h |= 0; } return "event_" + Math.abs(h).toString(16).padStart(8, "0"); }
-function metric(label, value) { return `<div class="metric"><small>${esc(label)}</small><strong>${esc(value)}</strong></div>`; }
-function eventItem(text) { return `<div class="event">${esc(text)}</div>`; }
-function imageBox(path, label) { return path ? `<div><div class="image-box"><img src="${esc(path)}" alt="${esc(label)}"></div><p style="color:var(--muted);">${esc(label)}</p></div>` : `<div><div class="image-box">Clean placeholder panel</div><p style="color:var(--muted);">${esc(label)}</p></div>`; }
-function addAudit(action) { const previous = audit[audit.length - 1]?.event_hash || "GENESIS"; const item = { action, previous, case_hash: activeCase().case_hash }; item.event_hash = hash(JSON.stringify(item)); audit.push(item); }
-function runStep(step) {
-  activeStep = step;
-  if (!completed.includes(step)) completed.push(step);
-  activeCase().state = step.toLowerCase().replaceAll(" ", "_");
-  timeline.push(step + " completed for " + activeCase().case_hash);
-  addAudit(step);
-  renderAll();
-}
-function selectCase(index) { selectedCaseIndex = index; timeline.push("Selected " + activeCase().case_hash); addAudit("case_selected"); renderAll(); }
-function renderWorkflow() {
-  document.querySelectorAll(".step").forEach(btn => { const step = btn.dataset.step; btn.classList.toggle("done", completed.includes(step)); btn.classList.toggle("active", activeStep === step); });
-  const progress = Math.round((completed.length / STATE.workflow_steps.length) * 100);
-  document.getElementById("progressFill").style.width = progress + "%";
-  document.getElementById("workflowMetrics").innerHTML = metric("Progress", progress + "%") + metric("Current case state", activeCase().state) + metric("Status", activeCase().status);
-  document.getElementById("timeline").innerHTML = timeline.map(eventItem).join("");
-  document.getElementById("auditLog").innerHTML = audit.map(item => `<div class="event"><strong>${esc(item.action)}</strong><br><span>${esc(item.event_hash)}</span></div>`).join("");
-}
-function renderClinical() {
-  document.getElementById("caseQueue").innerHTML = STATE.cases.map((item, idx) => `<button class="case-button ${idx === selectedCaseIndex ? "active" : ""}" type="button" onclick="selectCase(${idx})"><strong>${esc(item.case_hash)}</strong><span>${esc(item.eye_side)} · ${esc(item.priority)} · ${esc(item.status)}</span></button>`).join("");
-  document.getElementById("viewerGrid").innerHTML = imageBox(activeCase().oct_image, "OCT / B-scan viewer mock") + imageBox(activeCase().heatmap, "Heatmap viewer");
-  document.getElementById("biomarkers").innerHTML = Object.entries(activeCase().biomarkers).map(([k,v]) => `<div class="bio-item"><span>${esc(k)}</span><span>${esc(v)}</span></div>`).join("");
-  document.getElementById("journalNotes").innerHTML = activeCase().notes.map(eventItem).join("");
-  document.getElementById("medHistory").innerHTML = activeCase().medications.map(eventItem).join("") || eventItem("No Medication History in this mock case.");
-}
-function renderAi() {
-  const r = STATE.byom_response.result;
-  document.getElementById("aiMetrics").innerHTML = metric("label", r.label) + metric("score", r.score) + metric("uncertainty", r.uncertainty) + metric("confidence band", r.confidence_band);
-  const request = {...STATE.byom_request, case_hash: activeCase().case_hash};
-  const response = {...STATE.byom_response, case_hash: activeCase().case_hash};
-  document.getElementById("requestJson").textContent = JSON.stringify(request, null, 2);
-  document.getElementById("responseJson").textContent = JSON.stringify(response, null, 2);
-  document.getElementById("workspaceGrid").innerHTML = workspace.map(item => `<div class="mini-card"><strong>${esc(item)}</strong>Backend AI operation module.</div>`).join("");
-  document.getElementById("similarCases").innerHTML = STATE.similar_cases.map(item => `<div class="mini-card"><strong>${esc(item.case_hash)}</strong>Score ${esc(item.score)}<br>${esc(item.basis)}</div>`).join("");
-}
-document.querySelectorAll(".step").forEach(btn => btn.addEventListener("click", () => runStep(btn.dataset.step)));
-document.getElementById("reviewStatus").addEventListener("change", e => { if (e.target.value === "overridden") { timeline.push("Override AI Result selected; override reason required when overridden"); addAudit("override_reason_required"); } renderAll(); });
-function renderAll() { renderWorkflow(); renderClinical(); renderAi(); }
-renderAll();
-</script>
+  </main>
+  <footer class="shell footer-note">Static product POC for review-support workflow demonstration. doctor review required. not diagnosis. not clinically validated. not a regulated medical device.</footer>
 </body>
 </html>
